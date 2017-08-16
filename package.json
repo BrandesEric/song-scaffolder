@@ -10,5 +10,8 @@
     "npm-run-all": "^4.0.2",
     "ts-node": "^3.2.1",
     "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "tonal": "^0.69.9"
   }
 }
