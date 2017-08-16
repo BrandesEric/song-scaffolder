@@ -1,5 +1,5 @@
 import { Note } from "./note";
-import { MidiClip, Note as AbletonJsNote } from "../../../AbletonJS/sdk/index";
+import * as AbletonJs from "ableton-js";
 
 export class Phrase {
 
@@ -19,10 +19,10 @@ export class Phrase {
         return this._notes.map(x => `${x.name}_${x.time}_${x.duration}`).join("  ");
     }
 
-    toMidiClip(): MidiClip {
-        var clip = new MidiClip();
+    toMidiClip(): AbletonJs.MidiClip {
+        var clip = new AbletonJs.MidiClip();
         clip.lengthInBeats = this.duration * 4;
-        clip.notes = this._notes.map(x => new AbletonJsNote(x.pitch, x.time, x.durationAsDecimal))
+        clip.notes = this._notes.map(x => new AbletonJs.Note(x.pitch, x.time, x.durationAsDecimal))
 
         return clip;
     }

@@ -2,8 +2,8 @@ import { Config } from "../config/index";
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
-import * as AbletonJs from "ableton-js/sdk";
-import { Track } from "ableton-js/sdk";
+import * as AbletonJs from "ableton-js";
+import { Track } from "ableton-js";
 
 export class KickDrumGenerator {
     
@@ -28,6 +28,8 @@ export class KickDrumGenerator {
             phrase.addNote(note);
         }
 
-        AbletonJs.insertMidiClip(this.track, phrase.toMidiClip())
+
+        AbletonJs.insertMidiClip(this.track, phrase.toMidiClip());
+        
     }
 }
