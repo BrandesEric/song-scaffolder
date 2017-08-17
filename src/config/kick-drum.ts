@@ -1,3 +1,3 @@
 export let KickDrum = {
-    bars: 2
+    clipLength: 2
 }

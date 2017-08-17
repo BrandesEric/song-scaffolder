@@ -7,12 +7,12 @@ import { Track } from "ableton-js";
 
 export class KickDrumGenerator {
     
-    bars: number;
+    clipLength: number;
 
     track: Track;
 
     constructor() {
-        this.bars = Config.KickDrum.bars;
+        this.clipLength = Config.KickDrum.clipLength;
     }
 
     async generate() {
@@ -21,15 +21,15 @@ export class KickDrumGenerator {
     }
     
     async generateFourOnFloor() {
-        var hits = this.bars * 4;
-        var phrase = new Phrase(this.bars);
-        for(var i = 0; i < hits; i++){
+        var phrase = new Phrase(this.clipLength, "4x4");
+        var beats = phrase.beats;
+        for(var i = 0; i < beats; i++){
             var note = Note.fromNoteName("C3", i, NoteDuration.Sixteenth);
             phrase.addNote(note);
         }
 
 
-        AbletonJs.insertMidiClip(this.track, phrase.toMidiClip());
-        
+        var clip = phrase.toMidiClip();
+        await AbletonJs.insertMidiClip(this.track, clip);
     }
 }

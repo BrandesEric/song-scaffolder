@@ -5,10 +5,17 @@ export class Phrase {
 
     private _notes: Note[] = [];
 
-    public duration: number;
+    public bars: number;
 
-    constructor(duration: number) {
-        this.duration = duration;
+    public name: string;
+
+    public get beats(): number {
+        return this.bars * 4;
+    }
+
+    constructor(bars: number, name: string = null) {
+        this.bars = bars;
+        this.name = name;
     }
 
     addNote(note: Note) {
@@ -21,9 +28,10 @@ export class Phrase {
 
     toMidiClip(): AbletonJs.MidiClip {
         var clip = new AbletonJs.MidiClip();
-        clip.lengthInBeats = this.duration * 4;
+        clip.lengthInBeats = this.beats;
+        clip.name = this.name;
         clip.notes = this._notes.map(x => new AbletonJs.Note(x.pitch, x.time, x.durationAsDecimal))
-
+        
         return clip;
     }
 }
