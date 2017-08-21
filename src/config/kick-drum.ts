@@ -1,3 +1,6 @@
 export let KickDrum = {
-    clipLength: 2
+    defaultClipLengthInBars: 2,
+    numberOfRandom: 4,
+    increasingPercentOfHit: 25,
+    initialPercentOfHit: 85
 }

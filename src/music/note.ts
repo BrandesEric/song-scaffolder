@@ -4,20 +4,33 @@ export class Note {
     name: string;
     pitch: number;
     duration: NoteDuration;
-    durationAsDecimal: number;
-    time: number;
+    timeStartInBeats: number;
+    
+    get durationInBeats(): number {
+        return Note.durationAsBeats(this.duration);
+    }
 
-    static fromNoteName(name: string, time: number, duration: NoteDuration): Note {
+    clone(): Note {
         var note = new Note();
-        note.name = name;
-        note.pitch = tonal.note.midi(note.name) + 12;
-        note.time = time;
-        note.duration = duration;
-        note.durationAsDecimal = Note.durationAsDecimal(note.duration);
+        note.name = this.name;
+        note.pitch = this.pitch;
+        note.duration = this.duration
+        note.timeStartInBeats = this.timeStartInBeats;
+        
         return note;
     }
 
-    static durationAsDecimal(duration: NoteDuration): number {
+    static fromNoteName(name: string, timeStartInBeats: number, duration: NoteDuration): Note {
+        var note = new Note();
+        note.name = name;
+        note.pitch = tonal.note.midi(note.name) + 12;
+        note.timeStartInBeats = timeStartInBeats;
+        note.duration = duration;
+
+        return note;
+    }
+
+    static durationAsBeats(duration: NoteDuration): number {
         switch (duration) {
             case NoteDuration.ThirtySecond:
                 return 1 / 8;
