@@ -11,8 +11,9 @@ export class KickDrumGenerator {
         var track = await AbletonJs.createMidiTrackIfNotExists("AJS Kick Drum");
         //await this.generateFourOnFloor(track);
         //await this.generateDancehall(track);
-        for (var i = 0; i < Config.KickDrum.numberOfRandom; i++) {
-            await this.generateRandom(track, `Random ${i + 1}`);
+        for (var i = 0; i < Config.KickDrum.strategies.length; i++) {
+            var strategy = Config.KickDrum.strategies[i];
+            this.generatePhraseFromStrategy(track, strategy);
         }
         return track;
     }
@@ -30,29 +31,10 @@ export class KickDrumGenerator {
         await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
     }
 
-    async generateRandom(track: Track, name: string = "Random") {
-        var phrase = new Phrase(Config.KickDrum.defaultClipLengthInBars / 2, name);
-        var beats = phrase.numberOfBeats;
-
-        for (var i = 0; i < beats; i+= 0.25) {
-            if (i === 0) {
-                if (this.shouldHit(Config.KickDrum.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
-                }
-            }
-            else {
-                var sixteenthsSincePlayed = i - phrase.lastBeatPlayed;
-                var decimalPercent = Config.KickDrum.increasingPercentOfHit / 100;
-                var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
-
-                if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
-                }
-
-            }
-        }
-
-        await AbletonJs.insertMidiClip(track, phrase.double().toMidiClip());
+    async generatePhraseFromStrategy(track: Track, strategy: { generate: () => Phrase }) {
+        var phrase = strategy.generate();
+        console.log(phrase);
+        await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
     }
 
     generatePhraseFromPattern(pattern: string, name: string = null) {
@@ -71,10 +53,5 @@ export class KickDrumGenerator {
         }
 
         return phrase;
-    }
-
-    shouldHit(percentangeChance: number): boolean {
-        var rand = Math.random() * 100;
-        return rand <= percentangeChance;
-    }
+    }  
 }
