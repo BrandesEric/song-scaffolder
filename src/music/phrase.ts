@@ -11,7 +11,7 @@ export class Phrase {
 
     public name: string;
 
-    public get beats(): number {
+    public get numberOfBeats(): number {
         return this.bars * 4;
     }
 
@@ -22,6 +22,7 @@ export class Phrase {
         
         return orderBy(this._notes, "timeStartInBeats", ["desc"])[0].timeStartInBeats;
     }
+
 
     constructor(bars: number, name: string = null) {
         this.bars = bars;
@@ -42,7 +43,7 @@ export class Phrase {
 
     toMidiClip(): AbletonJs.MidiClip {
         var clip = new AbletonJs.MidiClip();
-        clip.lengthInBeats = this.beats;
+        clip.lengthInBeats = this.numberOfBeats;
         clip.name = this.name;
         clip.notes = this._notes.map(x => new AbletonJs.Note(x.pitch, x.timeStartInBeats, x.durationInBeats))
         
@@ -50,12 +51,12 @@ export class Phrase {
     }
 
     double(): Phrase {
-        var beats = this.beats;
+        var beats = this.numberOfBeats;
         var phrase = new Phrase(this.bars * 2, this.name);
         var newNotes = [].concat(this._notes);
         newNotes = newNotes.concat(this._notes.map(note => {
             var newNote = note.clone();
-            newNote.timeStartInBeats = this.beats + note.timeStartInBeats;
+            newNote.timeStartInBeats = this.numberOfBeats + note.timeStartInBeats;
             return newNote;
         }));
 

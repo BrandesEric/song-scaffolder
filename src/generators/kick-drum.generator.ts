@@ -31,29 +31,28 @@ export class KickDrumGenerator {
     }
 
     async generateRandom(track: Track, name: string = "Random") {
-        var phrase = new Phrase(Config.KickDrum.defaultClipLengthInBars, name);
-        var beats = phrase.beats;
-        var sixteenthNotes = beats * 4;
+        var phrase = new Phrase(Config.KickDrum.defaultClipLengthInBars / 2, name);
+        var beats = phrase.numberOfBeats;
 
-        for (var i = 0; i < sixteenthNotes; i++) {
+        for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(Config.KickDrum.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName("C3", i/4, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
                 }
             }
             else {
-                var sixteenthsSincePlayed = i - (phrase.lastBeatPlayed * 4);
+                var sixteenthsSincePlayed = i - phrase.lastBeatPlayed;
                 var decimalPercent = Config.KickDrum.increasingPercentOfHit / 100;
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName("C3", i/4, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
                 }
 
             }
         }
 
-        await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
+        await AbletonJs.insertMidiClip(track, phrase.double().toMidiClip());
     }
 
     generatePhraseFromPattern(pattern: string, name: string = null) {
