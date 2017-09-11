@@ -1,19 +1,20 @@
 import { Phrase } from "../music/phrase";
 import { Note, NoteDuration } from "../music/note";
 import { Track } from "../../../AbletonJS/dist/index";
+import { IClipGenerationStrategy } from "./iclip-generation-strategy";
 
-export class KickDrumIntervalStrategy {
-    numberOfClips = 2;
+export class KickDrumIntervalStrategy implements IClipGenerationStrategy {
+    numberOfClips = 4;
     increasingPercentOfHit = 25;
     initialPercentOfHit =  85;
     defaultLengthInBars = 2;
     name = "KD Interval";
 
-    private counter = 1;
+    private counter = 0;
 
     generate(): Phrase {
-        console.log("here i am")
         var phrase = new Phrase(this.defaultLengthInBars/2,  `${this.name} ${this.counter}`);
+        this.counter++;
         var beats = phrase.numberOfBeats;
 
         for (var i = 0; i < beats; i+= 0.25) {

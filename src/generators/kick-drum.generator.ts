@@ -4,11 +4,14 @@ import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { Track } from "ableton-js";
+import { IClipGenerationStrategy } from "../strategies/iclip-generation-strategy";
 
 export class KickDrumGenerator {
 
+    public static TRACK_NAME = "AJS Kick Drum";
+
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists("AJS Kick Drum");
+        var track = await AbletonJs.createMidiTrackIfNotExists(KickDrumGenerator.TRACK_NAME);
         //await this.generateFourOnFloor(track);
         //await this.generateDancehall(track);
         for (var i = 0; i < Config.KickDrum.strategies.length; i++) {
@@ -31,10 +34,11 @@ export class KickDrumGenerator {
         await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
     }
 
-    async generatePhraseFromStrategy(track: Track, strategy: { generate: () => Phrase }) {
-        var phrase = strategy.generate();
-        console.log(phrase);
-        await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
+    async generatePhraseFromStrategy(track: Track, strategy: IClipGenerationStrategy) {
+        for(var i = 0; i <= strategy.numberOfClips; i++) {
+            var phrase = strategy.generate();
+            await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
+        }
     }
 
     generatePhraseFromPattern(pattern: string, name: string = null) {
@@ -54,4 +58,12 @@ export class KickDrumGenerator {
 
         return phrase;
     }  
+
+    async clearClips(): Promise<void> {
+
+        var track = await AbletonJs.getTrackByName(KickDrumGenerator.TRACK_NAME);
+        await AbletonJs.deleteAllMidiClips(track);
+
+        return;
+    }
 }
