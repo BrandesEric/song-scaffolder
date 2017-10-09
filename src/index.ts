@@ -1,10 +1,10 @@
 import { Config } from "./config/index";
 import { KickDrumGenerator } from "./generators/kick-drum.generator";
 
-function generateKickDrum() {
+async function generateKickDrum() {
     var kickDrumGenerator = new KickDrumGenerator();
-    kickDrumGenerator.clearClips();
-    kickDrumGenerator.generate();
+    await kickDrumGenerator.clearClips();
+    await kickDrumGenerator.generate();
 }
 
 generateKickDrum();

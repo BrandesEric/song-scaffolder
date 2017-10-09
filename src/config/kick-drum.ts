@@ -5,6 +5,6 @@ export let KickDrum = {
     defaultClipLengthInBars: 2,
     strategies: [
         new KickDrumIntervalStrategy(),
-        //new KickDrumPatternStrategy()
+        new KickDrumPatternStrategy()
     ]
 }

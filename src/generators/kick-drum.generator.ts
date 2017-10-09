@@ -12,11 +12,11 @@ export class KickDrumGenerator {
 
     async generate() {
         var track = await AbletonJs.createMidiTrackIfNotExists(KickDrumGenerator.TRACK_NAME);
-        //await this.generateFourOnFloor(track);
-        //await this.generateDancehall(track);
+        await this.generateFourOnFloor(track);
+        await this.generateDancehall(track);
         for (var i = 0; i < Config.KickDrum.strategies.length; i++) {
             var strategy = Config.KickDrum.strategies[i];
-            this.generatePhraseFromStrategy(track, strategy);
+            await this.generatePhraseFromStrategy(track, strategy);
         }
         return track;
     }
@@ -35,7 +35,7 @@ export class KickDrumGenerator {
     }
 
     async generatePhraseFromStrategy(track: Track, strategy: IClipGenerationStrategy) {
-        for(var i = 0; i <= strategy.numberOfClips; i++) {
+        for(var i = 0; i < strategy.numberOfClips; i++) {
             var phrase = strategy.generate();
             await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
         }

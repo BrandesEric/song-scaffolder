@@ -5,9 +5,9 @@ export class Note {
     pitch: number;
     duration: NoteDuration;
     timeStartInBeats: number;
-    
+
     get durationInBeats(): number {
-        return Note.durationAsBeats(this.duration);
+        return this.duration.lengthInBeats;
     }
 
     clone(): Note {
@@ -16,7 +16,7 @@ export class Note {
         note.pitch = this.pitch;
         note.duration = this.duration
         note.timeStartInBeats = this.timeStartInBeats;
-        
+
         return note;
     }
 
@@ -29,32 +29,21 @@ export class Note {
 
         return note;
     }
-
-    static durationAsBeats(duration: NoteDuration): number {
-        switch (duration) {
-            case NoteDuration.ThirtySecond:
-                return 1 / 8;
-            case NoteDuration.Sixteenth:
-                return 1 / 4;
-            case NoteDuration.Eighth:
-                return 1 / 2;
-            case NoteDuration.Quarter:
-                return 1;
-            case NoteDuration.Half:
-                return 2;
-            case NoteDuration.Whole:
-                return 4;
-        }
-    }
 }
 
 
-export enum NoteDuration {
-    Unknown,
-    ThirtySecond = "1/32",
-    Sixteenth = "1/16",
-    Eighth = "1/8",
-    Quarter = "1/4",
-    Half = "1/2",
-    Whole = "1"
+export class NoteDuration {
+    lengthInBeats: number;
+    lengthInBars: number;
+    name: string;
+    private constructor(lengthInBars: number, lengthInBeats: number) {
+        this.lengthInBars = lengthInBars;
+        this.lengthInBeats = lengthInBeats;
+    }
+    static ThirtySecond = new NoteDuration(1 / 32, 1 / 8);
+    static Sixteenth = new NoteDuration(1 / 16, 1 / 4);
+    static Eighth = new NoteDuration(1 / 8, 1 / 2);
+    static Quarter = new NoteDuration(1 / 4, 1);
+    static Half = new NoteDuration(1 / 2, 2);
+    static Whole = new NoteDuration(1, 4);
 }

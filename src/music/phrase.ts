@@ -29,6 +29,10 @@ export class Phrase {
         this.name = name;
     }
 
+    get notes(): Note[] {
+        return this._notes;
+    }
+
     addNote(note: Note) {
         this._notes.push(note);
     }
@@ -61,6 +65,21 @@ export class Phrase {
         }));
 
         phrase.addNotes(newNotes);
+
+        return phrase;
+    }
+
+    concat(phrase: Phrase): Phrase {
+        var newLengthInBars = this.bars + phrase.bars;
+        var newPhrase = new Phrase(newLengthInBars, this.name);
+        var newNotes = [].concat(this._notes.map(x => x.clone()));
+        newNotes = newNotes.concat(phrase.notes.map(note => {
+            var newNote = note.clone();
+            newNote.timeStartInBeats = this.numberOfBeats + note.timeStartInBeats;
+            return newNote;
+        }));
+
+        newPhrase.addNotes(newNotes);
 
         return phrase;
     }

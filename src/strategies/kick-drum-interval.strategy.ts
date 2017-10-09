@@ -21,7 +21,7 @@ export class KickDrumIntervalStrategy implements IClipGenerationStrategy {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
                     phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
-                }
+                } 
             }
             else {
                 var sixteenthsSincePlayed = i - phrase.lastBeatPlayed;
