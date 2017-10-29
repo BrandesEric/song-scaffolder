@@ -3,7 +3,6 @@ import { KickDrumPatternStrategy } from "../strategies/kick-drum-pattern.strateg
 import { KickDrumCommonStrategy } from "../strategies/kick-drum-common.strategy";
 
 export let KickDrum = {
-    defaultClipLengthInBars: 2,
     strategies: [
         new KickDrumCommonStrategy(),
         new KickDrumIntervalStrategy(),

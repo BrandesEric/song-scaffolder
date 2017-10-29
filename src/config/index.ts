@@ -1,7 +1,9 @@
 
 
 import { KickDrum } from "./kick-drum";
+import { SnareDrum } from "./snare-drum";
 
 export let Config = {
-    KickDrum: KickDrum
+    KickDrum: KickDrum,
+    SnareDrum: SnareDrum
 }
