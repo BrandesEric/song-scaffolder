@@ -1,19 +1,24 @@
-import { Config } from "../config/index";
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { Track } from "ableton-js";
 import { IClipGenerationStrategy } from "../strategies/iclip-generation-strategy";
+import { HiHatCommonStrategy } from "../strategies/hihat-common.strategy";
 
 export class HiHatGenerator {
 
     public static TRACK_NAME = "AJS Hihats";
 
+    strategies = [
+        new HiHatCommonStrategy(),
+        //new HiHatTrapStrategy()
+    ]
+
     async generate() {
         var track = await AbletonJs.createMidiTrackIfNotExists(HiHatGenerator.TRACK_NAME);
-        for (var i = 0; i < Config.HiHat.strategies.length; i++) {
-            var strategy = Config.HiHat.strategies[i];
+        for (var i = 0; i < this.strategies.length; i++) {
+            var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
         }
         return track;

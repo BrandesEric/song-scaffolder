@@ -1,7 +1,8 @@
-import { Config } from "./config/index";
 import { KickDrumGenerator } from "./generators/kick-drum.generator";
 import { SnareDrumGenerator } from "./generators/snare-drum.generator";
 import { HiHatGenerator } from "./generators/hihat.generator";
+import { ChordGenerator } from "./generators/chord-generator";
+import * as tonal from "tonal";
 
 async function generateKickDrum() {
     var kickDrumGenerator = new KickDrumGenerator();
@@ -21,7 +22,16 @@ async function generateHiHats(){
     await hiHatGenerator.generate();
 }
 
-generateKickDrum()
-    .then(() => generateSnareDrum())
-    .then(() => generateHiHats());
+async function generateChords() {
+    var chordGenerator = new ChordGenerator();
+    await chordGenerator.clearClips();
+    await chordGenerator.generate();
+}
 
+//  generateKickDrum()
+//      .then(() => generateSnareDrum())
+//      .then(() => generateHiHats());
+
+generateChords();
+
+// https://plnkr.co/edit/jnmW3dwdDUbAI7NH9Tpa?p=preview

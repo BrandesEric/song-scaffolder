@@ -2,6 +2,7 @@ import { IClipGenerationStrategy } from "./iclip-generation-strategy";
 import { Phrase } from "../music/phrase";
 import { Pattern } from "../music/pattern";
 import { Note, NoteDuration } from "../music/note";
+import { SongConfig } from "../config/song.config";
 
 export class HiHatCommonStrategy implements IClipGenerationStrategy {
     numberOfClips;
@@ -31,7 +32,7 @@ export class HiHatCommonStrategy implements IClipGenerationStrategy {
             var action = pattern.patternString[i];
             if (action === "x") {
                 var velocity = this.getRandomInt(75, 127);
-                var note = Note.fromNoteName("C3", i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration, velocity);
+                var note = Note.fromNoteName(`${SongConfig.key}3`, i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration, velocity);
                 phrase.addNote(note);
             }
         }

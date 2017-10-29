@@ -2,6 +2,7 @@ import { Phrase } from "../music/phrase";
 import { Note, NoteDuration } from "../music/note";
 import { Track } from "../../../AbletonJS/dist/index";
 import { IClipGenerationStrategy } from "./iclip-generation-strategy";
+import { SongConfig } from "../config/song.config";
 
 export class KickDrumIntervalStrategy implements IClipGenerationStrategy {
     numberOfClips = 4;
@@ -20,7 +21,7 @@ export class KickDrumIntervalStrategy implements IClipGenerationStrategy {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
                 } 
             }
             else {
@@ -29,7 +30,7 @@ export class KickDrumIntervalStrategy implements IClipGenerationStrategy {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName("C3", i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
                 }
             }
         }

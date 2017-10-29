@@ -2,6 +2,7 @@ import { Pattern } from "../music/pattern";
 import { IClipGenerationStrategy } from "./iclip-generation-strategy";
 import { Phrase } from "../music/phrase";
 import { Note } from "../music/note";
+import { SongConfig } from "../config/song.config";
 
 export class KickDrumPatternStrategy implements IClipGenerationStrategy {
 
@@ -34,7 +35,7 @@ export class KickDrumPatternStrategy implements IClipGenerationStrategy {
         for (var i = 0; i < pattern.patternString.length; i++) {
             var action = pattern.patternString[i];
             if (action === "x") {
-                var note = Note.fromNoteName("C3", i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration);
+                var note = Note.fromNoteName(`${SongConfig.key}3`, i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration);
                 phrase.addNote(note);
             }
         }

@@ -25,7 +25,7 @@ export class Note {
     static fromNoteName(name: string, timeStartInBeats: number, duration: NoteDuration, velocity: number = null): Note {
         var note = new Note();
         note.name = name;
-        note.pitch = tonal.note.midi(note.name) + 12;
+        note.pitch = tonal.Note.midi(note.name) + 12;
         note.timeStartInBeats = timeStartInBeats;
         note.duration = duration;
         if(velocity) {

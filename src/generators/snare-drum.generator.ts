@@ -1,19 +1,23 @@
-import { Config } from "../config/index";
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { Track } from "ableton-js";
 import { IClipGenerationStrategy } from "../strategies/iclip-generation-strategy";
+import { SnareDrumCommonStrategy } from "../strategies/snare-drum-common.strategy";
 
 export class SnareDrumGenerator {
 
     public static TRACK_NAME = "AJS Snare Drum";
 
+    strategies = [
+        new SnareDrumCommonStrategy()
+    ]
+
     async generate() {
         var track = await AbletonJs.createMidiTrackIfNotExists(SnareDrumGenerator.TRACK_NAME);
-        for (var i = 0; i < Config.SnareDrum.strategies.length; i++) {
-            var strategy = Config.SnareDrum.strategies[i];
+        for (var i = 0; i < this.strategies.length; i++) {
+            var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
         }
         return track;
