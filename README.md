@@ -1,0 +1,1 @@
+Scaffolds out song ideas using [AbletonJS](https://github.com/BrandesEric/AbletonJS)
