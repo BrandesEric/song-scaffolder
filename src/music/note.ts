@@ -5,6 +5,7 @@ export class Note {
     pitch: number;
     duration: NoteDuration;
     timeStartInBeats: number;
+    velocity = 127
 
     get durationInBeats(): number {
         return this.duration.lengthInBeats;
@@ -16,16 +17,20 @@ export class Note {
         note.pitch = this.pitch;
         note.duration = this.duration
         note.timeStartInBeats = this.timeStartInBeats;
+        note.velocity = this.velocity;
 
         return note;
     }
 
-    static fromNoteName(name: string, timeStartInBeats: number, duration: NoteDuration): Note {
+    static fromNoteName(name: string, timeStartInBeats: number, duration: NoteDuration, velocity: number = null): Note {
         var note = new Note();
         note.name = name;
         note.pitch = tonal.note.midi(note.name) + 12;
         note.timeStartInBeats = timeStartInBeats;
         note.duration = duration;
+        if(velocity) {
+            note.velocity = velocity;
+        }
 
         return note;
     }

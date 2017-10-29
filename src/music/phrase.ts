@@ -49,7 +49,7 @@ export class Phrase {
         var clip = new AbletonJs.MidiClip();
         clip.lengthInBeats = this.numberOfBeats;
         clip.name = this.name;
-        clip.notes = this._notes.map(x => new AbletonJs.Note(x.pitch, x.timeStartInBeats, x.durationInBeats))
+        clip.notes = this._notes.map(x => new AbletonJs.Note(x.pitch, x.timeStartInBeats, x.durationInBeats, x.velocity))
         
         return clip;
     }
