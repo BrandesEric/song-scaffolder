@@ -5,7 +5,7 @@ import { Note } from "../music/note";
 
 export class KickDrumPatternStrategy implements IClipGenerationStrategy {
 
-    numberOfClips = 1;
+    numberOfClips = 4;
 
     name = "KD Pattern";
 
@@ -20,7 +20,7 @@ export class KickDrumPatternStrategy implements IClipGenerationStrategy {
         new PatternDefinition(new Pattern("---x"), 20),
     ]
 
-    generate(): Phrase {
+    generate(): Phrase { 
         var pattern = this.getRandomPattern();
         while(pattern.lengthInBars < this.numberOfBars) {
             pattern = pattern.concat(this.getRandomPattern());
