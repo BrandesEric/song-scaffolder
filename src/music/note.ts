@@ -52,3 +52,9 @@ export class NoteDuration {
     static Half = new NoteDuration(1 / 2, 2);
     static Whole = new NoteDuration(1, 4);
 }
+
+export class TimePosition {
+    static timeInBeats(bars: number): number {
+        return bars * 4;
+    }
+}
