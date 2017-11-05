@@ -3,6 +3,7 @@ import { SnareDrumGenerator } from "./generators/snare-drum.generator";
 import { HiHatGenerator } from "./generators/hihat.generator";
 import { ChordGenerator } from "./generators/chord-generator";
 import * as tonal from "tonal";
+import { RandomChordStrategy } from "./strategies/chord-random.strategy";
 
 async function generateKickDrum() {
     var kickDrumGenerator = new KickDrumGenerator("AJS Kick");
@@ -28,10 +29,18 @@ async function generateSimpleChords() {
     await chordGenerator.generate();
 }
 
+async function generateRandomChords() {
+    var chordGenerator = new ChordGenerator("AJS Random Chords", [new RandomChordStrategy(2)]);
+    await chordGenerator.clearClips();
+    await chordGenerator.generate();
+}
+
 //  generateKickDrum()
 //       .then(() => generateSnareDrum())
-//       .then(() => generateHiHats());
+//       .then(() => genyerateHiHats());
  
  //generateSimpleChords();
+
+ generateRandomChords();
 
 // https://plnkr.co/edit/jnmW3dwdDUbAI7NH9Tpa?p=preview
