@@ -32,6 +32,6 @@ async function generateSimpleChords() {
 //       .then(() => generateSnareDrum())
 //       .then(() => generateHiHats());
  
-// generateSimpleChords();
+ //generateSimpleChords();
 
 // https://plnkr.co/edit/jnmW3dwdDUbAI7NH9Tpa?p=preview

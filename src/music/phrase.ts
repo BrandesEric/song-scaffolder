@@ -1,6 +1,7 @@
 import { orderBy } from "lodash";
 import { Note } from "./note";
 import * as AbletonJs from "ableton-js"
+import { Chord } from "./chord";
 
 
 export class Phrase {
@@ -39,6 +40,15 @@ export class Phrase {
 
     addNotes(notes: Note[]) {
         this._notes = this._notes.concat(notes);
+    }
+
+    addNotesFromChords(chords: Chord[]){
+        var timeStartInBeats = 0;
+        chords.forEach(chord => {
+            var notes = chord.getNotes(timeStartInBeats);
+            this.addNotes(notes);
+            timeStartInBeats += chord.duration.lengthInBeats;
+        });
     }
 
     toString(): string {

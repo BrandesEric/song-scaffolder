@@ -37,17 +37,12 @@ export class SimpleChordStrategy implements IClipGenerationStrategy {
     }
     generate(): Phrase {
         var progression = this.progressions[this.currentProgression];
-        var phrase = new Phrase(progression.length, progression.toString());
         var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
         var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.startOctave));
-        var timeStartInBeats = 0;
-        chords.forEach(chord => {
-            var notes = chord.getNotes(timeStartInBeats);
-            phrase.addNotes(notes);
-            timeStartInBeats += chord.duration.lengthInBeats;
-        });
+        var phrase = new Phrase(progression.length, progression.toString());
+        phrase.addNotesFromChords(chords);
         this.currentProgression++;
 
-        return phrase;
+        return phrase; 
     }
 } 
