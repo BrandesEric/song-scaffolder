@@ -8,14 +8,21 @@ import { SimpleChordStrategy } from "../strategies/chord-simple.strategy";
 
 export class ChordGenerator {
 
-    public static TRACK_NAME = "AJS Chords";
+    public trackName: string;
 
-    strategies = [
+    constructor(trackName: string, strategies: IClipGenerationStrategy[] = null) {
+        this.trackName = trackName;
+        if(strategies) {
+            this.strategies = strategies;
+        }
+    }
+
+    strategies: IClipGenerationStrategy[] = [
         new SimpleChordStrategy()
     ]
 
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists(ChordGenerator.TRACK_NAME);
+        var track = await AbletonJs.createMidiTrackIfNotExists(this.trackName);
         for (var i = 0; i < this.strategies.length; i++) {
             var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
@@ -33,7 +40,7 @@ export class ChordGenerator {
 
     async clearClips(): Promise<void> {
 
-        var track = await AbletonJs.getTrackByName(ChordGenerator.TRACK_NAME);
+        var track = await AbletonJs.getTrackByName(this.trackName);
         if(track){
             await AbletonJs.deleteAllMidiClips(track);
         }

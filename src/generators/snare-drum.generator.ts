@@ -8,14 +8,18 @@ import { SnareDrumCommonStrategy } from "../strategies/snare-drum-common.strateg
 
 export class SnareDrumGenerator {
 
-    public static TRACK_NAME = "AJS Snare Drum";
+    trackName: string;
+
+    constructor(trackName: string) {
+        this.trackName = trackName;
+    }
 
     strategies = [
         new SnareDrumCommonStrategy()
     ]
 
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists(SnareDrumGenerator.TRACK_NAME);
+        var track = await AbletonJs.createMidiTrackIfNotExists(this.trackName);
         for (var i = 0; i < this.strategies.length; i++) {
             var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
@@ -33,7 +37,7 @@ export class SnareDrumGenerator {
 
     async clearClips(): Promise<void> {
 
-        var track = await AbletonJs.getTrackByName(SnareDrumGenerator.TRACK_NAME);
+        var track = await AbletonJs.getTrackByName(this.trackName);
         if(track){
             await AbletonJs.deleteAllMidiClips(track);
         }

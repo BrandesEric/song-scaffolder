@@ -8,7 +8,11 @@ import { HiHatCommonStrategy } from "../strategies/hihat-common.strategy";
 
 export class HiHatGenerator {
 
-    public static TRACK_NAME = "AJS Hihats";
+    trackName: string;
+
+    constructor(trackName: string){
+        this.trackName = trackName;
+    }
 
     strategies = [
         new HiHatCommonStrategy(),
@@ -16,7 +20,7 @@ export class HiHatGenerator {
     ]
 
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists(HiHatGenerator.TRACK_NAME);
+        var track = await AbletonJs.createMidiTrackIfNotExists(this.trackName);
         for (var i = 0; i < this.strategies.length; i++) {
             var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
@@ -34,7 +38,7 @@ export class HiHatGenerator {
 
     async clearClips(): Promise<void> {
 
-        var track = await AbletonJs.getTrackByName(HiHatGenerator.TRACK_NAME);
+        var track = await AbletonJs.getTrackByName(this.trackName);
         if(track){
             await AbletonJs.deleteAllMidiClips(track);
         }

@@ -19,7 +19,12 @@ export class SimpleChordStrategy implements IClipGenerationStrategy {
         [6, 5, 4, 5],
         [1, 6, 4, 5],
         [1, 4, 6, 5],
-        [1, 5, 4, 5]
+        [1, 5, 4, 5],
+        [1, 5, 6],
+        [1, 3, 4, 1],
+        [1, 2, 5, 1],
+        [1, 4, 5, 1],
+        [6,5,4,1]
     ]
 
     numberOfClips: number = this.progressions.length;

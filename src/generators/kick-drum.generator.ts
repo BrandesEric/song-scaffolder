@@ -10,7 +10,7 @@ import { KickDrumPatternStrategy } from "../strategies/kick-drum-pattern.strateg
 
 export class KickDrumGenerator {
 
-    public static TRACK_NAME = "AJS Kick Drum";
+    trackName: string;
 
     strategies = [
         new KickDrumCommonStrategy(),
@@ -18,8 +18,12 @@ export class KickDrumGenerator {
         new KickDrumPatternStrategy()
     ]
 
+    constructor(trackName: string) {
+        this.trackName = trackName;
+    }
+
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists(KickDrumGenerator.TRACK_NAME);
+        var track = await AbletonJs.createMidiTrackIfNotExists(this.trackName);
         for (var i = 0; i < this.strategies.length; i++) {
             var strategy = this.strategies[i];
             await this.generatePhraseFromStrategy(track, strategy);
@@ -37,7 +41,7 @@ export class KickDrumGenerator {
 
     async clearClips(): Promise<void> {
 
-        var track = await AbletonJs.getTrackByName(KickDrumGenerator.TRACK_NAME);
+        var track = await AbletonJs.getTrackByName(this.trackName);
         if(track){
             await AbletonJs.deleteAllMidiClips(track);
         }
