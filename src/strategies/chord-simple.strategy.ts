@@ -2,12 +2,12 @@ import { IClipGenerationStrategy } from "./iclip-generation-strategy";
 import { Phrase } from "../music/phrase";
 import { Pattern } from "../music/pattern";
 import { Note, NoteDuration, TimePosition } from "../music/note";
-import { Scale, Chord } from "tonal";
+import * as Tonal from "tonal";
 import * as Key from "tonal-key";
 import { SongConfig } from "../config/song.config";
+import { Chord } from "../music/chord";
 
 export class SimpleChordStrategy implements IClipGenerationStrategy {
-    numberOfClips: number = 1;
 
     private scale;
     private chords;
@@ -22,34 +22,27 @@ export class SimpleChordStrategy implements IClipGenerationStrategy {
         [1, 5, 4, 5]
     ]
 
-    constructor(startOctave = 3) {
+    numberOfClips: number = this.progressions.length;
+
+    constructor(startOctave = 2) {
         var scaleName = `${SongConfig.key} ${SongConfig.mode}`;
-        this.scale = Scale.notes(scaleName);
+        this.scale = Tonal.Scale.notes(scaleName);
         this.chords = Key.chords(scaleName);
         this.startOctave = startOctave;
     }
     generate(): Phrase {
         var progression = this.progressions[this.currentProgression];
         var phrase = new Phrase(progression.length, progression.toString());
-        for(var i = 0; i < progression.length; i++){
-            var chordName = this.chords[progression[i] - 1];
-            var notes = this.convertChordToNotes(chordName);
-        }
-        return phrase.double();
+        var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
+        var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.startOctave));
+        var timeStartInBeats = 0;
+        chords.forEach(chord => {
+            var notes = chord.getNotes(timeStartInBeats);
+            phrase.addNotes(notes);
+            timeStartInBeats += chord.duration.lengthInBeats;
+        });
+        this.currentProgression++;
+
+        return phrase;
     }
-
-    convertChordToNotes(chordName: string): Note[] {
-        var chordNotes = Chord.notes(chordName);
-        var notes = [];
-        for(var j = 0; j < chordNotes.length; j++) {
-            var noteName = chordNotes[j];
-            noteName += this.startOctave;
-            var note = Note.fromNoteName(noteName, TimePosition.timeInBeats(i), NoteDuration.Whole, 100);
-            notes.push(note);
-        }
-
-        return notes;
-    }
-
-
 } 
