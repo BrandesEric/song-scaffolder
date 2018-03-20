@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
