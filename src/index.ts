@@ -48,10 +48,13 @@ var path = require("path");
 
 // // https://plnkr.co/edit/jnmW3dwdDUbAI7NH9Tpa?p=preview
 
-const express = require('express')
-const app = express() as Application
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express() as Application;
 app.set('view engine', 'hbs');
 app.engine('html', require('hbs').__express);
 app.set('views', path.join(__dirname, 'web/views'));
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
 Router.applyRoutes(app);
 app.listen(3000, () => console.log('Song Scaffolder started on port 3000!'))

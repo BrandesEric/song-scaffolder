@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html>
-    <head>
 
-    </head>
-    <body>
-        <div class="container">
-            <h1> Hello</h1>
+<head>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2 style="margin-bottom: 5px;">Song Scaffolder.</h2>
+    </div>
+    <div class="container flex">
+        <div style="flex: 0 0 40%;">
+            <h3>
+                Device: {{#if currentState.deviceActive}}
+                <span class="connected">Connected</span>
+                {{else}}
+                <span class="disconnected">Disconnected</span>
+                {{/if}}
+            </h3>
+            <div>
+                <h3>
+                    <form action="/change-tempo" method="POST">
+                        Tempo:
+                        <input type="text" name="tempo" value="{{currentState.tempo}}" size="3" />
+                        <button type="submit">Change Tempo</button>
+                    </form>
+                </h3>
+            </div>
         </div>
-    </body>
+        <div class="flex align-center" style="flex: 1 0 auto">
+            <form action="/add-chords" method="POST">
+                <button class="link-button">Add Chords</button>
+            </form>
+            <form action="/add-melody" method="POST">
+                <button class="link-button">Add Melody</button>
+            </form>
+            <form action="/add-bass" method="POST">
+                <button class="link-button">Add Bass</button>
+            </form>
+            <form action="/add-drums" method="POST">
+                <button class="link-button">Add Drums</button>
+            </form>
+        </div>
+    </div>
+    <div class="container flex-column eric">
+        {{#each currentState.chordTracks}}
+        <div class="track chord">
+            <h3 style="margin-top: 0">Chords</h3>
+            <form action="/generate-chords" method="POST">
+                <input type="hidden" name="id" value="{{this.id}}" />
+                <div class="flex-column">
+                    <div class="track-parameter flex align-center">
+                        <label>Track Name:</label>
+                        <input type="text" name="name" value="{{this.name}}">
+                    </div>
+                    <div class="track-parameter flex align-center">
+                        <label>Start Octave:</label>
+                        <input type="text" name="startOctave" value="{{this.startOctave}}">
+                    </div>
+                        
+                    <button>Generate</button>
+                </div>
+            </form>
+        </div>
+        {{/each}}
+    </div>
+</body>
+
 </html>

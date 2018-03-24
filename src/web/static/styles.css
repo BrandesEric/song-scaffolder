@@ -1,6 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: sans-serif;
     color: #333;
+    font-size: 16px;
+}
+
+div {
+    width: 100%;
 }
 
 .container {
@@ -28,4 +37,50 @@ body {
 
 .text-center {
     text-align: center;
+}
+
+input[type='text'] {
+    padding: 10px;
+    width: auto;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+button {
+    border: 2px #ddd solid;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 7px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #ccc;
+    border-color: #aaa;
+}
+
+.link-button {
+    color: #4286f4;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #fff;
+    border: none;
+    margin: 0 20px;
+}
+
+.link-button:hover {
+    color: #346ec9;
+    background-color: #fff;
+    border: none;
+}
+
+.track {
+    border: 1px solid #eee;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+.track-parameter {
+    margin-bottom: 5px;
+}
+.track-parameter label{
+    flex: 0 0 125px;
 }

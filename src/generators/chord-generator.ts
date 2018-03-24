@@ -5,28 +5,24 @@ import * as AbletonJs from "ableton-js";
 import { Track } from "ableton-js";
 import { IClipGenerationStrategy } from "../strategies/iclip-generation-strategy";
 import { SimpleChordStrategy } from "../strategies/chord-simple.strategy";
+import { ChordTrack } from "../state/tracks";
 
 export class ChordGenerator {
 
-    public trackName: string;
+    public chordTrack: ChordTrack;
 
-    constructor(trackName: string, strategies: IClipGenerationStrategy[] = null) {
-        this.trackName = trackName;
-        if(strategies) {
-            this.strategies = strategies;
-        }
+    constructor(chordTrack: ChordTrack) {
+        this.chordTrack = chordTrack;
     }
 
-    strategies: IClipGenerationStrategy[] = [
-        new SimpleChordStrategy()
-    ]
-
     async generate() {
-        var track = await AbletonJs.createMidiTrackIfNotExists(this.trackName);
-        for (var i = 0; i < this.strategies.length; i++) {
-            var strategy = this.strategies[i];
-            await this.generatePhraseFromStrategy(track, strategy);
-        }
+        var track = await AbletonJs.createMidiTrackIfNotExists(this.chordTrack.name); 
+        var simpleChords = new SimpleChordStrategy(this.chordTrack.startOctave)
+        await simpleChords.generate();
+        // for (var i = 0; i < this.strategies.length; i++) {
+        //     var strategy = this.strategies[i];
+        //     await this.generatePhraseFromStrategy(track, strategy);
+        // }
         return track;
     }
 
@@ -40,7 +36,7 @@ export class ChordGenerator {
 
     async clearClips(): Promise<void> {
 
-        var track = await AbletonJs.getTrackByName(this.trackName);
+        var track = await AbletonJs.getTrackByName(this.chordTrack.name);
         if(track){
             await AbletonJs.deleteAllMidiClips(track);
         }
