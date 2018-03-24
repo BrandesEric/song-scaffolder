@@ -50,13 +50,28 @@
             <form action="/generate-chords" method="POST">
                 <input type="hidden" name="id" value="{{this.id}}" />
                 <div class="flex-column">
-                    <div class="track-parameter flex align-center">
-                        <label>Track Name:</label>
-                        <input type="text" name="name" value="{{this.name}}">
+                    <div class="flex">
+                        <div class="track-parameter flex align-center">
+                            <label>Track Name:</label> 
+                            <input type="text" name="name" value="{{this.name}}" />
+                        </div>
+                        <div class="track-parameter flex align-center">
+                            <label><input type="checkbox" name="includeBasicChords" value="true" {{#if includeBasicChords}}checked{{/if}}>Basic Chords</label>&nbsp;&nbsp;&nbsp;
+                            <label><input type="checkbox" name="includeBassNote" value="true" {{#if includeBassNote}}checked{{/if}}>Bass Note</label>   
+                            <label><input type="checkbox" name="includeTwoOctaveBassNote" value="true" {{#if includeTwoOctaveBassNote}}checked{{/if}}>-2 Octaves</label>   
+                        </div>
                     </div>
-                    <div class="track-parameter flex align-center">
-                        <label>Start Octave:</label>
-                        <input type="text" name="startOctave" value="{{this.startOctave}}">
+                    <div class="flex">
+                        <div class="track-parameter flex align-center">
+                            <label>Start Octave:</label>
+                            <input type="text" name="startOctave" value="{{this.startOctave}}" />
+                        </div>
+                 
+                        <div class="track-parameter flex align-center">
+                            <label>Number of Clips:</label>
+                            <input type="text" name="numClips" value="{{this.numClips}}">&nbsp;&nbsp;&nbsp;
+                            <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
+                        </div>
                     </div>
                         
                     <button>Generate</button>

@@ -17,30 +17,24 @@ export class ChordGenerator {
 
     async generate() {
         var track = await AbletonJs.createMidiTrackIfNotExists(this.chordTrack.name); 
-        var simpleChords = new SimpleChordStrategy(this.chordTrack.startOctave)
-        await simpleChords.generate();
-        // for (var i = 0; i < this.strategies.length; i++) {
-        //     var strategy = this.strategies[i];
-        //     await this.generatePhraseFromStrategy(track, strategy);
-        // }
-        return track;
-    }
-
-   
-    async generatePhraseFromStrategy(track: Track, strategy: IClipGenerationStrategy) {
-        for(var i = 0; i < strategy.numberOfClips; i++) {
-            var phrase = strategy.generate();
-            await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
+        if(this.chordTrack.clearClips){
+            await this.clearClips(track)
+        } 
+        if(this.chordTrack.includeBasicChords){
+            await this.generateSimpleChords(track);
         }
     }
-
-    async clearClips(): Promise<void> {
-
-        var track = await AbletonJs.getTrackByName(this.chordTrack.name);
-        if(track){
-            await AbletonJs.deleteAllMidiClips(track);
+ 
+    async generateSimpleChords(track: Track){
+        var simpleChords = new SimpleChordStrategy(this.chordTrack)
+        var phrases = simpleChords.generateAll();
+        for(var i = 0; i < phrases.length; i++) {
+            await AbletonJs.insertMidiClip(track, phrases[i].toMidiClip());
         }
+        
+    }
 
-        return;
+    async clearClips(track: Track): Promise<void> {
+        await AbletonJs.deleteAllMidiClips(track);
     }
 }

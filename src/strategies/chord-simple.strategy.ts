@@ -6,43 +6,41 @@ import * as Tonal from "tonal";
 import * as Key from "tonal-key";
 import { SongConfig } from "../config/song.config";
 import { Chord } from "../music/chord";
+import { ChordTrack } from "../state/tracks";
 
-export class SimpleChordStrategy implements IClipGenerationStrategy {
+export class SimpleChordStrategy {
 
     private scale;
     private chords;
-    private startOctave: number;
-    private currentProgression = 0;
+    private chordTrack: ChordTrack;
 
     private progressions = [
         [1, 5, 6, 4],
-        [6, 5, 4, 5],
-        [1, 6, 4, 5],
-        [1, 4, 6, 5],
-        [1, 5, 4, 5],
-        [1, 5, 6],
-        [1, 3, 4, 1],
-        [1, 2, 5, 1],
-        [1, 4, 5, 1],
-        [6,5,4,1]
+        [5, 6, 4, 1],
+        [6, 4, 1, 5],
+        [4, 1, 5, 6]
     ]
 
     numberOfClips: number = this.progressions.length;
 
-    constructor(startOctave = 2) {
+    constructor(chordTrack: ChordTrack) {
+        this.chordTrack = chordTrack;
         var scaleName = `${SongConfig.key} ${SongConfig.mode}`;
         this.scale = Tonal.Scale.notes(scaleName);
-        this.chords = Key.chords(scaleName);
-        this.startOctave = startOctave;
+        this.chords = Key.chords(scaleName).map(x => x.replace("Maj7", "M").replace("m7", "m").replace("7", ""));
     }
-    generate(): Phrase {
-        var progression = this.progressions[this.currentProgression];
-        var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
-        var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.startOctave));
-        var phrase = new Phrase(progression.length, progression.toString());
-        phrase.addNotesFromChords(chords);
-        this.currentProgression++;
+    generateAll(): Phrase[] {
+        var phrases = [];
+        for(var i = 0; i < this.progressions.length; i++) {
+            var progression = this.progressions[i];
+            var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
+            var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.chordTrack));
+            console.log(chords);
+            var phrase = new Phrase(progression.length, progression.toString());
+            phrase.addNotesFromChords(chords);
+            phrases.push(phrase);
+        }
 
-        return phrase; 
+        return phrases;
     }
 } 

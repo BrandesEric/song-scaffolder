@@ -10,7 +10,7 @@ export class Router {
 
         app.get("/", async (req, res) => {
             var state = await currentState();
-            console.log(state);
+            //console.log(state);
             res.render("index.html", {
                 currentState: state
             })
