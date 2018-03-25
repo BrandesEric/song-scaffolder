@@ -51,6 +51,7 @@ export class NoteDuration {
     static Quarter = new NoteDuration(1 / 4, 1);
     static Half = new NoteDuration(1 / 2, 2);
     static Whole = new NoteDuration(1, 4);
+    static TwoWhole = new NoteDuration(2, 8);
 }
 
 export class TimePosition {

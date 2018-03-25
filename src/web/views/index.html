@@ -74,8 +74,32 @@
                             <label><input type="radio" name="voicing" value="secondInversion" {{#ifCond voicing "secondInversion"}}checked{{/ifCond}} />2nd Inversion</label>   
                         </div>
                     </div>
-                    <div class="flex">
+                    <div class="flex random-duration">
+                        <div class="track-parameter flex align-center">
+                            <label style="flex: 0 0 225px;"><input type="checkbox" name="randomizeChordDuration" value="true" {{#if randomizeChordDuration}}checked{{/if}}>Randomize Duration</label>
+                        </div>  
+                        <div class="track-parameter flex align-center">
+                            <label>Clip Length:</label>
+                            <input type="text" name="clipLengthInBars" placeholder="Bars" value="{{this.clipLengthInBars}}" />
+                        </div>
+                    </div>
+                    <div class="flex random-duration">
+                        <div class="track-parameter flex align-center">
+                            <input size="2" type="text" name="quarterNoteChance" value="{{this.quarterNoteChance}}" />&nbsp;&nbsp;&nbsp;
+                            <label>1/4 Note</label>
                             
+                            <input size="2" type="text" name="halfNoteChance"  value="{{this.halfNoteChance}}" />&nbsp;&nbsp;&nbsp;
+                            <label>1/2 Note</label>
+
+                            <input size="2" type="text" name="wholeNoteChance" value="{{this.wholeNoteChance}}" />&nbsp;&nbsp;&nbsp;
+                            <label>1 Bar</label>
+
+                            <input size="2" type="text" name="twoWholeNoteChance" value="{{this.twoWholeNoteChance}}" />&nbsp;&nbsp;&nbsp;
+                            <label>2 Bars</label>
+
+                            <input size="2" type="text" name="percentRepeatChance" value="{{this.percentRepeatChance}}" />&nbsp;&nbsp;&nbsp;
+                            <label>% repeat</label>
+                        </div>
                     </div>
                         
                     <button>Generate</button>

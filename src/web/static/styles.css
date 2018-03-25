@@ -85,3 +85,7 @@ button:hover {
 .track-parameter label{
     flex: 0 0 150px;
 }
+
+.random-duration label {
+    flex: 0 0 100px;
+}
