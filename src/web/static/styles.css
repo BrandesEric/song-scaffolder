@@ -80,6 +80,7 @@ button:hover {
 }
 .track-parameter {
     margin-bottom: 5px;
+    padding: 6px 0;
 }
 .track-parameter label{
     flex: 0 0 150px;

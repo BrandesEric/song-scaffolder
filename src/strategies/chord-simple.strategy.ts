@@ -16,9 +16,13 @@ export class SimpleChordStrategy {
 
     private progressions = [
         [1, 5, 6, 4],
+        [1, 4, 6, 5],
+        [1, 6, 4, 5],
+        [1, 5, 4, 5],
+        [4, 1, 5, 6],
         [5, 6, 4, 1],
+        [6, 5, 4, 5],
         [6, 4, 1, 5],
-        [4, 1, 5, 6]
     ]
 
     numberOfClips: number = this.progressions.length;
@@ -31,7 +35,7 @@ export class SimpleChordStrategy {
     }
     generateAll(): Phrase[] {
         var phrases = [];
-        for(var i = 0; i < this.progressions.length; i++) {
+        for (var i = 0; i < this.progressions.length; i++) {
             var progression = this.progressions[i];
             var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
             var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.chordTrack));

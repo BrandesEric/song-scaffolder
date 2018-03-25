@@ -15,7 +15,7 @@ export async function generateChords(chordTrack: ChordTrack, state: ApplicationS
     return true;
 }
 
-export type ChordVoicing = "open" | "firstInversion" | "secondInversion";
+export type ChordVoicing = "normal" | "open" | "firstInversion" | "secondInversion";
 
 export class ChordTrack {
     id: string = uuid();
@@ -27,7 +27,7 @@ export class ChordTrack {
     clearClips: boolean = true;
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
-    voicing: ChordVoicing = "open";
+    voicing: ChordVoicing = "normal";
     
 
     public static fromFormPost(form): ChordTrack {

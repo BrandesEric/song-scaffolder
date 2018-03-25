@@ -59,6 +59,7 @@
                             <label><input type="checkbox" name="includeBasicChords" value="true" {{#if includeBasicChords}}checked{{/if}}>Basic Chords</label>&nbsp;&nbsp;&nbsp;
                             <label><input type="checkbox" name="includeBassNote" value="true" {{#if includeBassNote}}checked{{/if}}>Bass Note</label>   
                             <label><input type="checkbox" name="includeTwoOctaveBassNote" value="true" {{#if includeTwoOctaveBassNote}}checked{{/if}}>-2 Octaves</label>   
+                            <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
                         </div>
                     </div>
                     <div class="flex">
@@ -66,19 +67,15 @@
                             <label>Start Octave:</label>
                             <input type="text" name="startOctave" value="{{this.startOctave}}" />
                         </div>
-                 
                         <div class="track-parameter flex align-center">
-                            <label>Number of Clips:</label>
-                            <input type="text" name="numClips" value="{{this.numClips}}">&nbsp;&nbsp;&nbsp;
-                            <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
+                            <label><input type="radio" name="voicing" value="normal" {{#ifCond voicing "normal"}}checked{{/ifCond}} />Normal Voicing</label>   
+                            <label><input type="radio" name="voicing" value="open" {{#ifCond voicing "open"}}checked{{/ifCond}} />Open Voicing</label>   
+                            <label><input type="radio" name="voicing" value="firstInversion" {{#ifCond voicing "firstInversion"}}checked{{/ifCond}} />1st Inversion</label>   
+                            <label><input type="radio" name="voicing" value="secondInversion" {{#ifCond voicing "secondInversion"}}checked{{/ifCond}} />2nd Inversion</label>   
                         </div>
                     </div>
                     <div class="flex">
-                            <div class="track-parameter flex align-center">
-                                <label><input type="radio" name="voicing" value="open" {{#ifCond voicing "open"}}checked{{/ifCond}} />Open Voicings</label>   
-                                <label style="flex-basis: 200px;"><input type="radio" name="voicing" value="firstInversion" {{#ifCond voicing "firstInversion"}}checked{{/ifCond}} />1st Inversion</label>   
-                                <label style="flex-basis: 200px;"><input type="radio" name="voicing" value="secondInversion" {{#ifCond voicing "secondInversion"}}checked{{/ifCond}} />2nd Inversion</label>   
-                            </div>
+                            
                     </div>
                         
                     <button>Generate</button>
