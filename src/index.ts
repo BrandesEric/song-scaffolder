@@ -50,7 +50,15 @@ var path = require("path");
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressHandlebars = require('express-handlebars');
 const app = express() as Application;
+var hbs = require('hbs');
+hbs.registerHelper('ifCond', function(v1, v2, options) {
+    if(v1 === v2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 app.set('view engine', 'hbs');
 app.engine('html', require('hbs').__express);
 app.set('views', path.join(__dirname, 'web/views'));

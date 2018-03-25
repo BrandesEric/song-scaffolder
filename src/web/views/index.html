@@ -73,6 +73,13 @@
                             <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
                         </div>
                     </div>
+                    <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label><input type="radio" name="voicing" value="open" {{#ifCond voicing "open"}}checked{{/ifCond}} />Open Voicings</label>   
+                                <label style="flex-basis: 200px;"><input type="radio" name="voicing" value="firstInversion" {{#ifCond voicing "firstInversion"}}checked{{/ifCond}} />1st Inversion</label>   
+                                <label style="flex-basis: 200px;"><input type="radio" name="voicing" value="secondInversion" {{#ifCond voicing "secondInversion"}}checked{{/ifCond}} />2nd Inversion</label>   
+                            </div>
+                    </div>
                         
                     <button>Generate</button>
                 </div>

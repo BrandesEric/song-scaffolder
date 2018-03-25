@@ -35,7 +35,6 @@ export class SimpleChordStrategy {
             var progression = this.progressions[i];
             var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
             var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.chordTrack));
-            console.log(chords);
             var phrase = new Phrase(progression.length, progression.toString());
             phrase.addNotesFromChords(chords);
             phrases.push(phrase);

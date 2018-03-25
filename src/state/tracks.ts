@@ -2,7 +2,6 @@ import * as AbletonJs from "ableton-js";
 import * as uuid from "uuid/v4";
 import { ApplicationState } from "./application-state";
 import { ChordGenerator } from "../generators/chord-generator";
-import { ChordOptions } from "../music/chord";
 
 export function addChords(state: ApplicationState) {
     state.chordTracks.push(new ChordTrack());
@@ -16,6 +15,7 @@ export async function generateChords(chordTrack: ChordTrack, state: ApplicationS
     return true;
 }
 
+export type ChordVoicing = "open" | "firstInversion" | "secondInversion";
 
 export class ChordTrack {
     id: string = uuid();
@@ -27,6 +27,7 @@ export class ChordTrack {
     clearClips: boolean = true;
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
+    voicing: ChordVoicing = "open";
     
 
     public static fromFormPost(form): ChordTrack {
@@ -39,6 +40,7 @@ export class ChordTrack {
         track.includeBasicChords = !!form.includeBasicChords && form.includeBasicChords === "true";
         track.includeBassNote = !!form.includeBassNote && form.includeBassNote === "true";
         track.includeTwoOctaveBassNote = !!form.includeTwoOctaveBassNote && form.includeTwoOctaveBassNote === "true";
+        track.voicing = form.voicing;
 
         return track;
     }
