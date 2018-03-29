@@ -101,6 +101,15 @@
                             <label>% repeat</label>
                         </div>
                     </div>
+                    <div class="flex">
+                        <div class="track-parameter flex align-center">
+                            <label style="flex: 0 0 225px;"><input type="checkbox" name="includeRandomChords" value="true" {{#if includeRandomChords}}checked{{/if}}>Random Chords</label>
+                        </div>  
+                        <div class="track-parameter flex align-center">
+                            <label># of Clips</label>
+                            <input type="text" name="numClips" placeholder="# of Clips" value="{{this.numClips}}" />
+                        </div>
+                    </div>
                         
                     <button>Generate</button>
                 </div>
