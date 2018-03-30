@@ -23,6 +23,16 @@ export class KickDrumGenerator {
         new Pattern("x-----x-----x-----x-------x---x-", NoteDuration.Sixteenth, "Trap2"), 
     ];
 
+    partialPatterns: PatternDefinition[] = [
+        new PatternDefinition(new Pattern("x---"), 50),
+        new PatternDefinition(new Pattern("--x-"), 40),
+        new PatternDefinition(new Pattern("x--x"), 20),
+        new PatternDefinition(new Pattern("---x"), 10),
+        new PatternDefinition(new Pattern("x-x-"), 10),
+        new PatternDefinition(new Pattern("----"), 20),
+    ]
+
+
     constructor(kickTrack: KickTrack) {
         this.kickTrack = kickTrack;
     }
@@ -30,11 +40,17 @@ export class KickDrumGenerator {
     async generate() {
         var track = await AbletonJs.createMidiTrackIfNotExists(this.kickTrack.name);
         if(this.kickTrack.clearClips) {
-            await this.clearClips();
+            await this.clearClips(track);
         }
         if(this.kickTrack.includeBasicKicks) {
             for(let i = 0; i < this.commonPatterns.length; i++) {
                 var phrase = this.generatePhraseFromPattern(this.commonPatterns[i]);
+                await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
+            }
+        }
+        if(this.kickTrack.includeRandomKicks) {
+            for(let i = 0; i < this.kickTrack.numClips; i++) {
+                var phrase = this.generateRandomKickPattern(`Random ${i+1}`);
                 await AbletonJs.insertMidiClip(track, phrase.toMidiClip());
             }
         }
@@ -83,18 +99,52 @@ export class KickDrumGenerator {
         return phrase.double();
     }
 
-    shouldHit(percentangeChance: number): boolean {
+    private shouldHit(percentangeChance: number): boolean {
         var rand = Math.random() * 100;
         return rand <= percentangeChance;
     }
 
-    async clearClips(): Promise<void> {
-
-        var track = await AbletonJs.getTrackByName(this.kickTrack.name);
-        if(track){
-            await AbletonJs.deleteAllMidiClips(track);
+    generateRandomKickPattern(clipName: string): Phrase { 
+        var pattern = this.getRandomPattern();
+        while(pattern.lengthInBars < (this.defaultLengthInBars / 2)) {
+            pattern = pattern.concat(this.getRandomPattern());
         }
+        pattern.name = clipName;
+        return this.generatePhraseFromPattern(pattern)
+    }
 
-        return;
+    private getRandomPattern(): Pattern {
+        var totalWeightOfAllPatterns = this.partialPatterns.reduce((weight, current) => weight + current.weight, 0);
+        var randomNumber = this.getRandomInt(0, totalWeightOfAllPatterns);
+        for(var i = 0; i < this.partialPatterns.length; i++){
+            var pattern = this.partialPatterns[i];
+            if(randomNumber <= pattern.weight) {
+                return pattern.pattern;
+            }
+            else {
+                randomNumber -= pattern.weight;
+            }
+        };
+
+        throw new Error("Should always find a random pattern");
+    }
+
+    private getRandomInt(min: number, max: number): number {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
+
+    async clearClips(track: Track): Promise<void> {
+        await AbletonJs.deleteAllMidiClips(track);
+    }
+}
+
+class PatternDefinition {
+    pattern: Pattern;
+    weight: number;
+    constructor(pattern: Pattern, weight: number) {
+        this.pattern = pattern;
+        this.weight = weight;
     }
 }
