@@ -4,7 +4,6 @@ import { ApplicationState } from "./application-state";
 import { ChordGenerator } from "../generators/chord-generator";
 import { ChordTrack } from "./chord-track";
 import { KickTrack } from "./kick-track";
-import { KickDrumCommonStrategy } from "../strategies/kick-drum-common.strategy";
 import { KickDrumGenerator } from "../generators/kick-drum.generator";
 
 export function addChords(state: ApplicationState) {

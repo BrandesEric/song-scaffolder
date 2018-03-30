@@ -1,6 +1,6 @@
 import { NoteDuration, Note } from "./note";
 import * as Tonal from "tonal";
-import { ChordTrack } from "../state/tracks";
+import { ChordTrack } from "../state/chord-track";
 import { ChordGenerator } from "../generators/chord-generator";
 
 export class Chord {

@@ -1,10 +1,9 @@
-import { IClipGenerationStrategy } from "./iclip-generation-strategy";
 import { Phrase } from "../music/phrase";
 import { Pattern } from "../music/pattern";
 import { Note, NoteDuration } from "../music/note";
 import { SongConfig } from "../config/song.config";
 
-export class SnareDrumCommonStrategy implements IClipGenerationStrategy {
+export class SnareDrumCommonStrategy {
     numberOfClips;
 
     private currentPatternIndex = 0;

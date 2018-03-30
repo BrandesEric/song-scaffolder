@@ -7,6 +7,8 @@ export class KickTrack {
     
     kind: TrackKind = TrackKind.Kick;
 
+    numClips = 10;
+
     includeBasicKicks = true;
     includeRandomKicks = true;
     includeIntervalKicks = true;
