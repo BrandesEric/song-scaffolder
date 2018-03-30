@@ -116,6 +116,29 @@
             </form>
         </div>
         {{/each}}
+        {{#each currentState.kickTracks}}
+            <div class="track kick">
+                <h3 style="margin-top: 0">Kick</h3>
+                <form action="/generate-kick" method="POST">
+                    <input type="hidden" name="id" value="{{this.id}}" />
+                    <div class="flex-column">
+                        <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label>Track Name:</label> 
+                                <input type="text" name="name" value="{{this.name}}" />
+                            </div>
+                            <div class="track-parameter flex align-center">
+                                <label style="flex: 0 0 120px;"><input type="checkbox" name="includeBasicKicks" value="true" {{#if includeBasicKicks}}checked{{/if}}>Basic Kicks</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeRandomKicks" value="true" {{#if includeRandomKicks}}checked{{/if}}>Random Kicks</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeIntervalKicks" value="true" {{#if includeIntervalKicks}}checked{{/if}}>Interval Kicks</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
+                            </div>
+                        </div>
+                        <button>Generate</button>
+                    </div>
+                </form>
+            </div>
+        {{/each}}
     </div>
 </body>
 

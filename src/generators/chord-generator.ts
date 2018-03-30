@@ -4,9 +4,9 @@ import * as Key from "tonal-key";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { Track } from "ableton-js";
-import { ChordTrack } from "../state/tracks";
 import { Chord } from "../music/chord";
 import { SongConfig } from "../config/song.config";
+import { ChordTrack } from "../state/chord-track";
 
 type ChordNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type ChordWeight = number;

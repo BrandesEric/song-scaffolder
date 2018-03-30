@@ -3,7 +3,9 @@ import * as path from 'path';
 import { serveStatic } from "serve-static";
 import { currentState } from "../state/current";
 import { changeTempo } from "../state/tempo";
-import { addChords, ChordTrack, generateChords } from "../state/tracks";
+import { addChords, generateChords, generateKick } from "../state/tracks";
+import { KickTrack } from "../state/kick-track";
+import { ChordTrack } from "../state/chord-track";
 
 export class Router {
     static applyRoutes(app: Application) {
@@ -30,6 +32,13 @@ export class Router {
             var chordTrack = ChordTrack.fromFormPost(req.body);
             var state = await currentState();
             await generateChords(chordTrack, state);
+            res.redirect("/");
+        });
+
+        app.post("/generate-kick", async (req, res) => {
+            var kickTrack = KickTrack.fromFormPost(req.body);
+            var state = await currentState();
+            await generateKick(kickTrack, state);
             res.redirect("/");
         });
 
