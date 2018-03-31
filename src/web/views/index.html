@@ -139,6 +139,29 @@
                 </form>
             </div>
         {{/each}}
+        {{#each currentState.snareTracks}}
+            <div class="track snare">
+                <h3 style="margin-top: 0">Snare</h3>
+                <form action="/generate-snare" method="POST">
+                    <input type="hidden" name="id" value="{{this.id}}" />
+                    <div class="flex-column">
+                        <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label>Track Name:</label> 
+                                <input type="text" name="name" value="{{this.name}}" />
+                            </div>
+                            <div class="track-parameter flex align-center">
+                                <label style="flex: 0 0 120px;"><input type="checkbox" name="includeBasicSnares" value="true" {{#if includeBasicSnares}}checked{{/if}}>Basic Snares</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeRandomSnares" value="true" {{#if includeRandomSnares}}checked{{/if}}>Random Snares</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeIntervalSnares" value="true" {{#if includeIntervalSnares}}checked{{/if}}>Interval Snares</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
+                            </div>
+                        </div>
+                        <button>Generate</button>
+                    </div>
+                </form>
+            </div>
+        {{/each}}
     </div>
 </body>
 

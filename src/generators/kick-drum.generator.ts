@@ -6,6 +6,7 @@ import { Track } from "ableton-js";
 import { KickTrack } from "../state/kick-track";
 import { Pattern } from "../music/pattern";
 import { SongConfig } from "../config/song.config";
+import { WeightedPattern } from "../music/weighted-pattern";
 
 export class KickDrumGenerator {
 
@@ -17,19 +18,20 @@ export class KickDrumGenerator {
 
     commonPatterns = [
         new Pattern("x---x---x---x---",  NoteDuration.Sixteenth ,"FourOnFloor"),
+        new Pattern("x-------x-------",  NoteDuration.Sixteenth ,"1 and 3"),
         new Pattern("x--x--x-x--x--x-", NoteDuration.Sixteenth, "Dancehall1"),
         new Pattern("x--x----x--x----", NoteDuration.Sixteenth, "Dancehall2"),
         new Pattern("x-----x---------x-----x-----xxx-", NoteDuration.Sixteenth, "Trap1"),
         new Pattern("x-----x-----x-----x-------x---x-", NoteDuration.Sixteenth, "Trap2"), 
     ];
 
-    partialPatterns: PatternDefinition[] = [
-        new PatternDefinition(new Pattern("x---"), 50),
-        new PatternDefinition(new Pattern("--x-"), 40),
-        new PatternDefinition(new Pattern("x--x"), 20),
-        new PatternDefinition(new Pattern("---x"), 10),
-        new PatternDefinition(new Pattern("x-x-"), 10),
-        new PatternDefinition(new Pattern("----"), 20),
+    partialPatterns: WeightedPattern[] = [
+        new WeightedPattern(new Pattern("x---"), 50),
+        new WeightedPattern(new Pattern("--x-"), 40),
+        new WeightedPattern(new Pattern("x--x"), 20),
+        new WeightedPattern(new Pattern("---x"), 10),
+        new WeightedPattern(new Pattern("x-x-"), 10),
+        new WeightedPattern(new Pattern("----"), 20),
     ]
 
 
@@ -137,14 +139,5 @@ export class KickDrumGenerator {
 
     async clearClips(track: Track): Promise<void> {
         await AbletonJs.deleteAllMidiClips(track);
-    }
-}
-
-class PatternDefinition {
-    pattern: Pattern;
-    weight: number;
-    constructor(pattern: Pattern, weight: number) {
-        this.pattern = pattern;
-        this.weight = weight;
     }
 }

@@ -3,6 +3,7 @@ import { deviceActive } from "./device-active";
 import { getTempo } from "./tempo";
 import { ChordTrack } from "./chord-track";
 import { KickTrack } from "./kick-track";
+import { SnareTrack } from "./snare-track";
 
 var state = new ApplicationState();
 
@@ -11,6 +12,8 @@ var chordTrack = new ChordTrack();
 state.chordTracks.push(chordTrack);
 var kickTrack = new KickTrack();
 state.kickTracks.push(kickTrack);
+var snareTrack = new SnareTrack();
+state.snareTracks.push(snareTrack);
 
 export async function currentState(): Promise<ApplicationState> {
 
