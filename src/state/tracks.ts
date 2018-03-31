@@ -7,6 +7,8 @@ import { KickTrack } from "./kick-track";
 import { KickDrumGenerator } from "../generators/kick-drum.generator";
 import { SnareTrack } from "./snare-track";
 import { SnareDrumGenerator } from "../generators/snare-drum.generator";
+import { HihatTrack } from "./hihat-track";
+import { HihatGenerator } from "../generators/hihat.generator";
 
 export function addChords(state: ApplicationState) {
     state.chordTracks.push(new ChordTrack());
@@ -44,11 +46,24 @@ export async function generateSnare(snareTrack: SnareTrack, state: ApplicationSt
     return true;
 }
 
+export function addHihat(state: ApplicationState) {
+    state.hihatTracks.push(new HihatTrack());
+}
+
+export async function generateHihat(hihatTrack: HihatTrack, state: ApplicationState): Promise<boolean> {
+    var hihatGenerator = new HihatGenerator(hihatTrack);
+    await hihatGenerator.generate();
+    state.updateHihatTrack(hihatTrack);
+
+    return true;
+}
+
 
 
 export enum TrackKind {
     Unspecified,
     Chord,
     Kick,
-    Snare
+    Snare,
+    Hihat
 }

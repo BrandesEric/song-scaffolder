@@ -162,6 +162,29 @@
                 </form>
             </div>
         {{/each}}
+        {{#each currentState.hihatTracks}}
+            <div class="track hihat">
+                <h3 style="margin-top: 0">Hihat</h3>
+                <form action="/generate-hihat" method="POST">
+                    <input type="hidden" name="id" value="{{this.id}}" />
+                    <div class="flex-column">
+                        <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label>Track Name:</label> 
+                                <input type="text" name="name" value="{{this.name}}" />
+                            </div>
+                            <div class="track-parameter flex align-center">
+                                <label style="flex: 0 0 120px;"><input type="checkbox" name="includeBasicHats" value="true" {{#if includeBasicHats}}checked{{/if}}>Basic Hats</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeRandomHats" value="true" {{#if includeRandomHats}}checked{{/if}}>Random Hats</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="includeTrapHats" value="true" {{#if includeTrapHats}}checked{{/if}}>Trap Hats</label>&nbsp;&nbsp;&nbsp;
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
+                            </div>
+                        </div>
+                        <button>Generate</button>
+                    </div>
+                </form>
+            </div>
+        {{/each}}
     </div>
 </body>
 

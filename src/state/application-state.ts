@@ -1,6 +1,7 @@
 import { ChordTrack } from "./chord-track";
 import { KickTrack } from "./kick-track";
 import { SnareTrack } from "./snare-track";
+import { HihatTrack } from "./hihat-track";
 
 export class ApplicationState {
     public deviceActive: boolean;
@@ -8,6 +9,7 @@ export class ApplicationState {
     public chordTracks: ChordTrack[] = [];
     public kickTracks: KickTrack[] = [];
     public snareTracks: SnareTrack[] = [];
+    public hihatTracks: HihatTrack[] = [];
 
     public updateChordTrack(chordTrack: ChordTrack) {
         var index = this.chordTracks.findIndex(x => x.id === chordTrack.id);
@@ -22,5 +24,10 @@ export class ApplicationState {
     public updateSnareTrack(snareTrack: SnareTrack) {
         var index = this.snareTracks.findIndex(x => x.id === snareTrack.id);
         this.snareTracks[index] = snareTrack;
+    }
+
+    public updateHihatTrack(hihatTrack: HihatTrack) {
+        var index = this.hihatTracks.findIndex(x => x.id === hihatTrack.id);
+        this.hihatTracks[index] = hihatTrack;
     }
 }
