@@ -1,5 +1,6 @@
 import { TrackKind } from "./tracks";
 import * as uuid from "uuid/v4";
+import { PhrasePreferences } from "../music/phrase-preferences";
 
 export type ChordVoicing = "normal" | "open" | "firstInversion" | "secondInversion";
 
@@ -26,6 +27,8 @@ export class ChordTrack {
     includeRandomChords: boolean = true;
 
     voicing: ChordVoicing = "normal";
+
+    phrasePreferences: PhrasePreferences = PhrasePreferences.longNotes();
     
 
     public static fromFormPost(form): ChordTrack {
@@ -36,10 +39,6 @@ export class ChordTrack {
         track.startOctave = form.startOctave;
         track.numClips = form.numClips;
         track.clipLengthInBars = parseInt(form.clipLengthInBars || 4);
-        track.quarterNoteChance = parseInt(form.quarterNoteChance || 0);
-        track.halfNoteChance = parseInt(form.halfNoteChance || 0);
-        track.wholeNoteChance = parseInt(form.wholeNoteChance || 0);
-        track.twoWholeNoteChance = parseInt(form.twoWholeNoteChance || 0);
         track.percentRepeatChance = parseInt(form.percentRepeatChance || 0);
         
         track.clearClips = form.clearClips && form.clearClips === "true";
@@ -50,6 +49,20 @@ export class ChordTrack {
         track.includeRandomChords = !!form.includeRandomChords && form.includeRandomChords === "true";
         
         track.voicing = form.voicing;
+
+        switch(form.phrasePreferences) {
+            case "short":
+                track.phrasePreferences = PhrasePreferences.shortNotes();
+                break;
+            case "medium":
+                track.phrasePreferences = PhrasePreferences.mediumNotes();
+                break;
+            default: 
+                track.phrasePreferences = PhrasePreferences.longNotes();
+                break;
+        }
+
+        console.log(track.phrasePreferences.name);
 
         return track;
     }

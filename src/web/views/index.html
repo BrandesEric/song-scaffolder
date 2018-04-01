@@ -85,17 +85,11 @@
                     </div>
                     <div class="flex random-duration">
                         <div class="track-parameter flex align-center">
-                            <input size="2" type="text" name="quarterNoteChance" value="{{this.quarterNoteChance}}" />&nbsp;&nbsp;&nbsp;
-                            <label>1/4 Note</label>
-                            
-                            <input size="2" type="text" name="halfNoteChance"  value="{{this.halfNoteChance}}" />&nbsp;&nbsp;&nbsp;
-                            <label>1/2 Note</label>
-
-                            <input size="2" type="text" name="wholeNoteChance" value="{{this.wholeNoteChance}}" />&nbsp;&nbsp;&nbsp;
-                            <label>1 Bar</label>
-
-                            <input size="2" type="text" name="twoWholeNoteChance" value="{{this.twoWholeNoteChance}}" />&nbsp;&nbsp;&nbsp;
-                            <label>2 Bars</label>
+                            <select name="phrasePreferences">
+                                <option value="short" {{#ifCond phrasePreferences.name "short"}}selected{{/ifCond}}>Short</option>
+                                <option value="medium" {{#ifCond phrasePreferences.name "medium"}}selected{{/ifCond}}>Medium</option>
+                                <option value="long" {{#ifCond phrasePreferences.name "long"}}selected{{/ifCond}}>Long</option>
+                            </select>
 
                             <input size="2" type="text" name="percentRepeatChance" value="{{this.percentRepeatChance}}" />&nbsp;&nbsp;&nbsp;
                             <label>% repeat</label>

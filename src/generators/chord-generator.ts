@@ -138,7 +138,13 @@ export class ChordGenerator {
         var progressionPosition = 0;
         var chords = [];
         while(currentClipLengthInBars < this.chordTrack.clipLengthInBars){
-            var duration = this.getRandomChordDuration();
+            var duration;
+            if(this.chordTrack.randomizeChordDuration) {
+                duration = this.chordTrack.phrasePreferences.getRandomNoteLength();
+            }
+            else {
+                duration = NoteLength.Whole;
+            }      
             var chord = new Chord(chordNames[progressionPosition % chordNames.length], duration, this.chordTrack)
             chords.push(chord);
             var shouldRepeatSameChord = this.getRandomInt(1, 100);
@@ -184,51 +190,7 @@ export class ChordGenerator {
 
         throw new Error("Should always be able to find a next chord!");
     }
-
-    private getRandomChordDuration(): NoteLength {
-        var randomChance = this.getRandomInt(1, 100);
-        if(randomChance <= this.quarterNotePercentChance) {
-            return NoteLength.Quarter
-        }
-        randomChance -= this.quarterNotePercentChance;
-        if(randomChance <= this.halfNotePercentChance) {
-            return NoteLength.Half
-        }
-        randomChance -= this.halfNotePercentChance;
-        if(randomChance <= this.wholeNotePercentChance){
-            return NoteLength.Whole;
-        }
-        randomChance -= this.wholeNotePercentChance;
-        if(randomChance <= this.twoWholeNotePercentChance){
-            return NoteLength.TwoWhole;
-        }
-
-        throw new Error("ACK, should never not find a note duration!!");
-    }
     
-    private get totalChances(): number {
-        return  this.chordTrack.quarterNoteChance + 
-            this.chordTrack.halfNoteChance +
-            this.chordTrack.wholeNoteChance +
-            this.chordTrack.twoWholeNoteChance
-    }
-
-    private get quarterNotePercentChance(): number {
-        return Math.floor((this.chordTrack.quarterNoteChance / this.totalChances) * 100);
-    }
-
-    private get halfNotePercentChance(): number {
-        return Math.floor((this.chordTrack.halfNoteChance / this.totalChances) * 100);
-    }
-
-    private get wholeNotePercentChance(): number {
-        return Math.floor((this.chordTrack.wholeNoteChance / this.totalChances) * 100);
-    }
-
-    private get twoWholeNotePercentChance(): number {
-        return Math.floor((this.chordTrack.twoWholeNoteChance / this.totalChances) * 100);
-    }
-
     private getRandomInt(min: number, max: number): number {
         min = Math.ceil(min);
         max = Math.floor(max);

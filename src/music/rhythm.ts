@@ -15,6 +15,10 @@ export class RhythmPattern {
     get lengthInBars() {
         return this.parts.reduce((length, duration) => length + duration.lengthInBars, 0);
     } 
+
+    static makeRandom(lengthInBeats: number, noteLength: number, amountOfRest: number) {
+        
+    }
 }
 
 export let commonRhythms = [
