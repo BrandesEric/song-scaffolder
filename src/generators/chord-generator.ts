@@ -3,7 +3,7 @@ import * as Tonal from "tonal";
 import * as Key from "tonal-key";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
-import { Track } from "ableton-js";
+import { MidiTrack } from "ableton-js";
 import { Chord } from "../music/chord";
 import { SongConfig } from "../config/song.config";
 import { ChordTrack } from "../state/chord-track";
@@ -235,7 +235,7 @@ export class ChordGenerator {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    async clearClips(track: Track): Promise<void> {
+    async clearClips(track: MidiTrack): Promise<void> {
         await AbletonJs.deleteAllMidiClips(track);
     }
 }
