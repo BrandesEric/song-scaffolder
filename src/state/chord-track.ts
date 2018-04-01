@@ -20,12 +20,12 @@ export class ChordTrack {
     percentRepeatChance: number = 0;
     percentRests: number = 0;
 
-    includeBasicChords: boolean = false;
+    includeBasicChords: boolean = true;
     clearClips: boolean = true;
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
-    
-    includeRandomChords: boolean = true;
+    splitChords: boolean = false;
+    includeRandomChords: boolean = false;
 
     voicing: ChordVoicing = "normal";
     rhythm: "whole" | "common" | "random" = "whole";
@@ -48,6 +48,7 @@ export class ChordTrack {
         track.includeBassNote = !!form.includeBassNote && form.includeBassNote === "true";
         track.includeTwoOctaveBassNote = !!form.includeTwoOctaveBassNote && form.includeTwoOctaveBassNote === "true";
         track.includeRandomChords = !!form.includeRandomChords && form.includeRandomChords === "true";
+        track.splitChords = !!form.splitChords && form.splitChords === "true";
         
         track.voicing = form.voicing;
         track.rhythm = form.rhythm;

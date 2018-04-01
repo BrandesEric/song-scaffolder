@@ -136,7 +136,6 @@ export class ChordGenerator {
         }
         else if(this.chordTrack.rhythm === "common") {
             rhythm = RhythmPattern.getCommonRhythm(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
-            console.log(rhythm);
         }
         else {
             rhythm = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);

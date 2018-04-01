@@ -61,7 +61,7 @@ export class RhythmPattern {
         else if(prefs.name === "long") {
             pattern = NoteLength.halfTime(NoteLength.halfTime(pattern));
         }
-        console.log(pattern);
+        
         return this.generateFromNoteLengths(desiredLengthInBars, pattern);
     }
 

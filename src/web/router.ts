@@ -53,7 +53,6 @@ export class Router {
 
         app.post("/generate-hihat", async (req, res) => {
             var hihatTrack = HihatTrack.fromFormPost(req.body);
-            console.log(hihatTrack)
             var state = await currentState();
             await generateHihat(hihatTrack, state);
             res.redirect("/");

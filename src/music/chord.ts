@@ -32,13 +32,30 @@ export class Chord {
     }
 
     public getNotes(timeStartInBeats: number): Note[] {
-        var notes = this.chordNotes.map(chordNote => {
-            var note = Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, this.duration,  this.velocity);
 
-            return note;
-        });
-
-        return notes;
+        if(this.chordTrack.splitChords) {
+            var highestNotes = this.chordNotes.sort((a, b) => a.toMidi() - b.toMidi()).reverse();
+            var notes = this.chordNotes.map(chordNote => {
+                var durationHalf = this.duration.doubleTime();
+                if(chordNote === highestNotes[0] || chordNote === highestNotes[1]) {
+                    return Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, durationHalf,  this.velocity);
+                }
+                else {
+                    return Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
+                }
+            });
+    
+            return notes;
+        }
+        else {
+            var notes = this.chordNotes.map(chordNote => {
+                var note = Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, this.duration,  this.velocity);
+    
+                return note;
+            });
+    
+            return notes;
+        }
     }
     
     private getChordNotes(rootNote: ChordNote, intervals: string[]): ChordNote[] {
@@ -105,6 +122,10 @@ export class ChordNote {
         chordNote.octave = this.octave;
 
         return chordNote;
+    }
+
+    toMidi(): number {
+        return Tonal.Note.midi(this.noteAndOctave) + 12;
     }
 
     static fromNote(note: string): ChordNote{
