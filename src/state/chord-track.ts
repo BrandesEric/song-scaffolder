@@ -24,10 +24,11 @@ export class ChordTrack {
     clearClips: boolean = true;
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
-    randomizeChordDuration: boolean = false;
+    
     includeRandomChords: boolean = true;
 
     voicing: ChordVoicing = "normal";
+    rhythm: "whole" | "common" | "random" = "whole";
 
     noteLengthPreferences: NoteLengthPreferences = NoteLengthPreferences.longNotes();
     
@@ -46,10 +47,10 @@ export class ChordTrack {
         track.includeBasicChords = !!form.includeBasicChords && form.includeBasicChords === "true";
         track.includeBassNote = !!form.includeBassNote && form.includeBassNote === "true";
         track.includeTwoOctaveBassNote = !!form.includeTwoOctaveBassNote && form.includeTwoOctaveBassNote === "true";
-        track.randomizeChordDuration = !!form.randomizeChordDuration && form.randomizeChordDuration === "true";
         track.includeRandomChords = !!form.includeRandomChords && form.includeRandomChords === "true";
         
         track.voicing = form.voicing;
+        track.rhythm = form.rhythm;
 
         var percentRests = parseInt(form.percentRests);
         var percentNotes = 100 - percentRests;
@@ -65,8 +66,6 @@ export class ChordTrack {
                 track.noteLengthPreferences = NoteLengthPreferences.longNotes(percentNotes, percentRests);
                 break;
         }
-
-        console.log(track.noteLengthPreferences);
 
         return track;
     }

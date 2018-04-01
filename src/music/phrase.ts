@@ -45,8 +45,10 @@ export class Phrase {
     addNotesFromChords(chords: Chord[]){
         var timeStartInBeats = 0;
         chords.forEach(chord => {
-            var notes = chord.getNotes(timeStartInBeats);
-            this.addNotes(notes);
+            if(!chord.duration.isRest) {
+                var notes = chord.getNotes(timeStartInBeats);
+                this.addNotes(notes);
+            }
             timeStartInBeats += chord.duration.lengthInBeats;
         });
     }

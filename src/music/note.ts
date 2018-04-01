@@ -45,8 +45,17 @@ export class NoteLength {
     private constructor(lengthInBars: number, lengthInBeats: number, isRest = false) {
         this.lengthInBars = lengthInBars;
         this.lengthInBeats = lengthInBeats;
-        this.isRest = false;
+        this.isRest = isRest;
     }
+
+    public doubleTime() {
+        return NoteLength.fromBars(this.lengthInBars / 2, this.isRest);
+    }
+
+    public halfTime() {
+        return NoteLength.fromBars(this.lengthInBars * 2, this.isRest);
+    }
+
     static ThirtySecond = new NoteLength(1 / 32, 1 / 8);
     static TripletSixteenth = new NoteLength( 1/ 24, 1 / 6);
     static Sixteenth = new NoteLength(1 / 16, 1 / 4);
@@ -74,6 +83,14 @@ export class NoteLength {
 
     static fromBars(bars: number, isRest = false) {
         return new NoteLength(bars, TimePosition.lengthInBeats(bars), isRest);
+    }
+
+    static doubleTime(noteLengths: NoteLength[]) {
+        return noteLengths.map(x => x.doubleTime());
+    }
+
+    static halfTime(noteLengths: NoteLength[]) {
+        return noteLengths.map(x => x.halfTime());
     }
 }
 

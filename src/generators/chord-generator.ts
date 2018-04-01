@@ -108,47 +108,41 @@ export class ChordGenerator {
             var nextChordNumber = this.getRandomNextChordNumber(currentChordNumber)
             progression.push(nextChordNumber);
             currentChordNumber = nextChordNumber;
-        }
-        var rhythm = null;
-        if(!this.chordTrack.randomizeChordDuration){
-            rhythm = [NoteLength.Whole];
-        }
-        return this.getChordPhraseWithRhythm(progression, rhythm);
+        } 
+
+        return this.getChordPhraseWithRhythm(progression);
     }
 
     generateBasicChordProgressions(): Phrase[] {
         var phrases = [];
         for (var i = 0; i < this.progressions.length; i++) {
             var progression = this.progressions[i];
-            var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
-            var rhythm = null;
-            if(!this.chordTrack.randomizeChordDuration){
-                rhythm = [NoteLength.Whole];
-            }
-            var phrase = this.getChordPhraseWithRhythm(progression, rhythm);
+            var phrase = this.getChordPhraseWithRhythm(progression);
             phrases.push(phrase);
-          
         }
 
         return phrases;
     }
 
-    private getChordPhraseWithRhythm(progression: number[], rhythm?: NoteLength[]): Phrase {
+    private getChordPhraseWithRhythm(progression: number[]): Phrase {
         var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
         var currentClipLengthInBars = 0;
         var progressionPosition = 0;
         var chords = [];
 
-        if(!rhythm) {
-            var rhythmPattern = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
-            rhythm = rhythmPattern.parts;
+        var rhythm: RhythmPattern;
+        if(this.chordTrack.rhythm === "whole") {
+            rhythm = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, [NoteLength.Whole]);
+        }
+        else if(this.chordTrack.rhythm === "common") {
+            rhythm = RhythmPattern.getCommonRhythm(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
+            console.log(rhythm);
         }
         else {
-            var rhythmPattern = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, rhythm);
-            rhythm = rhythmPattern.parts;
+            rhythm = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
         }
 
-        rhythm.forEach(duration => {
+        rhythm.parts.forEach(duration => {
             var chord = new Chord(chordNames[progressionPosition % chordNames.length], duration, this.chordTrack)
             chords.push(chord);
             var shouldRepeatSameChord = this.getRandomInt(1, 100);
