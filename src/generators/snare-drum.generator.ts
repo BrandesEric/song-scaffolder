@@ -2,7 +2,7 @@ import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
-import { Track } from "ableton-js";
+import { MidiTrack } from "ableton-js";
 import { SnareTrack } from "../state/snare-track";
 import { Pattern } from "../music/pattern";
 import { WeightedPattern } from "../music/weighted-pattern";
@@ -20,7 +20,7 @@ export class SnareDrumGenerator {
         new Pattern("--x---x---x---x-",  NoteDuration.Sixteenth ,"MidBeat"),
         new Pattern("----x-------x---",  NoteDuration.Sixteenth ,"Downbeat"),
         new Pattern("----x--xx-x-x---",  NoteDuration.Sixteenth ,"Fancier"),
-        new Pattern("--------x-----x---x-----x-------",  NoteDuration.ThirtySecond ,"Trap"),
+        new Pattern("----x--x-x--x---",  NoteDuration.Sixteenth ,"Trap"),
         new Pattern("xxxx", NoteDuration.Sixteenth, "Roll") 
     ];
 
@@ -137,7 +137,7 @@ export class SnareDrumGenerator {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    async clearClips(track: Track): Promise<void> {
+    async clearClips(track: MidiTrack): Promise<void> {
         await AbletonJs.deleteAllMidiClips(track);
     }
 }

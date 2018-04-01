@@ -2,7 +2,7 @@ import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
 import { Note, NoteDuration } from "../music/note";
 import * as AbletonJs from "ableton-js";
-import { Track } from "ableton-js";
+import { MidiTrack } from "ableton-js";
 import { KickTrack } from "../state/kick-track";
 import { Pattern } from "../music/pattern";
 import { SongConfig } from "../config/song.config";
@@ -137,7 +137,7 @@ export class KickDrumGenerator {
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
 
-    async clearClips(track: Track): Promise<void> {
+    async clearClips(track: MidiTrack): Promise<void> {
         await AbletonJs.deleteAllMidiClips(track);
     }
 }

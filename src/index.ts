@@ -50,7 +50,6 @@ var path = require("path");
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const expressHandlebars = require('express-handlebars');
 const app = express() as Application;
 var hbs = require('hbs');
 hbs.registerHelper('ifCond', function(v1, v2, options) {
