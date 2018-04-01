@@ -1,6 +1,6 @@
 import { TrackKind } from "./tracks";
 import * as uuid from "uuid/v4";
-import { PhrasePreferences } from "../music/phrase-preferences";
+import { NoteLengthPreferences } from "../music/note-length-preferences";
 
 export type ChordVoicing = "normal" | "open" | "firstInversion" | "secondInversion";
 
@@ -18,6 +18,7 @@ export class ChordTrack {
     wholeNoteChance: number = 1;
     twoWholeNoteChance: number = 0;
     percentRepeatChance: number = 0;
+    percentRests: number = 0;
 
     includeBasicChords: boolean = false;
     clearClips: boolean = true;
@@ -28,7 +29,7 @@ export class ChordTrack {
 
     voicing: ChordVoicing = "normal";
 
-    phrasePreferences: PhrasePreferences = PhrasePreferences.longNotes();
+    noteLengthPreferences: NoteLengthPreferences = NoteLengthPreferences.longNotes();
     
 
     public static fromFormPost(form): ChordTrack {
@@ -50,19 +51,22 @@ export class ChordTrack {
         
         track.voicing = form.voicing;
 
-        switch(form.phrasePreferences) {
+        var percentRests = parseInt(form.percentRests);
+        var percentNotes = 100 - percentRests;
+
+        switch(form.noteLengthPreferences) {
             case "short":
-                track.phrasePreferences = PhrasePreferences.shortNotes();
+                track.noteLengthPreferences = NoteLengthPreferences.shortNotes(percentNotes, percentRests);
                 break;
             case "medium":
-                track.phrasePreferences = PhrasePreferences.mediumNotes();
+                track.noteLengthPreferences = NoteLengthPreferences.mediumNotes(percentNotes, percentRests);
                 break;
             default: 
-                track.phrasePreferences = PhrasePreferences.longNotes();
+                track.noteLengthPreferences = NoteLengthPreferences.longNotes(percentNotes, percentRests);
                 break;
         }
 
-        console.log(track.phrasePreferences.name);
+        console.log(track.noteLengthPreferences);
 
         return track;
     }

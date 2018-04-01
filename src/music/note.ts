@@ -41,9 +41,11 @@ export class NoteLength {
     lengthInBeats: number;
     lengthInBars: number;
     name: string;
-    private constructor(lengthInBars: number, lengthInBeats: number) {
+    isRest: boolean = false;
+    private constructor(lengthInBars: number, lengthInBeats: number, isRest = false) {
         this.lengthInBars = lengthInBars;
         this.lengthInBeats = lengthInBeats;
+        this.isRest = false;
     }
     static ThirtySecond = new NoteLength(1 / 32, 1 / 8);
     static TripletSixteenth = new NoteLength( 1/ 24, 1 / 6);
@@ -59,43 +61,19 @@ export class NoteLength {
     static DottedWhole = new NoteLength(1.5, 6);
     static TwoWhole = new NoteLength(2, 8);
 
-    static fromBeats(beats: number) {
-        return new NoteLength(TimePosition.lengthInBars(beats), beats);
+
+    static SixteenthRest = new NoteLength(1 / 16, 1 / 4, true);
+    static EighthRest = new NoteLength(1 / 8, 1 / 2, true);
+    static QuarterRest = new NoteLength(1 / 4, 1, true);
+    static HalfRest = new NoteLength(1 / 2, 2, true);
+    static WholeRest = new NoteLength(1, 4, true);
+
+    static fromBeats(beats: number, isRest = false) {
+        return new NoteLength(TimePosition.lengthInBars(beats), beats, isRest);
     }
 
-    static fromBars(bars: number) {
-        return new NoteLength(bars, TimePosition.lengthInBeats(bars));
-    }
-}
-
-export class RestLength {
-    lengthInBeats: number;
-    lengthInBars: number;
-    name: string;
-    private constructor(lengthInBars: number, lengthInBeats: number) {
-        this.lengthInBars = lengthInBars;
-        this.lengthInBeats = lengthInBeats;
-    }
-    static ThirtySecond = new RestLength(1 / 32, 1 / 8);
-    static TripletSixteenth = new RestLength( 1/ 24, 1 / 6);
-    static Sixteenth = new RestLength(1 / 16, 1 / 4);
-    static TripletEighth = new RestLength(1/12, 1/3);
-    static Eighth = new RestLength(1 / 8, 1 / 2);
-    static DottedEighth = new RestLength(3/16, 3/4)
-    static Quarter = new RestLength(1 / 4, 1);
-    static DottedQuarter = new RestLength(3/8, 1.5)
-    static Half = new RestLength(1 / 2, 2);
-    static DottedHalf = new RestLength(3/4, 3);
-    static Whole = new RestLength(1, 4);
-    static DottedWhole = new RestLength(1.5, 6);
-    static TwoWhole = new RestLength(2, 8);
-
-    static fromBeats(beats: number) {
-        return new RestLength(TimePosition.lengthInBars(beats), beats);
-    }
-
-    static fromBars(bars: number) {
-        return new RestLength(bars, TimePosition.lengthInBeats(bars));
+    static fromBars(bars: number, isRest = false) {
+        return new NoteLength(bars, TimePosition.lengthInBeats(bars), isRest);
     }
 }
 

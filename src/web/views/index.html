@@ -85,14 +85,17 @@
                     </div>
                     <div class="flex random-duration">
                         <div class="track-parameter flex align-center">
-                            <select name="phrasePreferences">
-                                <option value="short" {{#ifCond phrasePreferences.name "short"}}selected{{/ifCond}}>Short</option>
-                                <option value="medium" {{#ifCond phrasePreferences.name "medium"}}selected{{/ifCond}}>Medium</option>
-                                <option value="long" {{#ifCond phrasePreferences.name "long"}}selected{{/ifCond}}>Long</option>
+                            <select name="noteLengthPreferences" style="margin-right: 20px; padding: 10px;">
+                                <option value="short" {{#ifCond noteLengthPreferences.name "short"}}selected{{/ifCond}}>Short</option>
+                                <option value="medium" {{#ifCond noteLengthPreferences.name "medium"}}selected{{/ifCond}}>Medium</option>
+                                <option value="long" {{#ifCond noteLengthPreferences.name "long"}}selected{{/ifCond}}>Long</option>
                             </select>
 
                             <input size="2" type="text" name="percentRepeatChance" value="{{this.percentRepeatChance}}" />&nbsp;&nbsp;&nbsp;
                             <label>% repeat</label>
+
+                            <input size="2" type="text" name="percentRests" value="{{this.noteLengthPreferences.restWeight}}" />&nbsp;&nbsp;&nbsp;
+                            <label>% rests</label>
                         </div>
                     </div>
                     <div class="flex">

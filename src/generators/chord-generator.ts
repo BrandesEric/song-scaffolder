@@ -1,12 +1,13 @@
 import { Phrase } from "../music/phrase";
 import * as Tonal from "tonal";
 import * as Key from "tonal-key";
-import { Note, NoteLength } from "../music/note";
+import { Note, NoteLength, TimePosition } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { Chord } from "../music/chord";
 import { SongConfig } from "../config/song.config";
 import { ChordTrack } from "../state/chord-track";
+import { RhythmPattern } from "../music/rhythm";
 
 type ChordNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type ChordWeight = number;
@@ -108,8 +109,11 @@ export class ChordGenerator {
             progression.push(nextChordNumber);
             currentChordNumber = nextChordNumber;
         }
-        
-        return this.getChordPhraseWithRandomizedDuration(progression);
+        var rhythm = null;
+        if(!this.chordTrack.randomizeChordDuration){
+            rhythm = [NoteLength.Whole];
+        }
+        return this.getChordPhraseWithRhythm(progression, rhythm);
     }
 
     generateBasicChordProgressions(): Phrase[] {
@@ -117,42 +121,41 @@ export class ChordGenerator {
         for (var i = 0; i < this.progressions.length; i++) {
             var progression = this.progressions[i];
             var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
-            if(this.chordTrack.randomizeChordDuration){
-                var phrase = this.getChordPhraseWithRandomizedDuration(progression);
-                phrases.push(phrase);
+            var rhythm = null;
+            if(!this.chordTrack.randomizeChordDuration){
+                rhythm = [NoteLength.Whole];
             }
-            else {
-                var chords = chordNames.map(chordName => new Chord(chordName, NoteLength.Whole, this.chordTrack));
-                var phrase = new Phrase(progression.length, progression.toString());
-                phrase.addNotesFromChords(chords);
-                phrases.push(phrase);
-            }
+            var phrase = this.getChordPhraseWithRhythm(progression, rhythm);
+            phrases.push(phrase);
+          
         }
 
         return phrases;
     }
 
-    private getChordPhraseWithRandomizedDuration(progression: number[]): Phrase {
+    private getChordPhraseWithRhythm(progression: number[], rhythm?: NoteLength[]): Phrase {
         var chordNames = progression.map(chordNumber => this.chords[chordNumber - 1]);
         var currentClipLengthInBars = 0;
         var progressionPosition = 0;
         var chords = [];
-        while(currentClipLengthInBars < this.chordTrack.clipLengthInBars){
-            var duration;
-            if(this.chordTrack.randomizeChordDuration) {
-                duration = this.chordTrack.phrasePreferences.getRandomNoteLength();
-            }
-            else {
-                duration = NoteLength.Whole;
-            }      
+
+        if(!rhythm) {
+            var rhythmPattern = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
+            rhythm = rhythmPattern.parts;
+        }
+        else {
+            var rhythmPattern = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, rhythm);
+            rhythm = rhythmPattern.parts;
+        }
+
+        rhythm.forEach(duration => {
             var chord = new Chord(chordNames[progressionPosition % chordNames.length], duration, this.chordTrack)
             chords.push(chord);
             var shouldRepeatSameChord = this.getRandomInt(1, 100);
             if(shouldRepeatSameChord > this.chordTrack.percentRepeatChance) {
                 progressionPosition++;
             }
-            currentClipLengthInBars += duration.lengthInBars;
-        }
+        });
 
         var phrase = new Phrase(this.chordTrack.clipLengthInBars, progression.toString())
         phrase.addNotesFromChords(chords);
