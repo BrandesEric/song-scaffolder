@@ -1,7 +1,7 @@
-import { NoteDuration } from "./note";
+import { NoteLength } from "./note";
 
 export class Pattern {
-    individualNoteDuration: NoteDuration;
+    individualNoteDuration: NoteLength;
     patternString: string;
     name: string;
 
@@ -11,7 +11,7 @@ export class Pattern {
         return notes * this.individualNoteDuration.lengthInBars;
     }
 
-    constructor(pattern: string, individualNoteDuration = NoteDuration.Sixteenth, name: string = null) {
+    constructor(pattern: string, individualNoteDuration = NoteLength.Sixteenth, name: string = null) {
         this.patternString = pattern;
         this.individualNoteDuration = individualNoteDuration;
         this.name = name;

@@ -1,6 +1,6 @@
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
-import { Note, NoteDuration } from "../music/note";
+import { Note, NoteLength } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { Pattern } from "../music/pattern";
@@ -17,15 +17,15 @@ export class HihatGenerator {
     defaultLengthInBars = 4;
 
     commonPatterns = [
-        new Pattern("x-x-x-x-x-x-x-x-",  NoteDuration.Sixteenth ,"Downbeat"),
-        new Pattern("-x-x-x-x-x-x-x-x",  NoteDuration.Sixteenth ,"Upbeat"),
-        new Pattern("xxxxxxxxxxxxxxxx",  NoteDuration.Sixteenth ,"EveryBeat"),
-        new Pattern("x---x---x---x---", NoteDuration.Sixteenth, "Quarters"),
-        new Pattern("x-xxx-x-x-xxx-x-", NoteDuration.Sixteenth, "Rhythm1"),
-        new Pattern("x-xxx-x-x-xxx-x-", NoteDuration.Sixteenth, "Rhythm1"),
-        new Pattern("xxx-x-xxxxx-x-xx", NoteDuration.Sixteenth, "Rhythm2"),
-        new Pattern("x-x-x-xxx-x-x-xx", NoteDuration.Sixteenth, "Rhythm3"),
-        new Pattern("xxx-x-x-xxx-x-x-", NoteDuration.Sixteenth, "Rhythm4")
+        new Pattern("x-x-x-x-x-x-x-x-",  NoteLength.Sixteenth ,"Downbeat"),
+        new Pattern("-x-x-x-x-x-x-x-x",  NoteLength.Sixteenth ,"Upbeat"),
+        new Pattern("xxxxxxxxxxxxxxxx",  NoteLength.Sixteenth ,"EveryBeat"),
+        new Pattern("x---x---x---x---", NoteLength.Sixteenth, "Quarters"),
+        new Pattern("x-xxx-x-x-xxx-x-", NoteLength.Sixteenth, "Rhythm1"),
+        new Pattern("x-xxx-x-x-xxx-x-", NoteLength.Sixteenth, "Rhythm1"),
+        new Pattern("xxx-x-xxxxx-x-xx", NoteLength.Sixteenth, "Rhythm2"),
+        new Pattern("x-x-x-xxx-x-x-xx", NoteLength.Sixteenth, "Rhythm3"),
+        new Pattern("xxx-x-x-xxx-x-x-", NoteLength.Sixteenth, "Rhythm4")
     ];
 
     partialPatterns: WeightedPattern[] = [
@@ -88,7 +88,7 @@ export class HihatGenerator {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 } 
             }
             else {
@@ -97,7 +97,7 @@ export class HihatGenerator {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 }
             }
         }

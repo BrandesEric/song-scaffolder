@@ -1,6 +1,6 @@
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
-import { Note, NoteDuration } from "../music/note";
+import { Note, NoteLength } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { KickTrack } from "../state/kick-track";
@@ -17,12 +17,12 @@ export class KickDrumGenerator {
     defaultLengthInBars = 4;
 
     commonPatterns = [
-        new Pattern("x---x---x---x---",  NoteDuration.Sixteenth ,"FourOnFloor"),
-        new Pattern("x-------x-------",  NoteDuration.Sixteenth ,"1 and 3"),
-        new Pattern("x--x--x-x--x--x-", NoteDuration.Sixteenth, "Dancehall1"),
-        new Pattern("x--x----x--x----", NoteDuration.Sixteenth, "Dancehall2"),
-        new Pattern("x-----x---------x-----x-----xxx-", NoteDuration.Sixteenth, "Trap1"),
-        new Pattern("x-----x-----x-----x-------x---x-", NoteDuration.Sixteenth, "Trap2"), 
+        new Pattern("x---x---x---x---",  NoteLength.Sixteenth ,"FourOnFloor"),
+        new Pattern("x-------x-------",  NoteLength.Sixteenth ,"1 and 3"),
+        new Pattern("x--x--x-x--x--x-", NoteLength.Sixteenth, "Dancehall1"),
+        new Pattern("x--x----x--x----", NoteLength.Sixteenth, "Dancehall2"),
+        new Pattern("x-----x---------x-----x-----xxx-", NoteLength.Sixteenth, "Trap1"),
+        new Pattern("x-----x-----x-----x-------x---x-", NoteLength.Sixteenth, "Trap2"), 
     ];
 
     partialPatterns: WeightedPattern[] = [
@@ -84,7 +84,7 @@ export class KickDrumGenerator {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 } 
             }
             else {
@@ -93,7 +93,7 @@ export class KickDrumGenerator {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 }
             }
         }

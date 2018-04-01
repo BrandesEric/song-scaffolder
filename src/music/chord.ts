@@ -1,14 +1,14 @@
-import { NoteDuration, Note } from "./note";
+import { NoteLength, Note } from "./note";
 import * as Tonal from "tonal";
 import { ChordTrack } from "../state/chord-track";
 import { ChordGenerator } from "../generators/chord-generator";
 
 export class Chord {
     name: string;
-    duration: NoteDuration = NoteDuration.Whole;
+    duration: NoteLength = NoteLength.Whole;
     chordTrack: ChordTrack;
 
-    constructor(name: string, duration: NoteDuration, chordTrack: ChordTrack) {
+    constructor(name: string, duration: NoteLength, chordTrack: ChordTrack) {
         this.name = name;
         this.duration = duration;
         this.chordTrack = chordTrack;

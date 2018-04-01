@@ -1,6 +1,6 @@
 import { Phrase } from "../music/phrase";
 import { Pattern } from "../music/pattern";
-import { Note, NoteDuration } from "../music/note";
+import { Note, NoteLength } from "../music/note";
 import { SongConfig } from "../config/song.config";
 
 export class HiHatCommonStrategy {
@@ -9,8 +9,8 @@ export class HiHatCommonStrategy {
     private currentPatternIndex = 0;
 
     patterns = [
-        new Pattern("x-x-x-x-x-x-x-x-",  NoteDuration.Sixteenth ,"Sixteenths alternating"),
-        new Pattern("xxxxxxxxxxxxxxxx",  NoteDuration.Sixteenth ,"Sixteenths"),
+        new Pattern("x-x-x-x-x-x-x-x-",  NoteLength.Sixteenth ,"Sixteenths alternating"),
+        new Pattern("xxxxxxxxxxxxxxxx",  NoteLength.Sixteenth ,"Sixteenths"),
     ];
 
     constructor() {

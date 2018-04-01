@@ -1,7 +1,7 @@
 import { Phrase } from "../music/phrase";
 import * as Tonal from "tonal";
 import * as Key from "tonal-key";
-import { Note, NoteDuration } from "../music/note";
+import { Note, NoteLength } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { Chord } from "../music/chord";
@@ -122,7 +122,7 @@ export class ChordGenerator {
                 phrases.push(phrase);
             }
             else {
-                var chords = chordNames.map(chordName => new Chord(chordName, NoteDuration.Whole, this.chordTrack));
+                var chords = chordNames.map(chordName => new Chord(chordName, NoteLength.Whole, this.chordTrack));
                 var phrase = new Phrase(progression.length, progression.toString());
                 phrase.addNotesFromChords(chords);
                 phrases.push(phrase);
@@ -185,22 +185,22 @@ export class ChordGenerator {
         throw new Error("Should always be able to find a next chord!");
     }
 
-    private getRandomChordDuration(): NoteDuration {
+    private getRandomChordDuration(): NoteLength {
         var randomChance = this.getRandomInt(1, 100);
         if(randomChance <= this.quarterNotePercentChance) {
-            return NoteDuration.Quarter
+            return NoteLength.Quarter
         }
         randomChance -= this.quarterNotePercentChance;
         if(randomChance <= this.halfNotePercentChance) {
-            return NoteDuration.Half
+            return NoteLength.Half
         }
         randomChance -= this.halfNotePercentChance;
         if(randomChance <= this.wholeNotePercentChance){
-            return NoteDuration.Whole;
+            return NoteLength.Whole;
         }
         randomChance -= this.wholeNotePercentChance;
         if(randomChance <= this.twoWholeNotePercentChance){
-            return NoteDuration.TwoWhole;
+            return NoteLength.TwoWhole;
         }
 
         throw new Error("ACK, should never not find a note duration!!");

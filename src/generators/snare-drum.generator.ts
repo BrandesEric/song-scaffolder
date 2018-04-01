@@ -1,6 +1,6 @@
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
-import { Note, NoteDuration } from "../music/note";
+import { Note, NoteLength } from "../music/note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { SnareTrack } from "../state/snare-track";
@@ -17,11 +17,11 @@ export class SnareDrumGenerator {
     defaultLengthInBars = 4;
 
     commonPatterns = [
-        new Pattern("--x---x---x---x-",  NoteDuration.Sixteenth ,"MidBeat"),
-        new Pattern("----x-------x---",  NoteDuration.Sixteenth ,"Downbeat"),
-        new Pattern("----x--xx-x-x---",  NoteDuration.Sixteenth ,"Fancier"),
-        new Pattern("----x--x-x--x---",  NoteDuration.Sixteenth ,"Trap"),
-        new Pattern("xxxx", NoteDuration.Sixteenth, "Roll") 
+        new Pattern("--x---x---x---x-",  NoteLength.Sixteenth ,"MidBeat"),
+        new Pattern("----x-------x---",  NoteLength.Sixteenth ,"Downbeat"),
+        new Pattern("----x--xx-x-x---",  NoteLength.Sixteenth ,"Fancier"),
+        new Pattern("----x--x-x--x---",  NoteLength.Sixteenth ,"Trap"),
+        new Pattern("xxxx", NoteLength.Sixteenth, "Roll") 
     ];
 
     partialPatterns: WeightedPattern[] = [
@@ -84,7 +84,7 @@ export class SnareDrumGenerator {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 } 
             }
             else {
@@ -93,7 +93,7 @@ export class SnareDrumGenerator {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteDuration.Sixteenth));
+                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 }
             }
         }
