@@ -5,6 +5,7 @@ import { ChordTrack } from "./chord-track";
 import { KickTrack } from "./kick-track";
 import { SnareTrack } from "./snare-track";
 import { HihatTrack } from "./hihat-track";
+import { BassTrack } from "./bass-track";
 
 var state = new ApplicationState();
 
@@ -17,6 +18,8 @@ var snareTrack = new SnareTrack();
 state.snareTracks.push(snareTrack);
 var hihatTrack = new HihatTrack();
 state.hihatTracks.push(hihatTrack);
+var bassTrack = new BassTrack();
+state.bassTracks.push(bassTrack);
 
 export async function currentState(): Promise<ApplicationState> {
 

@@ -3,11 +3,12 @@ import * as path from 'path';
 import { serveStatic } from "serve-static";
 import { currentState } from "../state/current";
 import { changeTempo } from "../state/tempo";
-import { addChords, generateChords, generateKick, generateSnare, generateHihat } from "../state/tracks";
+import { addChords, generateChords, generateKick, generateSnare, generateHihat, generateBass } from "../state/tracks";
 import { KickTrack } from "../state/kick-track";
 import { ChordTrack } from "../state/chord-track";
 import { SnareTrack } from "../state/snare-track";
 import { HihatTrack } from "../state/hihat-track";
+import { BassTrack } from "../state/bass-track";
 
 export class Router {
     static applyRoutes(app: Application) {
@@ -55,6 +56,13 @@ export class Router {
             var hihatTrack = HihatTrack.fromFormPost(req.body);
             var state = await currentState();
             await generateHihat(hihatTrack, state);
+            res.redirect("/");
+        });
+
+        app.post("/generate-bass", async (req, res) => {
+            var bassTrack = BassTrack.fromFormPost(req.body);
+            var state = await currentState();
+            await generateBass(bassTrack, state);
             res.redirect("/");
         });
 

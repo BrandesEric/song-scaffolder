@@ -9,6 +9,8 @@ import { SnareTrack } from "./snare-track";
 import { SnareDrumGenerator } from "../generators/snare-drum.generator";
 import { HihatTrack } from "./hihat-track";
 import { HihatGenerator } from "../generators/hihat.generator";
+import { BassTrack } from "./bass-track";
+import { BassGenerator } from "../generators/bass-generator";
 
 export function addChords(state: ApplicationState) {
     state.chordTracks.push(new ChordTrack());
@@ -58,6 +60,14 @@ export async function generateHihat(hihatTrack: HihatTrack, state: ApplicationSt
     return true;
 }
 
+export async function generateBass(bassTrack: BassTrack, state: ApplicationState): Promise<boolean> {
+    var bassGenerator = new BassGenerator(bassTrack);
+    await bassGenerator.generate();
+    state.updateBassTrack(bassTrack);
+
+    return true;
+}
+
 
 
 export enum TrackKind {
@@ -65,5 +75,6 @@ export enum TrackKind {
     Chord,
     Kick,
     Snare,
-    Hihat
+    Hihat,
+    Bass
 }
