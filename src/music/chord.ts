@@ -1,7 +1,8 @@
-import { NoteLength, Note } from "./note";
+import { MidiNote } from "./midi-note";
 import * as Tonal from "tonal";
 import { ChordTrack } from "../state/chord-track";
 import { ChordGenerator } from "../generators/chord-generator";
+import { NoteLength } from "./note-length";
 
 export class Chord {
     name: string;
@@ -31,17 +32,17 @@ export class Chord {
         return intervals;
     }
 
-    public getNotes(timeStartInBeats: number): Note[] {
+    public getNotes(timeStartInBeats: number): MidiNote[] {
 
         if(this.chordTrack.splitChords) {
             var highestNotes = this.chordNotes.sort((a, b) => a.toMidi() - b.toMidi()).reverse();
             var notes = this.chordNotes.map(chordNote => {
                 var durationHalf = this.duration.doubleTime();
                 if(chordNote === highestNotes[0] || chordNote === highestNotes[1]) {
-                    return Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, durationHalf,  this.velocity);
+                    return MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, durationHalf,  this.velocity);
                 }
                 else {
-                    return Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
+                    return MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
                 }
             });
     
@@ -49,7 +50,7 @@ export class Chord {
         }
         else {
             var notes = this.chordNotes.map(chordNote => {
-                var note = Note.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, this.duration,  this.velocity);
+                var note = MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, this.duration,  this.velocity);
     
                 return note;
             });

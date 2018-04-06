@@ -1,6 +1,6 @@
-import { NoteLength } from "./note";
 import { isNumber } from "util";
 import { NoteLengthPreferences } from "./note-length-preferences";
+import { NoteLength } from "./note-length";
 
 export class RhythmPattern {
     public parts: NoteLength[] = [];

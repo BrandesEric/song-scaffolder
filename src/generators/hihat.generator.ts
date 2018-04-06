@@ -1,12 +1,13 @@
 import { Phrase } from "../music/phrase";
 import * as tonal from "tonal";
-import { Note, NoteLength } from "../music/note";
+import { MidiNote } from "../music/midi-note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { Pattern } from "../music/pattern";
 import { WeightedPattern } from "../music/weighted-pattern";
 import { SongConfig } from "../config/song.config";
 import { HihatTrack } from "../state/hihat-track";
+import { NoteLength } from "../music/note-length";
 
 export class HihatGenerator {
 
@@ -73,7 +74,7 @@ export class HihatGenerator {
         for (var i = 0; i < pattern.patternString.length; i++) {
             var action = pattern.patternString[i];
             if (action === "x") {
-                var note = Note.fromNoteName(`${SongConfig.key}3`, i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration);
+                var note = MidiNote.fromNoteName(`${SongConfig.key}3`, i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration);
                 phrase.addNote(note);
             }
         }
@@ -88,7 +89,7 @@ export class HihatGenerator {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
+                    phrase.addNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 } 
             }
             else {
@@ -97,7 +98,7 @@ export class HihatGenerator {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(Note.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
+                    phrase.addNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 }
             }
         }

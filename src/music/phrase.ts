@@ -1,12 +1,12 @@
 import { orderBy } from "lodash";
-import { Note } from "./note";
+import { MidiNote } from "./midi-note";
 import * as AbletonJs from "ableton-js"
 import { Chord } from "./chord";
 
 
 export class Phrase {
 
-    private _notes: Note[] = [];
+    private _notes: MidiNote[] = [];
 
     public bars: number;
 
@@ -30,15 +30,15 @@ export class Phrase {
         this.name = name;
     }
 
-    get notes(): Note[] {
+    get notes(): MidiNote[] {
         return this._notes;
     }
 
-    addNote(note: Note) {
+    addNote(note: MidiNote) {
         this._notes.push(note);
     }
 
-    addNotes(notes: Note[]) {
+    addNotes(notes: MidiNote[]) {
         this._notes = this._notes.concat(notes);
     }
 

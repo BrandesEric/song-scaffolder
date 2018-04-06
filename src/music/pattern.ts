@@ -1,4 +1,4 @@
-import { NoteLength } from "./note";
+import { NoteLength } from "./note-length";
 
 export class Pattern {
     individualNoteDuration: NoteLength;

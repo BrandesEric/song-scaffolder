@@ -1,13 +1,14 @@
 import { Phrase } from "../music/phrase";
 import * as Tonal from "tonal";
 import * as Key from "tonal-key";
-import { Note, NoteLength, TimePosition } from "../music/note";
+import { MidiNote } from "../music/midi-note";
 import * as AbletonJs from "ableton-js";
 import { MidiTrack } from "ableton-js";
 import { Chord } from "../music/chord";
 import { SongConfig } from "../config/song.config";
 import { ChordTrack } from "../state/chord-track";
 import { RhythmPattern } from "../music/rhythm";
+import { NoteLength } from "../music/note-length";
 
 type ChordNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type ChordWeight = number;
