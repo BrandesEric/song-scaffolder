@@ -7,6 +7,7 @@ import { BassTrack } from "./bass-track";
 export class ApplicationState {
     public deviceActive: boolean;
     public tempo: number;
+    public existingTracks: string[] = [];
     public chordTracks: ChordTrack[] = [];
     public kickTracks: KickTrack[] = [];
     public snareTracks: SnareTrack[] = [];

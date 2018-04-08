@@ -75,7 +75,7 @@ export class HihatGenerator {
             var action = pattern.patternString[i];
             if (action === "x") {
                 var note = MidiNote.fromNoteName(`${SongConfig.key}3`, i * pattern.individualNoteDuration.lengthInBeats, pattern.individualNoteDuration);
-                phrase.addNote(note);
+                phrase.addMidiNote(note);
             }
         }
 
@@ -89,7 +89,7 @@ export class HihatGenerator {
         for (var i = 0; i < beats; i+= 0.25) {
             if (i === 0) {
                 if (this.shouldHit(this.initialPercentOfHit)) {
-                    phrase.addNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
+                    phrase.addMidiNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 } 
             }
             else {
@@ -98,7 +98,7 @@ export class HihatGenerator {
                 var percentChance = (1 - Math.pow(1   - decimalPercent, sixteenthsSincePlayed)) * 100;
 
                 if (this.shouldHit(percentChance)) {
-                    phrase.addNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
+                    phrase.addMidiNote(MidiNote.fromNoteName(`${SongConfig.key}3`, i, NoteLength.Sixteenth));
                 }
             }
         }

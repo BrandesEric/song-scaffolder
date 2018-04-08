@@ -50,4 +50,9 @@ export class Note {
         
         return chordNote;
     }
+
+    static fromMidi(note: number) {
+        note = note - 12;
+        return this.fromString(Tonal.Note.fromMidi(note));
+    }
 }

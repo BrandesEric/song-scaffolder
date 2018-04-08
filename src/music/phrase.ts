@@ -34,7 +34,7 @@ export class Phrase {
         return this._notes;
     }
 
-    addNote(note: MidiNote) {
+    addMidiNote(note: MidiNote) {
         this._notes.push(note);
     }
 

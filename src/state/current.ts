@@ -6,6 +6,7 @@ import { KickTrack } from "./kick-track";
 import { SnareTrack } from "./snare-track";
 import { HihatTrack } from "./hihat-track";
 import { BassTrack } from "./bass-track";
+import * as AbletonJs from "ableton-js";
 
 var state = new ApplicationState();
 
@@ -19,12 +20,15 @@ state.snareTracks.push(snareTrack);
 var hihatTrack = new HihatTrack();
 state.hihatTracks.push(hihatTrack);
 var bassTrack = new BassTrack();
+bassTrack.sourceTrack = "Chords";
 state.bassTracks.push(bassTrack);
 
 export async function currentState(): Promise<ApplicationState> {
 
     state.deviceActive = await deviceActive();
-    
+    let tracks = await AbletonJs.getTracks();
+    state.existingTracks = tracks.filter(x => x.isMidi).map(x => x.name);
+
     if(state.deviceActive){
         state.tempo = await getTempo(); 
     }

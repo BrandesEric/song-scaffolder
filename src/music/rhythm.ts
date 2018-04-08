@@ -33,6 +33,26 @@ export class RhythmPattern {
         return new RhythmPattern(lengths);
     }
 
+    static getPatternByRhythmType(desiredLengthInBars: number, rhythmType: RhythmType) {
+        var rhythms: WeightedRhythmPattern[];
+        if(rhythmType === RhythmType.Bass) {
+            rhythms = bassRhythms;
+        }
+
+        var totalWeight = rhythms.reduce((acc, val) => val.weight + acc, 0);
+        var random = RhythmPattern.getRandomInt(1, totalWeight);
+        var index = 0;
+        var weightedPattern: WeightedRhythmPattern = rhythms[index];
+        while(random > weightedPattern.weight) {
+            random -= weightedPattern.weight;
+            index++;
+            weightedPattern = rhythms[index];
+        }
+        var pattern = weightedPattern.pattern;
+        console.log(pattern);
+        return this.generateFromNoteLengths(desiredLengthInBars, pattern);
+    }
+
     static generateFromNoteLengths(desiredLengthInBars: number, noteLengths: NoteLength[]) {
         var currentLengthInBars = 0;
         var index = 0;
@@ -92,3 +112,33 @@ const commonRhythms: NoteLength[][] = [
         NoteLength.Quarter
     ]
 ]
+
+const bassRhythms: WeightedRhythmPattern[] = [
+    {
+        weight: 20,
+        pattern: [NoteLength.Quarter, NoteLength.Quarter, NoteLength.Quarter, NoteLength.Quarter]
+    },{
+        weight: 10,
+        pattern: [NoteLength.Half, NoteLength.Half]
+    },{
+        weight: 10,
+        pattern: [NoteLength.Whole]
+    },{
+        weight: 10,
+        pattern: [NoteLength.Quarter, NoteLength.Quarter, NoteLength.Half]
+    },{
+        weight: 10,
+        pattern: [NoteLength.Half, NoteLength.Quarter, NoteLength.Quarter]
+    }
+]
+
+export enum RhythmType {
+    Unspecified,
+    Chord,
+    Bass
+}
+
+type WeightedRhythmPattern = {
+    weight: number,
+    pattern: NoteLength[]
+}

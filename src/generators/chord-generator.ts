@@ -86,6 +86,7 @@ export class ChordGenerator {
         if(this.chordTrack.clearClips){
             await this.clearClips(track)
         } 
+        
         if(this.chordTrack.includeBasicChords){
             var phrases = this.generateBasicChordProgressions();
             for(var i = 0; i < phrases.length; i++) {

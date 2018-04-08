@@ -117,6 +117,7 @@
         </div>
         {{/each}}
         {{#each currentState.bassTracks}}
+            {{#with . as |bassTrack|}}
             <div class="track bass">
                 <h3 style="margin-top: 0">Bass</h3>
                 <form action="/generate-bass" method="POST">
@@ -126,17 +127,22 @@
                             <div class="track-parameter flex align-center">
                                 <label>Track Name:</label> 
                                 <input type="text" name="name" value="{{this.name}}" />
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label> 
                             </div>
                             <div class="track-parameter flex align-center">
                                 <label style="flex: 0 0 120px;"><input type="checkbox" name="useSelectedClip" value="true" {{#if useSelectedClip}}checked{{/if}}>Use Selected Clip</label>&nbsp;&nbsp;&nbsp;
-                                <label>Source Track Name:</label> 
-                                <input type="text" name="name" value="{{this.sourceTrackName}}" />
+                                <select name="sourceTrack" style="margin-right: 20px; padding: 10px;">
+                                    {{#each @root.currentState.existingTracks}}
+                                        <option value="{{.}}" {{#ifCond bassTrack.sourceTrack .}}selected{{/ifCond}}>{{.}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
                         <button>Generate</button>
                     </div>
                 </form>
             </div>
+            {{/with}}
         {{/each}}
         {{#each currentState.kickTracks}}
             <div class="track kick">
