@@ -3,6 +3,7 @@ import * as Tonal from "tonal";
 import { ChordTrack } from "../state/chord-track";
 import { ChordGenerator } from "../generators/chord-generator";
 import { NoteLength } from "./note-length";
+import { Note } from "./note";
 
 export class Chord {
     name: string;
@@ -16,33 +17,33 @@ export class Chord {
         this.noteNamesInChord = Tonal.Chord.notes(name);
 
         var rootNoteWithOctave = this.noteNamesInChord[0] + this.chordTrack.startOctave;
-        this.rootNote = ChordNote.fromNote(rootNoteWithOctave);
+        this.rootNote = Note.fromString(rootNoteWithOctave);
         this.intervals = this.getIntervals(this.rootNote, this.noteNamesInChord);
-        this.chordNotes = this.getChordNotes(this.rootNote, this.intervals);
+        this.chordNotes = this.getNotesInChord(this.rootNote, this.intervals);
     }
 
-    private rootNote: ChordNote;
-    private chordNotes: ChordNote[];
+    private rootNote: Note;
+    private chordNotes: Note[];
     private intervals: string[];
     private noteNamesInChord: string[];
     private velocity = 100;
 
-    private getIntervals(rootNote: ChordNote, notesInChord: string[]): string[]{ 
+    private getIntervals(rootNote: Note, notesInChord: string[]): string[]{ 
         var intervals = notesInChord.map(x => Tonal.Distance.interval(rootNote.noteName, x));
         return intervals;
     }
 
-    public getNotes(timeStartInBeats: number): MidiNote[] {
+    public getMidiNotes(timeStartInBeats: number): MidiNote[] {
 
         if(this.chordTrack.splitChords) {
             var highestNotes = this.chordNotes.sort((a, b) => a.toMidi() - b.toMidi()).reverse();
             var notes = this.chordNotes.map(chordNote => {
                 var durationHalf = this.duration.doubleTime();
                 if(chordNote === highestNotes[0] || chordNote === highestNotes[1]) {
-                    return MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, durationHalf,  this.velocity);
+                    return MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, durationHalf,  this.velocity);
                 }
                 else {
-                    return MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
+                    return MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
                 }
             });
     
@@ -50,7 +51,7 @@ export class Chord {
         }
         else {
             var notes = this.chordNotes.map(chordNote => {
-                var note = MidiNote.fromNoteName(chordNote.noteAndOctave, timeStartInBeats, this.duration,  this.velocity);
+                var note = MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, this.duration,  this.velocity);
     
                 return note;
             });
@@ -59,11 +60,11 @@ export class Chord {
         }
     }
     
-    private getChordNotes(rootNote: ChordNote, intervals: string[]): ChordNote[] {
+    private getNotesInChord(rootNote: Note, intervals: string[]): Note[] {
         var chordNotes = intervals.map(interval => {
-            var noteWithOctave = Tonal.Distance.transpose(rootNote.noteAndOctave, interval);
+            var note = Tonal.Distance.transpose(rootNote.fullName, interval);
 
-            return ChordNote.fromNote(noteWithOctave);
+            return Note.fromString(note);
         });
 
         if(this.chordTrack.voicing === "open") {
@@ -84,57 +85,5 @@ export class Chord {
         }
 
         return chordNotes;
-    }
-}
-
-export class ChordNote {
-    noteName: string;
-    octave: number;
-
-    get noteAndOctave(): string {
-        return this.noteName + this.octave;
-    }
-
-    addOctave(): ChordNote{
-        return this.transposeBy("8P");
-    }
-
-    subtractOctave(): ChordNote {
-        return this.transposeBy("-8P");
-    }
-
-    transposeBy(interval: string): ChordNote { 
-        var newNoteNameAndOctave = Tonal.Distance.transpose(this.noteAndOctave, interval);
-
-        return ChordNote.fromNote(newNoteNameAndOctave);
-    }
-
-    distancefrom(chordNote: ChordNote): string {
-        return Tonal.Distance.interval(chordNote.noteAndOctave, this.noteAndOctave);
-    }
-
-    distanceTo(chordNote: ChordNote): string {
-        return Tonal.Distance.interval(this.noteAndOctave, chordNote.noteAndOctave);
-    }
-    
-    clone(): ChordNote {
-        var chordNote = new ChordNote();
-        chordNote.noteName = this.noteName;
-        chordNote.octave = this.octave;
-
-        return chordNote;
-    }
-
-    toMidi(): number {
-        return Tonal.Note.midi(this.noteAndOctave) + 12;
-    }
-
-    static fromNote(note: string): ChordNote{
-        var tokens = Tonal.Note.tokenize(note);
-        var chordNote = new ChordNote();
-        chordNote.noteName = tokens[0];
-        chordNote.octave = parseInt(tokens[2]);
-        
-        return chordNote;
     }
 }

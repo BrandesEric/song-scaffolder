@@ -38,7 +38,7 @@ export class Phrase {
         this._notes.push(note);
     }
 
-    addNotes(notes: MidiNote[]) {
+    addMidiNotes(notes: MidiNote[]) {
         this._notes = this._notes.concat(notes);
     }
 
@@ -46,8 +46,8 @@ export class Phrase {
         var timeStartInBeats = 0;
         chords.forEach(chord => {
             if(!chord.duration.isRest) {
-                var notes = chord.getNotes(timeStartInBeats);
-                this.addNotes(notes);
+                var notes = chord.getMidiNotes(timeStartInBeats);
+                this.addMidiNotes(notes);
             }
             timeStartInBeats += chord.duration.lengthInBeats;
         });
@@ -76,7 +76,7 @@ export class Phrase {
             return newNote;
         }));
 
-        phrase.addNotes(newNotes);
+        phrase.addMidiNotes(newNotes);
 
         return phrase;
     }
@@ -91,7 +91,7 @@ export class Phrase {
             return newNote;
         }));
 
-        newPhrase.addNotes(newNotes);
+        newPhrase.addMidiNotes(newNotes);
 
         return phrase;
     }
