@@ -11,6 +11,8 @@ import { HihatTrack } from "./hihat-track";
 import { HihatGenerator } from "../generators/hihat.generator";
 import { BassTrack } from "./bass-track";
 import { BassGenerator } from "../generators/bass-generator";
+import { MelodyTrack } from "./melody-track";
+import { MelodyGenerator } from "../generators/melody-generator";
 
 export function addChords(state: ApplicationState) {
     state.chordTracks.push(new ChordTrack());
@@ -68,7 +70,13 @@ export async function generateBass(bassTrack: BassTrack, state: ApplicationState
     return true;
 }
 
+export async function generateMelody(melodyTrack: MelodyTrack, state: ApplicationState): Promise<boolean> {
+    var melodyGenerator = new MelodyGenerator(melodyTrack);
+    await melodyGenerator.generate();
+    state.updateMelodyTrack(melodyTrack);
 
+    return true;
+}
 
 export enum TrackKind {
     Unspecified,
@@ -76,5 +84,6 @@ export enum TrackKind {
     Kick,
     Snare,
     Hihat,
-    Bass
+    Bass,
+    Melody
 }

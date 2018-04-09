@@ -144,6 +144,34 @@
             </div>
             {{/with}}
         {{/each}}
+        {{#each currentState.melodyTracks}}
+            {{#with . as |melodyTrack|}}
+            <div class="track bass">
+                <h3 style="margin-top: 0">Melody/Topline</h3>
+                <form action="/generate-melody" method="POST">
+                    <input type="hidden" name="id" value="{{this.id}}" />
+                    <div class="flex-column">
+                        <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label>Track Name:</label> 
+                                <input type="text" name="name" value="{{this.name}}" />
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label> 
+                            </div>
+                            <div class="track-parameter flex align-center">
+                                <label style="flex: 0 0 120px;"><input type="checkbox" name="useSelectedClip" value="true" {{#if useSelectedClip}}checked{{/if}}>Use Selected Clip</label>&nbsp;&nbsp;&nbsp;
+                                <select name="sourceTrack" style="margin-right: 20px; padding: 10px;">
+                                    {{#each @root.currentState.existingTracks}}
+                                        <option value="{{.}}" {{#ifCond melodyTrack.sourceTrack .}}selected{{/ifCond}}>{{.}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <button>Generate</button>
+                    </div>
+                </form>
+            </div>
+            {{/with}}
+        {{/each}}
         {{#each currentState.kickTracks}}
             <div class="track kick">
                 <h3 style="margin-top: 0">Kick</h3>

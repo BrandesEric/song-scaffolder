@@ -1,21 +1,22 @@
 import { TrackKind } from "./tracks";
 import * as uuid from "uuid/v4";
 
-export class BassTrack {
+export class MelodyTrack {
     id: string = uuid();
-    name: string = "Bass";
+    name: string = "Melody";
     sourceTrack: string;
 
     clearClips: boolean = true;
     useSelectedClip: boolean;
     
-    kind: TrackKind = TrackKind.Bass;
+    kind: TrackKind = TrackKind.Melody;
 
     numClips = 10;
-    subtractOctaves = 2;
+    startOctave = 3;
+    octaveRange = 2;
 
-    public static fromFormPost(form): BassTrack {
-        var track = new BassTrack();
+    public static fromFormPost(form): MelodyTrack {
+        var track = new MelodyTrack();
         track.id = form.id;
         track.name = form.name;
         track.sourceTrack = form.sourceTrack
