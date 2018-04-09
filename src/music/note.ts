@@ -22,12 +22,20 @@ export class Note {
         return Note.fromString(newNoteNameAndOctave);
     }
 
-    distancefrom(chordNote: Note): string {
-        return Tonal.Distance.interval(chordNote.fullName, this.fullName);
+    distancefrom(note: Note): string {
+        return Tonal.Distance.interval(note.fullName, this.fullName);
     }
 
-    distanceTo(chordNote: Note): string {
-        return Tonal.Distance.interval(this.fullName, chordNote.fullName);
+    distanceTo(note: Note): string {
+        return Tonal.Distance.interval(this.fullName, note.fullName);
+    }
+
+    distancefromInSemitones(note: Note): number {
+        return Tonal.Distance.semitones(note.fullName, this.fullName);
+    }
+
+    distanceToInSemitones(note: Note): number {
+        return Tonal.Distance.semitones(this.fullName, note.fullName);
     }
     
     clone(): Note {

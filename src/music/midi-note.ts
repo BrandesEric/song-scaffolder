@@ -1,5 +1,6 @@
 import * as tonal from "tonal";
 import { NoteLength } from "./note-length";
+import { Note } from "./note";
 
 export class MidiNote {
     name: string;
@@ -34,5 +35,9 @@ export class MidiNote {
         }
 
         return note;
+    }
+
+    toNote(): Note {
+        return Note.fromString(this.name);
     }
 }
