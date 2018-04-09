@@ -80,7 +80,7 @@ export class PhraseBuilder {
     private bassMaxOctave = 2;
     private startOctavesMelody = 4;
     private melodyMinOctave = 3;
-    private melodyMaxOctave = 6;
+    private melodyMaxOctave = 5;
 
     constructor(public rhythmPattern: RhythmPattern, public sourceNotes: AbletonJs.MidiNote[], public phraseType: TrackKind) {
         this.sourceNotes = sourceNotes || [];
@@ -247,7 +247,7 @@ export class PhraseBuilder {
             return this.startOctavesBass;
         }
         else {
-            this.startOctavesMelody;
+            return this.startOctavesMelody;
         }
     }
 
@@ -256,7 +256,7 @@ export class PhraseBuilder {
             return this.bassMinOctave;
         }
         else {
-            this.melodyMinOctave;
+            return this.melodyMinOctave;
         }
     }
 
@@ -265,7 +265,7 @@ export class PhraseBuilder {
             return this.bassMaxOctave;
         }
         else {
-            this.melodyMaxOctave;
+            return this.melodyMaxOctave;
         }
     }
 

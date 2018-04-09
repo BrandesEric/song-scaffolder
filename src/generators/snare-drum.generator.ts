@@ -28,9 +28,9 @@ export class SnareDrumGenerator {
     partialPatterns: WeightedPattern[] = [
         new WeightedPattern(new Pattern("x---"), 50),
         new WeightedPattern(new Pattern("--x-"), 40),
-        new WeightedPattern(new Pattern("-x-x"), 20),
+        new WeightedPattern(new Pattern("-x-x"), 5),
         new WeightedPattern(new Pattern("---x"), 10),
-        new WeightedPattern(new Pattern("x-x-"), 10),
+        new WeightedPattern(new Pattern("x-x-"), 5),
         new WeightedPattern(new Pattern("----"), 20),
         new WeightedPattern(new Pattern("xxxx"), 5),
     ]

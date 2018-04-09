@@ -12,6 +12,7 @@ import { BassTrack } from "../state/bass-track";
 import { NoteLength } from "../music/note-length";
 import { Note } from "../music/note";
 import { MelodyTrack } from "../state/melody-track";
+import { PhraseBuilder } from "../music/phrase-builder";
 
 export class MelodyGenerator {
 
@@ -33,54 +34,31 @@ export class MelodyGenerator {
         } 
 
         var sourceTrack = await AbletonJs.getTrackByName(this.melodyTrack.sourceTrack);
+        var clip: AbletonJs.MidiClip;
         if (this.melodyTrack.useSelectedClip) {
+            clip = await AbletonJs.getSelectedMidiClip();
+        }
+        
+        if(!clip) {
+            clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+        }
 
+        var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        for (var i = 0; i < this.melodyTrack.numClips; i++) {
+            var phrase = this.generateMelodyFromMidiClip(clip, midiNotes, i);
+            await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
         }
-        else {
-            var firstClip = (await AbletonJs.getMidiClips(sourceTrack))[0];
-            var midiNotes = await AbletonJs.getMidiClipNotes(firstClip);
-            for (var i = 0; i < this.melodyTrack.numClips; i++) {
-                var phrase = this.generateMelodyFromMidiClip(firstClip, midiNotes);
-                await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
-            }
-        }
+        
     }
 
-    generateMelodyFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[]): Phrase {
+    generateMelodyFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
         var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
-        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, RhythmType.Bass);
-        var phrase = new Phrase(noteLength.lengthInBars, "Melody Rand");
-        var currentTimeInBeats = 0;
-        rhythm.parts.forEach(noteLength => {
-            var note = this.getPitchAtTimeInBeats(currentTimeInBeats, notes);
-            var midiNote = MidiNote.fromNoteName(note.fullName, currentTimeInBeats, noteLength);
-            phrase.addMidiNote(midiNote);
-            currentTimeInBeats += noteLength.lengthInBeats;
-        });
+        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, RhythmType.Melody);
+        var builder = new PhraseBuilder(rhythm, notes, this.melodyTrack.kind);
+
+        var phrase = builder.generatePhrase(`Melody ${index}`);
 
         return phrase;
-    }
-
-    getPitchAtTimeInBeats(timeInBeats: number, notes: AbletonJs.MidiNote[], pitch: PitchPreference = PitchPreference.Lowest): Note {
-        notes = notes.sort((a, b) => a.time - b.time);
-        console.log(notes);
-        var notesAtTime = notes.filter(x => {
-            if (x.time === timeInBeats) {
-                return true;
-            }
-            else if(x.time < timeInBeats && x.time + x.duration > timeInBeats) {
-                return true;
-            }
-
-            return false;
-        });
-
-        notesAtTime = notesAtTime.sort((a, b) => a.pitch - b.pitch);
-        if(pitch === PitchPreference.Lowest) {
-            var note = Note.fromMidi(notesAtTime[0].pitch);
-            
-            return note;
-        }
     }
 
     async clearClips(track: MidiTrack): Promise<void> {

@@ -34,9 +34,36 @@ export class RhythmPattern {
     }
 
     static getPatternByRhythmType(desiredLengthInBars: number, rhythmType: RhythmType) {
+        var lengths = [];
+        var lastPattern; 
+        for(var i = 0; i < 4; i++) {
+            if(lengths.length === 0 || !this.shouldRepeatPattern()){
+                var pattern = this.getWeightedRhythmPattern(rhythmType);
+                lengths = lengths.concat(pattern);
+                lastPattern = pattern;
+            }
+            else {
+                lengths = lengths.concat(lastPattern);
+            }
+        }
+        
+        return this.generateFromNoteLengths(desiredLengthInBars, lengths);
+    }
+
+    static shouldRepeatPattern(): boolean {
+        return this.getRandomInt(0, 100) <= 50;
+    }
+
+    static getWeightedRhythmPattern(rhythmType: RhythmType): NoteLength[] {
         var rhythms: WeightedRhythmPattern[];
         if(rhythmType === RhythmType.Bass) {
             rhythms = bassRhythms;
+        }
+        else if (rhythmType == RhythmType.Chord){
+            rhythms = chordRhythms;
+        }
+        else if(rhythmType === RhythmType.Melody) {
+            rhythms = melodyRhythms
         }
 
         var totalWeight = rhythms.reduce((acc, val) => val.weight + acc, 0);
@@ -49,8 +76,9 @@ export class RhythmPattern {
             weightedPattern = rhythms[index];
         }
         var pattern = weightedPattern.pattern;
+        var lengths = this.parseRhythmString(pattern);
 
-        return this.generateFromNoteLengths(desiredLengthInBars, pattern);
+        return lengths;
     }
 
     static generateFromNoteLengths(desiredLengthInBars: number, noteLengths: NoteLength[]) {
@@ -71,74 +99,141 @@ export class RhythmPattern {
         return new RhythmPattern(lengths);
     }
 
-    static getCommonRhythm(desiredLengthInBars: number, prefs: NoteLengthPreferences): RhythmPattern {
-
-        var index = this.getRandomInt(0, commonRhythms.length);
-        var pattern = commonRhythms[index]
-        if(prefs.name === "medium") {
-            pattern = NoteLength.halfTime(pattern);
-        }
-        else if(prefs.name === "long") {
-            pattern = NoteLength.halfTime(NoteLength.halfTime(pattern));
-        }
-        
-        return this.generateFromNoteLengths(desiredLengthInBars, pattern);
-    }
-
     private static getRandomInt(min: number, max: number): number {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
-}
 
-const commonRhythms: NoteLength[][] = [
-    [ 
-        NoteLength.Quarter, 
-        NoteLength.Quarter, 
-        NoteLength.Quarter, 
-        NoteLength.Eighth, NoteLength.Eighth 
-    ],
-    [ 
-        NoteLength.Eighth, NoteLength.Eighth, 
-        NoteLength.Eighth, NoteLength.EighthRest, 
-        NoteLength.Quarter, 
-        NoteLength.Quarter 
-    ], 
-    [ 
-        NoteLength.Sixteenth, NoteLength.Sixteenth, NoteLength.Sixteenth, NoteLength.SixteenthRest,
-        NoteLength.Sixteenth, NoteLength.SixteenthRest, NoteLength.Sixteenth, NoteLength.SixteenthRest,
-        NoteLength.Quarter,
-        NoteLength.Quarter
-    ]
-]
+    private static parseRhythmString(pattern: string): NoteLength[] {
+        var noteLengths = []; 
+        var patternParts = pattern.split(" ");
+        patternParts.forEach(lengthString => {
+            var length = this.noteStringToLength(lengthString);
+            noteLengths.push(length);
+        });
+
+        return noteLengths;
+    }
+
+    private static noteStringToLength(noteString: string): NoteLength {
+        switch(noteString){
+            case "x":
+                return NoteLength.Sixteenth;
+            case "xr":
+                return NoteLength.SixteenthRest;
+            case "e":
+                return NoteLength.Eighth;
+            case "er":
+                return NoteLength.EighthRest;
+            case "e.": 
+                return NoteLength.DottedEighth;
+            case "q":
+                return NoteLength.Quarter;
+            case "q.":
+                return NoteLength.DottedQuarter;
+            case "qr":
+                return NoteLength.QuarterRest;
+            case "h":
+                return NoteLength.Half;
+            case "h.":
+                return NoteLength.DottedHalf;
+            case "hr":
+                return NoteLength.HalfRest;
+            case "w":
+                return NoteLength.Whole;
+            case "wr":
+                return NoteLength.WholeRest;
+                
+                
+        }
+    }
+}
 
 const bassRhythms: WeightedRhythmPattern[] = [
     {
-        weight: 20,
-        pattern: [NoteLength.Quarter, NoteLength.Quarter, NoteLength.Quarter, NoteLength.Quarter]
+        weight: 10,
+        pattern: "q q q q"
     },{
         weight: 10,
-        pattern: [NoteLength.Half, NoteLength.Half]
+        pattern: "h h"
     },{
         weight: 10,
-        pattern: [NoteLength.Whole]
+        pattern: "w"
     },{
         weight: 10,
-        pattern: [NoteLength.Quarter, NoteLength.Quarter, NoteLength.Half]
+        pattern: "q q h"
     },{
         weight: 10,
-        pattern: [NoteLength.Half, NoteLength.Quarter, NoteLength.Quarter]
+        pattern: "h q q"
+    },{
+        weight: 10,
+        pattern: "q q q qr"
+    },{
+        weight: 10,
+        pattern: "h. qr"
+    },{
+        weight: 10,
+        pattern: "h. q"
+    },{
+        weight: 10,
+        pattern: "h h q qr q q"
+    },{
+        weight: 10,
+        pattern: "h h q q q qr"
     }
+]
+
+const chordRhythms: WeightedRhythmPattern[] = [{
+        weight: 4,
+        pattern: "h h"
+    },{
+        weight: 10,
+        pattern: "w"
+    },{
+        weight: 10,
+        pattern: "w h h"
+    },{
+        weight: 10,
+        pattern: "h. h. h. h."
+    }
+]
+
+const melodyRhythms: WeightedRhythmPattern[] = [{
+    weight: 10,
+    pattern: "q q e e q q"
+},{
+    weight: 10,
+    pattern: "x x x x q e e"
+},{
+    weight: 10,
+    pattern: "x e x x e"
+},{
+    weight: 10,
+    pattern: "x xr x xr"
+},{
+    weight: 10,
+    pattern: "e e. e e."
+},{
+    weight: 10,
+    pattern: "e e. e x"
+},{
+    weight: 10,
+    pattern: "x e x e"
+},{
+    weight: 10,
+    pattern: "x e xr e"
+},
 ]
 
 export enum RhythmType {
     Unspecified,
     Chord,
-    Bass
+    Bass,
+    Melody
 }
 
 type WeightedRhythmPattern = {
     weight: number,
-    pattern: NoteLength[]
+    pattern: string
 }

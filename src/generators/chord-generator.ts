@@ -7,7 +7,7 @@ import { MidiTrack } from "ableton-js";
 import { Chord } from "../music/chord";
 import { SongConfig } from "../config/song.config";
 import { ChordTrack } from "../state/chord-track";
-import { RhythmPattern } from "../music/rhythm";
+import { RhythmPattern, RhythmType } from "../music/rhythm";
 import { NoteLength } from "../music/note-length";
 
 type ChordNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -137,7 +137,7 @@ export class ChordGenerator {
             rhythm = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, [NoteLength.Whole]);
         }
         else if(this.chordTrack.rhythm === "common") {
-            rhythm = RhythmPattern.getCommonRhythm(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
+            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.Chord);
         }
         else {
             rhythm = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
