@@ -32,23 +32,26 @@ export class BassGenerator {
         } 
 
         var sourceTrack = await AbletonJs.getTrackByName(this.bassTrack.sourceTrack);
+        var clip: AbletonJs.MidiClip;
         if (this.bassTrack.useSelectedClip) {
-
+            clip = await AbletonJs.getSelectedMidiClip();
         }
-        else {
-            var firstClip = (await AbletonJs.getMidiClips(sourceTrack))[0];
-            var midiNotes = await AbletonJs.getMidiClipNotes(firstClip);
-            for (var i = 0; i < this.bassTrack.numClips; i++) {
-                var phrase = this.generateBassLineFromMidiClip(firstClip, midiNotes);
-                await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
-            }
+        
+        if(!clip) {
+            clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+        }
+
+        var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        for (var i = 0; i < this.bassTrack.numClips; i++) {
+            var phrase = this.generateBassLineFromMidiClip(clip, midiNotes, i);
+            await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
         }
     }
 
-    generateBassLineFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[]): Phrase {
+    generateBassLineFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
         var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
         var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, RhythmType.Bass);
-        var phrase = new Phrase(noteLength.lengthInBars, "Bass Rand");
+        var phrase = new Phrase(noteLength.lengthInBars, `Bass ${index}`);
         var currentTimeInBeats = 0;
         rhythm.parts.forEach(noteLength => {
             var note = this.getPitchAtTimeInBeats(currentTimeInBeats, notes);
@@ -60,9 +63,8 @@ export class BassGenerator {
         return phrase;
     }
 
-    getPitchAtTimeInBeats(timeInBeats: number, notes: AbletonJs.MidiNote[], pitch: PitchPreference = PitchPreference.Lowest): Note {
+    getPitchAtTimeInBeats(timeInBeats: number, notes: AbletonJs.MidiNote[], pitch: PitchPreference = PitchPreference.Random): Note {
         notes = notes.sort((a, b) => a.time - b.time);
-        console.log(notes);
         var notesAtTime = notes.filter(x => {
             if (x.time === timeInBeats) {
                 return true;

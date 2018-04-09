@@ -35,11 +35,11 @@ state.melodyTracks.push(melodyTrack);
 export async function currentState(): Promise<ApplicationState> {
 
     state.deviceActive = await deviceActive();
-    let tracks = await AbletonJs.getTracks();
-    state.existingTracks = tracks.filter(x => x.isMidi).map(x => x.name);
 
     if(state.deviceActive){
         state.tempo = await getTempo(); 
+        let tracks = await AbletonJs.getTracks();
+        state.existingTracks = tracks.filter(x => x.isMidi).map(x => x.name);
     }
     else {
         state.tempo = null;

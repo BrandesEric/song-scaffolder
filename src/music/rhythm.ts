@@ -49,7 +49,7 @@ export class RhythmPattern {
             weightedPattern = rhythms[index];
         }
         var pattern = weightedPattern.pattern;
-        console.log(pattern);
+
         return this.generateFromNoteLengths(desiredLengthInBars, pattern);
     }
 
