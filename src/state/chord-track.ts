@@ -24,7 +24,6 @@ export class ChordTrack {
     clearClips: boolean = true;
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
-    splitChords: boolean = false;
     includeRandomChords: boolean = false;
 
     voicing: ChordVoicing = "normal";
@@ -48,7 +47,6 @@ export class ChordTrack {
         track.includeBassNote = !!form.includeBassNote && form.includeBassNote === "true";
         track.includeTwoOctaveBassNote = !!form.includeTwoOctaveBassNote && form.includeTwoOctaveBassNote === "true";
         track.includeRandomChords = !!form.includeRandomChords && form.includeRandomChords === "true";
-        track.splitChords = !!form.splitChords && form.splitChords === "true";
         
         track.voicing = form.voicing;
         track.rhythm = form.rhythm;

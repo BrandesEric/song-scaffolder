@@ -34,30 +34,15 @@ export class Chord {
     }
 
     public getMidiNotes(timeStartInBeats: number): MidiNote[] {
+        
+        var notes = this.chordNotes.map(chordNote => {
+            var note = MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, this.duration,  this.velocity);
 
-        if(this.chordTrack.splitChords) {
-            var highestNotes = this.chordNotes.sort((a, b) => a.toMidi() - b.toMidi()).reverse();
-            var notes = this.chordNotes.map(chordNote => {
-                var durationHalf = this.duration.doubleTime();
-                if(chordNote === highestNotes[0] || chordNote === highestNotes[1]) {
-                    return MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, durationHalf,  this.velocity);
-                }
-                else {
-                    return MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats + durationHalf.lengthInBeats, durationHalf,  this.velocity);
-                }
-            });
-    
-            return notes;
-        }
-        else {
-            var notes = this.chordNotes.map(chordNote => {
-                var note = MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, this.duration,  this.velocity);
-    
-                return note;
-            });
-    
-            return notes;
-        }
+            return note;
+        });
+
+        return notes;
+        
     }
     
     private getNotesInChord(rootNote: Note, intervals: string[]): Note[] {
