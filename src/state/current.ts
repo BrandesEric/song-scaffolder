@@ -12,25 +12,25 @@ import { MelodyTrack } from "./melody-track";
 var state = new ApplicationState();
 
 // TEMPORARY FOR TESTING
-var chordTrack = new ChordTrack();
-state.chordTracks.push(chordTrack);
+// var chordTrack = new ChordTrack();
+// state.chordTracks.push(chordTrack);
 
-var kickTrack = new KickTrack();
-state.kickTracks.push(kickTrack);
+// var kickTrack = new KickTrack();
+// state.kickTracks.push(kickTrack);
 
-var snareTrack = new SnareTrack();
-state.snareTracks.push(snareTrack);
+// var snareTrack = new SnareTrack();
+// state.snareTracks.push(snareTrack);
 
-var hihatTrack = new HihatTrack();
-state.hihatTracks.push(hihatTrack);
+// var hihatTrack = new HihatTrack();
+// state.hihatTracks.push(hihatTrack);
 
-var bassTrack = new BassTrack();
-bassTrack.sourceTrack = "Chords";
-state.bassTracks.push(bassTrack);
+// var bassTrack = new BassTrack();
+// bassTrack.sourceTrack = "Chords";
+// state.bassTracks.push(bassTrack);
 
-var melodyTrack = new MelodyTrack();
-melodyTrack.sourceTrack = "Chords";
-state.melodyTracks.push(melodyTrack);
+// var melodyTrack = new MelodyTrack();
+// melodyTrack.sourceTrack = "Chords";
+// state.melodyTracks.push(melodyTrack);
 
 export async function currentState(): Promise<ApplicationState> {
 

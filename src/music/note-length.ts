@@ -53,6 +53,38 @@ export class NoteLength {
     static halfTime(noteLengths: NoteLength[]) {
         return noteLengths.map(x => x.halfTime());
     }
+
+    public static parse(noteString: string): NoteLength {
+        switch(noteString){
+            case "x":
+                return NoteLength.Sixteenth;
+            case "xr":
+                return NoteLength.SixteenthRest;
+            case "e":
+                return NoteLength.Eighth;
+            case "er":
+                return NoteLength.EighthRest;
+            case "e.": 
+                return NoteLength.DottedEighth;
+            case "q":
+                return NoteLength.Quarter;
+            case "q.":
+                return NoteLength.DottedQuarter;
+            case "qr":
+                return NoteLength.QuarterRest;
+            case "h":
+                return NoteLength.Half;
+            case "h.":
+                return NoteLength.DottedHalf;
+            case "hr":
+                return NoteLength.HalfRest;
+            case "w":
+            default:
+                return NoteLength.Whole;
+            case "wr":
+                return NoteLength.WholeRest; 
+        }
+    }
 }
 
 export class TimePosition {

@@ -56,18 +56,17 @@
                             <input type="text" name="name" value="{{this.name}}" />
                         </div>
                         <div class="track-parameter flex align-center">
-                            <label><input type="checkbox" name="includeBasicChords" value="true" {{#if includeBasicChords}}checked{{/if}}>Basic Chords</label>&nbsp;&nbsp;&nbsp;
-                            <label><input type="checkbox" name="includeBassNote" value="true" {{#if includeBassNote}}checked{{/if}}>Bass Note</label>   
-                            <label><input type="checkbox" name="includeTwoOctaveBassNote" value="true" {{#if includeTwoOctaveBassNote}}checked{{/if}}>-2 Octaves</label>   
+                            <label><input type="checkbox" name="includeBasicChords" value="true" {{#if includeBasicChords}}checked{{/if}}>Basic Chords</label>
+                            <label><input type="checkbox" name="includeRandomChords" value="true" {{#if includeRandomChords}}checked{{/if}}>Random Chords</label>
                             <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label>   
                         </div>
                     </div>
                     <div class="flex">
                         <div class="track-parameter flex align-center">
-                            <label>Start Octave:</label>
-                            <input type="text" name="startOctave" value="{{this.startOctave}}" />
+                            <label><input type="checkbox" name="includeBassNote" value="true" {{#if includeBassNote}}checked{{/if}}>Bass Note</label>   
+                            <label><input type="checkbox" name="includeTwoOctaveBassNote" value="true" {{#if includeTwoOctaveBassNote}}checked{{/if}}>-2 Octaves</label>   
                         </div>
-                        <div class="track-parameter flex align-center">
+                        <div class="track-parameter flex align-center" style="justify-content: flex-end; margin-right: 20px;">
                             <label><input type="radio" name="voicing" value="normal" {{#ifCond voicing "normal"}}checked{{/ifCond}} />Normal Voicing</label>   
                             <label><input type="radio" name="voicing" value="open" {{#ifCond voicing "open"}}checked{{/ifCond}} />Open Voicing</label>   
                             <label><input type="radio" name="voicing" value="firstInversion" {{#ifCond voicing "firstInversion"}}checked{{/ifCond}} />1st Inversion</label>   
@@ -81,35 +80,28 @@
                                 <label><input type="radio" name="rhythm" value="random" {{#ifCond rhythm "random"}}checked{{/ifCond}} />Random Rhythms</label>
                         </div>  
                         <div class="track-parameter flex align-center">
-                            <label>Clip Length:</label>
-                            <input type="text" name="clipLengthInBars" placeholder="Bars" value="{{this.clipLengthInBars}}" />
-                        </div>
-                    </div>
-                    <div class="flex random-duration">
-                        <div class="track-parameter flex align-center">
+                            <label>Random Note Length</label>
                             <select name="noteLengthPreferences" style="margin-right: 20px; padding: 10px;">
                                 <option value="short" {{#ifCond noteLengthPreferences.name "short"}}selected{{/ifCond}}>Short</option>
                                 <option value="medium" {{#ifCond noteLengthPreferences.name "medium"}}selected{{/ifCond}}>Medium</option>
                                 <option value="long" {{#ifCond noteLengthPreferences.name "long"}}selected{{/ifCond}}>Long</option>
                             </select>
-
-                            <input size="2" type="text" name="percentRepeatChance" value="{{this.percentRepeatChance}}" />&nbsp;&nbsp;&nbsp;
-                            <label>% repeat</label>
-
-                            <input size="2" type="text" name="percentRests" value="{{this.noteLengthPreferences.restWeight}}" />&nbsp;&nbsp;&nbsp;
-                            <label>% rests</label>
                         </div>
                     </div>
-                    <div class="flex">
-                        <div class="track-parameter flex align-center">
-                            <label style="flex: 0 0 225px;"><input type="checkbox" name="includeRandomChords" value="true" {{#if includeRandomChords}}checked{{/if}}>Random Chords</label>
-                        </div>  
-                        <div class="track-parameter flex align-center">
-                            <label># of Clips</label>
-                            <input type="text" name="numClips" placeholder="# of Clips" value="{{this.numClips}}" />
+                    <div class="flex random-duration">
+                            <div class="track-parameter flex align-center">
+                                    <label><input type="checkbox" name="isArpeggiated" value="true" {{#if isArpeggiated}}checked{{/if}}>Arpeggiator On</label>   
+                                    <label><input type="radio" name="arpeggiatorLength" value="x" {{#ifCond arpeggiatorLength "x"}}checked{{/ifCond}} />1/16</label>   
+                                    <label><input type="radio" name="arpeggiatorLength" value="e" {{#ifCond arpeggiatorLength "e"}}checked{{/ifCond}} />1/8</label>   
+                                    <label><input type="radio" name="arpeggiatorLength" value="q" {{#ifCond arpeggiatorLength "q"}}checked{{/ifCond}} />1/4</label>
+                            </div>  
+                            <div class="track-parameter flex align-center">
+                                <label>Arpeggiator Direction</label>
+                                <label><input type="radio" name="arpeggiatorDirection" value="up" {{#ifCond arpeggiatorDirection "up"}}checked{{/ifCond}} />Up</label>   
+                                <label><input type="radio" name="arpeggiatorDirection" value="down" {{#ifCond arpeggiatorDirection "down"}}checked{{/ifCond}} />Down</label>   
+                                <label><input type="radio" name="arpeggiatorDirection" value="updown" {{#ifCond arpeggiatorDirection "updown"}}checked{{/ifCond}} />UpDown</label>
+                            </div>
                         </div>
-                    </div>
-                        
                     <button>Generate</button>
                 </div>
             </form>

@@ -14,21 +14,15 @@ export class ChordTrack {
     numClips: number = 10;
     clipLengthInBars: number = 4;
     startOctave: number = 3;
-    quarterNoteChance: number = 0;
-    halfNoteChance: number = 0;
-    wholeNoteChance: number = 1;
-    twoWholeNoteChance: number = 0;
-    percentRepeatChance: number = 0;
-    percentRests: number = 0;
 
     includeBasicChords: boolean = true;
     clearClips: boolean = true;
-    includeBassNote: boolean = true;
+    includeBassNote: boolean = false;
     includeTwoOctaveBassNote: boolean = false;
     includeRandomChords: boolean = false;
 
-    isArpeggiated = true;
-    arpeggiatorLength = NoteLength.Eighth;
+    isArpeggiated = false;
+    arpeggiatorLength = "e";
     arpeggiatorDirection: "up" | "down" | "updown" = "updown";
 
     voicing: ChordVoicing = "normal";
@@ -45,31 +39,19 @@ export class ChordTrack {
         track.startOctave = form.startOctave;
         track.numClips = form.numClips;
         track.clipLengthInBars = parseInt(form.clipLengthInBars || 4);
-        track.percentRepeatChance = parseInt(form.percentRepeatChance || 0);
         
         track.clearClips = form.clearClips && form.clearClips === "true";
         track.includeBasicChords = !!form.includeBasicChords && form.includeBasicChords === "true";
         track.includeBassNote = !!form.includeBassNote && form.includeBassNote === "true";
         track.includeTwoOctaveBassNote = !!form.includeTwoOctaveBassNote && form.includeTwoOctaveBassNote === "true";
         track.includeRandomChords = !!form.includeRandomChords && form.includeRandomChords === "true";
+
+        track.isArpeggiated = !!form.isArpeggiated && form.isArpeggiated === "true";
+        track.arpeggiatorDirection = form.arpeggiatorDirection;
+        track.arpeggiatorLength = form.arpeggiatorLength;
         
         track.voicing = form.voicing;
         track.rhythm = form.rhythm;
-
-        var percentRests = parseInt(form.percentRests);
-        var percentNotes = 100 - percentRests;
-
-        switch(form.noteLengthPreferences) {
-            case "short":
-                track.noteLengthPreferences = NoteLengthPreferences.shortNotes(percentNotes, percentRests);
-                break;
-            case "medium":
-                track.noteLengthPreferences = NoteLengthPreferences.mediumNotes(percentNotes, percentRests);
-                break;
-            default: 
-                track.noteLengthPreferences = NoteLengthPreferences.longNotes(percentNotes, percentRests);
-                break;
-        }
 
         return track;
     }

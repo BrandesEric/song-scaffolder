@@ -109,45 +109,12 @@ export class RhythmPattern {
         var noteLengths = []; 
         var patternParts = pattern.split(" ");
         patternParts.forEach(lengthString => {
-            var length = this.noteStringToLength(lengthString);
+            var length = NoteLength.parse(lengthString);
             noteLengths.push(length);
         });
 
         return noteLengths;
-    }
-
-    private static noteStringToLength(noteString: string): NoteLength {
-        switch(noteString){
-            case "x":
-                return NoteLength.Sixteenth;
-            case "xr":
-                return NoteLength.SixteenthRest;
-            case "e":
-                return NoteLength.Eighth;
-            case "er":
-                return NoteLength.EighthRest;
-            case "e.": 
-                return NoteLength.DottedEighth;
-            case "q":
-                return NoteLength.Quarter;
-            case "q.":
-                return NoteLength.DottedQuarter;
-            case "qr":
-                return NoteLength.QuarterRest;
-            case "h":
-                return NoteLength.Half;
-            case "h.":
-                return NoteLength.DottedHalf;
-            case "hr":
-                return NoteLength.HalfRest;
-            case "w":
-                return NoteLength.Whole;
-            case "wr":
-                return NoteLength.WholeRest;
-                
-                
-        }
-    }
+    } 
 }
 
 const bassRhythms: WeightedRhythmPattern[] = [

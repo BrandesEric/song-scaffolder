@@ -8,10 +8,6 @@ body {
     font-size: 16px;
 }
 
-div {
-    width: 100%;
-}
-
 .container {
     max-width: 1200px;
     margin-left: auto;
@@ -20,6 +16,7 @@ div {
 
 .flex {
     display: flex;
+    flex: 0 0 auto;
 }
 
 .flex-column {
@@ -81,11 +78,9 @@ button:hover {
 .track-parameter {
     margin-bottom: 5px;
     padding: 6px 0;
+    flex: 1 1 50%;
 }
 .track-parameter label{
-    flex: 0 0 150px;
-}
-
-.random-duration label {
-    flex: 0 0 100px;
+    margin-right: 20px;
+    display: inline-block;
 }

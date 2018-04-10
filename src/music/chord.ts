@@ -53,7 +53,7 @@ export class Chord {
             var currentIndex = 0;
             var currentLengthInBeats = 0;
             var midiNotes = [];
-            var length = this.chordTrack.arpeggiatorLength;
+            var length = NoteLength.parse(this.chordTrack.arpeggiatorLength);
             while(currentLengthInBeats < this.duration.lengthInBeats) {
                 var note = notes[currentIndex % notes.length];
                 if(length.lengthInBeats + currentLengthInBeats > this.duration.lengthInBeats) {
