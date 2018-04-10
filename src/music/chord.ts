@@ -4,6 +4,7 @@ import { ChordTrack } from "../state/chord-track";
 import { ChordGenerator } from "../generators/chord-generator";
 import { NoteLength } from "./note-length";
 import { Note } from "./note";
+import { orderBy } from "lodash";
 
 export class Chord {
     name: string;
@@ -34,15 +35,46 @@ export class Chord {
     }
 
     public getMidiNotes(timeStartInBeats: number): MidiNote[] {
-        
-        var notes = this.chordNotes.map(chordNote => {
-            var note = MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, this.duration,  this.velocity);
+        if(this.chordTrack.isArpeggiated) {
+            let notes: Note[];
+            if(this.chordTrack.arpeggiatorDirection === "up") {
+                notes = orderBy(this.chordNotes, (x) => x.toMidi(), ["asc"]);
+            }
+            else if(this.chordTrack.arpeggiatorDirection === "down") {
+                notes = orderBy(this.chordNotes, (x) => x.toMidi(), ["desc"]);
+            }
+            else {
+                var upNotes = orderBy(this.chordNotes, (x) => x.toMidi(), ["asc"]);
+                var downNotes = orderBy(this.chordNotes, (x) => x.toMidi(), ["desc"]);
+                upNotes.pop();
+                downNotes.pop();
+                notes = upNotes.concat(downNotes);
+            }
+            var currentIndex = 0;
+            var currentLengthInBeats = 0;
+            var midiNotes = [];
+            var length = this.chordTrack.arpeggiatorLength;
+            while(currentLengthInBeats < this.duration.lengthInBeats) {
+                var note = notes[currentIndex % notes.length];
+                if(length.lengthInBeats + currentLengthInBeats > this.duration.lengthInBeats) {
+                    length = NoteLength.fromBeats(this.duration.lengthInBeats - currentLengthInBeats);
+                }
+                midiNotes.push(MidiNote.fromNoteName(note.fullName, timeStartInBeats + currentLengthInBeats, length));
+                currentLengthInBeats += length.lengthInBeats;
+                currentIndex++;
+            }
 
-            return note;
-        });
+            return midiNotes;
+        }
+        else {
+            let midiNotes = this.chordNotes.map(chordNote => {
+                var note = MidiNote.fromNoteName(chordNote.fullName, timeStartInBeats, this.duration,  this.velocity);
 
-        return notes;
-        
+                return note;
+            });
+
+            return midiNotes;
+        }
     }
     
     private getNotesInChord(rootNote: Note, intervals: string[]): Note[] {

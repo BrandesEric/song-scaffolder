@@ -1,6 +1,7 @@
 import { TrackKind } from "./tracks";
 import * as uuid from "uuid/v4";
 import { NoteLengthPreferences } from "../music/note-length-preferences";
+import { NoteLength } from "../music/note-length";
 
 export type ChordVoicing = "normal" | "open" | "firstInversion" | "secondInversion";
 
@@ -25,6 +26,10 @@ export class ChordTrack {
     includeBassNote: boolean = true;
     includeTwoOctaveBassNote: boolean = false;
     includeRandomChords: boolean = false;
+
+    isArpeggiated = true;
+    arpeggiatorLength = NoteLength.Eighth;
+    arpeggiatorDirection: "up" | "down" | "updown" = "updown";
 
     voicing: ChordVoicing = "normal";
     rhythm: "whole" | "common" | "random" = "whole";
