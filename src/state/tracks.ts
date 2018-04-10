@@ -13,6 +13,36 @@ import { BassTrack } from "./bass-track";
 import { BassGenerator } from "../generators/bass-generator";
 import { MelodyTrack } from "./melody-track";
 import { MelodyGenerator } from "../generators/melody-generator";
+import { indexOf, remove } from "lodash";
+
+export async function deleteTrack(trackName: string, trackKind: string, state: ApplicationState) {
+    switch (trackKind) {
+        case "chord":
+            await deleteTrackFromList(state.chordTracks, trackName);
+            break;
+        case "bass":
+            await deleteTrackFromList(state.bassTracks, trackName);
+            break;
+        case "melody":
+            await deleteTrackFromList(state.melodyTracks, trackName);
+            break;
+        case "kick":
+            await deleteTrackFromList(state.kickTracks, trackName);
+            break;
+        case "snare":
+            await deleteTrackFromList(state.snareTracks, trackName);
+            break;
+        case "hihat":
+            await deleteTrackFromList(state.hihatTracks, trackName);
+            break;
+    }
+}
+
+async function deleteTrackFromList(list: { name: string }[], trackName: string) {
+    await AbletonJs.deleteTrackByName(trackName);
+    remove(list, (x) => x.name === trackName);
+}
+
 
 export function addChords(state: ApplicationState) {
     state.chordTracks.push(new ChordTrack());
@@ -62,12 +92,20 @@ export async function generateHihat(hihatTrack: HihatTrack, state: ApplicationSt
     return true;
 }
 
+export function addBass(state: ApplicationState) {
+    state.bassTracks.push(new BassTrack());
+}
+
 export async function generateBass(bassTrack: BassTrack, state: ApplicationState): Promise<boolean> {
     var bassGenerator = new BassGenerator(bassTrack);
     await bassGenerator.generate();
     state.updateBassTrack(bassTrack);
 
     return true;
+}
+
+export function addMelody(state: ApplicationState) {
+    state.melodyTracks.push(new MelodyTrack());
 }
 
 export async function generateMelody(melodyTrack: MelodyTrack, state: ApplicationState): Promise<boolean> {

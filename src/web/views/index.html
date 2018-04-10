@@ -38,8 +38,14 @@
             <form action="/add-bass" method="POST">
                 <button class="link-button">Add Bass</button>
             </form>
-            <form action="/add-drums" method="POST">
-                <button class="link-button">Add Drums</button>
+            <form action="/add-kick" method="POST">
+                <button class="link-button">Add Kick</button>
+            </form>
+            <form action="/add-snare" method="POST">
+                <button class="link-button">Add Snare</button>
+            </form>
+            <form action="/add-hihat" method="POST">
+                <button class="link-button">Add Hihat</button>
             </form>
         </div>
     </div>
@@ -47,6 +53,11 @@
         {{#each currentState.chordTracks}}
         <div class="track chord">
             <h3 style="margin-top: 0">Chords</h3>
+            <form style="float:right;position: relative;top: -40px; cursor: pointer;" action="/delete-track" method="POST">
+                <input type="hidden" name="track" value="{{this.name}}">
+                <input type="hidden" name="kind" value="chord">
+                <button>X</button>
+            </form>
             <form action="/generate-chords" method="POST">
                 <input type="hidden" name="id" value="{{this.id}}" />
                 <div class="flex-column">

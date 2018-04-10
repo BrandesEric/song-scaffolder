@@ -3,7 +3,7 @@ import * as path from 'path';
 import { serveStatic } from "serve-static";
 import { currentState } from "../state/current";
 import { changeTempo } from "../state/tempo";
-import { addChords, generateChords, generateKick, generateSnare, generateHihat, generateBass, generateMelody } from "../state/tracks";
+import { addChords, generateChords, generateKick, generateSnare, generateHihat, generateBass, generateMelody, addBass, addMelody, addKick, addSnare, addHihat, deleteTrack } from "../state/tracks";
 import { KickTrack } from "../state/kick-track";
 import { ChordTrack } from "../state/chord-track";
 import { SnareTrack } from "../state/snare-track";
@@ -29,6 +29,31 @@ export class Router {
 
         app.post("/add-chords", async(req, res) => {
             await addChords(await currentState());
+            res.redirect("/");
+        });
+
+        app.post("/add-bass", async(req, res) => {
+            await addBass(await currentState());
+            res.redirect("/");
+        });
+
+        app.post("/add-melody", async(req, res) => {
+            await addMelody(await currentState());
+            res.redirect("/");
+        });
+
+        app.post("/add-kick", async(req, res) => {
+            await addKick(await currentState());
+            res.redirect("/");
+        });
+
+        app.post("/add-snare", async(req, res) => {
+            await addSnare(await currentState());
+            res.redirect("/");
+        });
+
+        app.post("/add-hihat", async(req, res) => {
+            await addHihat(await currentState());
             res.redirect("/");
         });
 
@@ -71,6 +96,13 @@ export class Router {
             var melodyTrack = MelodyTrack.fromFormPost(req.body);
             var state = await currentState();
             await generateMelody(melodyTrack, state);
+            res.redirect("/");
+        });
+
+        app.post("/delete-track", async (req, res) => {
+            var melodyTrack = MelodyTrack.fromFormPost(req.body);
+            var state = await currentState();
+            await deleteTrack(req.body.track, req.body.kind, state);
             res.redirect("/");
         });
 
