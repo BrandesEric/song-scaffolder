@@ -14,6 +14,7 @@ export class ChordTrack {
     numClips: number = 10;
     clipLengthInBars: number = 4;
     startOctave: number = 3;
+    percentRepeatChance = 30;
 
     includeBasicChords: boolean = true;
     clearClips: boolean = true;
@@ -35,10 +36,6 @@ export class ChordTrack {
         var track = new ChordTrack();
         track.id = form.id;
         track.name = form.name;
-        
-        track.startOctave = form.startOctave;
-        track.numClips = form.numClips;
-        track.clipLengthInBars = parseInt(form.clipLengthInBars || 4);
         
         track.clearClips = form.clearClips && form.clearClips === "true";
         track.includeBasicChords = !!form.includeBasicChords && form.includeBasicChords === "true";
