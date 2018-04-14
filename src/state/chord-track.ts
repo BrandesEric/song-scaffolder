@@ -14,7 +14,7 @@ export class ChordTrack {
     numClips: number = 10;
     clipLengthInBars: number = 4;
     startOctave: number = 3;
-    percentRepeatChance = 30;
+    percentRepeatChance = 0;
 
     includeBasicChords: boolean = true;
     clearClips: boolean = true;

@@ -36,7 +36,7 @@ export class RhythmPattern {
     static getPatternByRhythmType(desiredLengthInBars: number, rhythmType: RhythmType) {
         var lengths = [];
         var lastPattern; 
-        for(var i = 0; i < 4; i++) {
+        for(var i = 0; i < 8; i++) {
             if(lengths.length === 0 || !this.shouldRepeatPattern()){
                 var pattern = this.getWeightedRhythmPattern(rhythmType);
                 lengths = lengths.concat(pattern);
@@ -168,29 +168,35 @@ const chordRhythms: WeightedRhythmPattern[] = [{
 
 const melodyRhythms: WeightedRhythmPattern[] = [{
     weight: 10,
-    pattern: "q q e e q q"
+    pattern: "e e e er"
 },{
     weight: 10,
-    pattern: "x x x x q e e"
+    pattern: "x x"
 },{
     weight: 10,
-    pattern: "x e x x e"
+    pattern: "x e x"
 },{
     weight: 10,
     pattern: "x xr x xr"
 },{
     weight: 10,
-    pattern: "e e. e e."
+    pattern: "e e."
 },{
     weight: 10,
-    pattern: "e e. e x"
-},{
-    weight: 10,
-    pattern: "x e x e"
+    pattern: "x e x er"
 },{
     weight: 10,
     pattern: "x e xr e"
-},
+},{
+    weight: 20,
+    pattern: "qr"
+},{
+    weight: 20,
+    pattern: "er"
+},{
+    weight: 10,
+    pattern: "er."
+}
 ]
 
 export enum RhythmType {

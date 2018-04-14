@@ -35,10 +35,13 @@ export class Phrase {
     }
 
     addMidiNote(note: MidiNote) {
-        this._notes.push(note);
+        if(!note.duration.isRest) {
+            this._notes.push(note);
+        }
     }
 
     addMidiNotes(notes: MidiNote[]) {
+        notes = notes.filter(x => !x.duration.isRest);
         this._notes = this._notes.concat(notes);
     }
 
