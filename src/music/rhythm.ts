@@ -1,5 +1,4 @@
 import { isNumber } from "util";
-import { NoteLengthPreferences } from "./note-length-preferences";
 import { NoteLength } from "./note-length";
 
 export class RhythmPattern {
@@ -17,26 +16,11 @@ export class RhythmPattern {
         return this.parts.reduce((length, duration) => length + duration.lengthInBars, 0);
     } 
 
-    static generateRandomPattern(desiredLengthInBars: number, prefs: NoteLengthPreferences): RhythmPattern {
-        var currentLengthInBars = 0;
-        var lengths = [];
-        while(currentLengthInBars < desiredLengthInBars) {
-            var duration = prefs.getRandomNoteLength();
-            if((currentLengthInBars + duration.lengthInBars) > desiredLengthInBars) {
-                duration = NoteLength.fromBars(desiredLengthInBars - currentLengthInBars);
-            }
-
-            lengths.push(duration);
-            currentLengthInBars += duration.lengthInBars;
-        }
-
-        return new RhythmPattern(lengths);
-    }
-
     static getPatternByRhythmType(desiredLengthInBars: number, rhythmType: RhythmType) {
         var lengths = [];
-        var lastPattern; 
-        for(var i = 0; i < 8; i++) {
+        var lastPattern;
+        var currentLengthInBars = 0;
+        while(currentLengthInBars < desiredLengthInBars) {
             if(lengths.length === 0 || !this.shouldRepeatPattern()){
                 var pattern = this.getWeightedRhythmPattern(rhythmType);
                 lengths = lengths.concat(pattern);
@@ -45,7 +29,9 @@ export class RhythmPattern {
             else {
                 lengths = lengths.concat(lastPattern);
             }
+            currentLengthInBars += lastPattern.reduce((length, x) => x.lengthInBars + length, 0);
         }
+
         
         return this.generateFromNoteLengths(desiredLengthInBars, lengths);
     }
@@ -59,8 +45,11 @@ export class RhythmPattern {
         if(rhythmType === RhythmType.Bass) {
             rhythms = bassRhythms;
         }
-        else if (rhythmType == RhythmType.Chord){
-            rhythms = chordRhythms;
+        else if (rhythmType == RhythmType.ChordCommon){
+            rhythms = chordCommonRhythms;
+        }
+        else if (rhythmType == RhythmType.ChordRandom) {
+            rhythms = chordRandomRhythms;
         }
         else if(rhythmType === RhythmType.Melody) {
             rhythms = melodyRhythms
@@ -151,18 +140,37 @@ const bassRhythms: WeightedRhythmPattern[] = [
     }
 ]
 
-const chordRhythms: WeightedRhythmPattern[] = [{
-        weight: 4,
-        pattern: "h h"
+const chordCommonRhythms: WeightedRhythmPattern[] = [{
+        weight: 10,
+        pattern: "h w h w w"
+    },{
+        weight: 10,
+        pattern: "w w w w"
+    },{
+        weight: 10,
+        pattern: "w h h w h h"
+    },{
+        weight: 10,
+        pattern: "h. h. h. h. w"
+    },{
+        weight: 10,
+        pattern: "h h. h. w w"
+    }
+]
+
+const chordRandomRhythms: WeightedRhythmPattern[] = [
+    {
+        weight: 3,
+        pattern: "h"
     },{
         weight: 10,
         pattern: "w"
     },{
-        weight: 10,
-        pattern: "w h h"
+        weight: 3,
+        pattern: "h."
     },{
         weight: 10,
-        pattern: "h. h. h. h."
+        pattern: "w."
     }
 ]
 
@@ -201,7 +209,8 @@ const melodyRhythms: WeightedRhythmPattern[] = [{
 
 export enum RhythmType {
     Unspecified,
-    Chord,
+    ChordCommon,
+    ChordRandom,
     Bass,
     Melody
 }

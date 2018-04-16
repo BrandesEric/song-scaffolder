@@ -1,6 +1,5 @@
 import { TrackKind } from "./tracks";
 import * as uuid from "uuid/v4";
-import { NoteLengthPreferences } from "../music/note-length-preferences";
 import { NoteLength } from "../music/note-length";
 
 export type ChordVoicing = "normal" | "open" | "firstInversion" | "secondInversion";
@@ -28,10 +27,7 @@ export class ChordTrack {
 
     voicing: ChordVoicing = "normal";
     rhythm: "whole" | "common" | "random" = "whole";
-
-    noteLengthPreferences: NoteLengthPreferences = NoteLengthPreferences.longNotes();
     
-
     public static fromFormPost(form): ChordTrack {
         var track = new ChordTrack();
         track.id = form.id;

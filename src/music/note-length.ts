@@ -83,6 +83,8 @@ export class NoteLength {
                 return NoteLength.Whole;
             case "wr":
                 return NoteLength.WholeRest; 
+            case "w.": 
+                return NoteLength.DottedWhole;
         }
     }
 }

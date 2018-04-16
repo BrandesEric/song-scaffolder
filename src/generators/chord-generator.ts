@@ -137,10 +137,10 @@ export class ChordGenerator {
             rhythm = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, [NoteLength.Whole]);
         }
         else if(this.chordTrack.rhythm === "common") {
-            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.Chord);
+            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordCommon);
         }
         else {
-            rhythm = RhythmPattern.generateRandomPattern(this.chordTrack.clipLengthInBars, this.chordTrack.noteLengthPreferences);
+            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordRandom);
         }
 
         rhythm.parts.forEach(duration => {
