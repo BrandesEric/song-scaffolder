@@ -9,6 +9,7 @@ import { SongConfig } from "../config/song.config";
 import { ChordTrack } from "../state/chord-track";
 import { RhythmPattern, RhythmType } from "../music/rhythm";
 import { NoteLength } from "../music/note-length";
+import { Note } from "../music/note";
 
 type ChordNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type ChordWeight = number;
@@ -22,6 +23,8 @@ export class ChordGenerator {
     public chordTrack: ChordTrack;
     private scale;
     private chords;
+    private maxOctave = 4;
+    private minOctave = 2;
 
     private progressions = [
         [1, 5, 6, 4],
@@ -143,9 +146,13 @@ export class ChordGenerator {
             rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordRandom);
         }
 
+        var lastChord = null;
         rhythm.parts.forEach(duration => {
-            var chord = new Chord(chordNames[progressionPosition % chordNames.length], duration, this.chordTrack)
+            var nextChordName = chordNames[progressionPosition % chordNames.length];
+            var chordOctave = this.getChordOctave(lastChord, nextChordName);
+            var chord = new Chord(nextChordName, duration, this.chordTrack, chordOctave)
             chords.push(chord);
+            lastChord = chord;
             var shouldRepeatSameChord = this.getRandomInt(1, 100);
             if(shouldRepeatSameChord > this.chordTrack.percentRepeatChance) {
                 progressionPosition++;
@@ -156,6 +163,41 @@ export class ChordGenerator {
         phrase.addNotesFromChords(chords);
 
         return phrase;
+    }
+
+    private getChordOctave(lastChord: Chord, nextChordName: string): number {
+        var rand = this.getRandomInt(1, 100);
+        if(!lastChord) {
+            if(rand < 65) {
+                return this.chordTrack.startOctave;
+            }
+            else {
+                return this.chordTrack.startOctave + 1;
+            }
+        }
+        
+        var lastNote = lastChord.rootNote;
+        if(rand <= 50) {
+            return lastNote.octave;
+        }
+        else {
+            var nextRoot = Tonal.Chord.notes(nextChordName)[0];
+            var upOctave = Math.min(this.maxOctave, lastNote.octave + 1);
+            var upNote = Note.fromString(nextRoot + upOctave);
+            var upDistance = Math.abs(lastNote.distanceToInSemitones(upNote));
+            var downOctave = Math.max(this.minOctave, lastNote.octave - 1)
+            var downNote = Note.fromString(nextRoot + downOctave);
+            var downDistance = Math.abs(lastNote.distanceToInSemitones(downNote));
+            if(downDistance <= upDistance && downDistance < 8) {
+                return downOctave;
+            }
+            else if(upDistance < 8) {
+                return upOctave;
+            }   
+            else {
+                return lastNote.octave;
+            }
+        }
     }
 
     private getRandomChordStart(): ChordNumber {

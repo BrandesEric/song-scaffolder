@@ -11,19 +11,19 @@ export class Chord {
     duration: NoteLength = NoteLength.Whole;
     chordTrack: ChordTrack;
 
-    constructor(name: string, duration: NoteLength, chordTrack: ChordTrack) {
+    constructor(name: string, duration: NoteLength, chordTrack: ChordTrack, startOctave?: number) {
         this.name = name;
         this.duration = duration;
         this.chordTrack = chordTrack;
         this.noteNamesInChord = Tonal.Chord.notes(name);
 
-        var rootNoteWithOctave = this.noteNamesInChord[0] + this.chordTrack.startOctave;
+        var rootNoteWithOctave = this.noteNamesInChord[0] + (startOctave || this.chordTrack.startOctave);
         this.rootNote = Note.fromString(rootNoteWithOctave);
         this.intervals = this.getIntervals(this.rootNote, this.noteNamesInChord);
         this.chordNotes = this.getNotesInChord(this.rootNote, this.intervals);
     }
 
-    private rootNote: Note;
+    public rootNote: Note;
     private chordNotes: Note[];
     private intervals: string[];
     private noteNamesInChord: string[];

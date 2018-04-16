@@ -131,12 +131,6 @@ const bassRhythms: WeightedRhythmPattern[] = [
     },{
         weight: 10,
         pattern: "h. q"
-    },{
-        weight: 10,
-        pattern: "h h q qr q q"
-    },{
-        weight: 10,
-        pattern: "h h q q q qr"
     }
 ]
 
