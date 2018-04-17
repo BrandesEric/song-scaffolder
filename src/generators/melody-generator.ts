@@ -53,7 +53,8 @@ export class MelodyGenerator {
 
     generateMelodyFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
         var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
-        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, RhythmType.Melody);
+        var rhythmType = this.melodyTrack.rhythmType === "pattern" ? RhythmType.MelodyPattern:  RhythmType.MelodyRandom;
+        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, rhythmType);
         var builder = new PhraseBuilder(rhythm, notes, this.melodyTrack.kind);
 
         var phrase = builder.generatePhrase(`Melody ${index}`);

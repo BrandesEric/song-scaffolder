@@ -52,7 +52,8 @@ export class BassGenerator {
 
     generateBassLineFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
         var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
-        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, RhythmType.Bass);
+        var rhythmType = this.bassTrack.rhythmType === "pattern" ? RhythmType.BassPattern:  RhythmType.BassRandom;
+        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, rhythmType);
         var builder = new PhraseBuilder(rhythm, notes, this.bassTrack.kind);
 
         var phrase = builder.generatePhrase(`Bass ${index}`);

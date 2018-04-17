@@ -42,17 +42,23 @@ export class RhythmPattern {
 
     static getWeightedRhythmPattern(rhythmType: RhythmType): NoteLength[] {
         var rhythms: WeightedRhythmPattern[];
-        if(rhythmType === RhythmType.Bass) {
-            rhythms = bassRhythms;
+        if(rhythmType === RhythmType.BassPattern) {
+            rhythms = bassPatternRhythms;
         }
-        else if (rhythmType == RhythmType.ChordCommon){
-            rhythms = chordCommonRhythms;
+        else if(rhythmType === RhythmType.BassRandom) {
+            rhythms = bassRandomRhythms;
+        }
+        else if (rhythmType == RhythmType.ChordPattern){
+            rhythms = chordPatternRhythms;
         }
         else if (rhythmType == RhythmType.ChordRandom) {
             rhythms = chordRandomRhythms;
         }
-        else if(rhythmType === RhythmType.Melody) {
-            rhythms = melodyRhythms
+        else if(rhythmType === RhythmType.MelodyPattern) {
+            rhythms = melodyPatternRhythms;
+        }
+        else if(rhythmType === RhythmType.MelodyRandom) {
+            rhythms = melodyRandomRhythms;
         }
 
         var totalWeight = rhythms.reduce((acc, val) => val.weight + acc, 0);
@@ -106,35 +112,54 @@ export class RhythmPattern {
     } 
 }
 
-const bassRhythms: WeightedRhythmPattern[] = [
+const bassPatternRhythms: WeightedRhythmPattern[] = [
     {
         weight: 10,
-        pattern: "q q q q"
+        pattern: "q q q q q q q q q q q q q q q q"
     },{
         weight: 10,
-        pattern: "h h"
+        pattern: "h h h h h h h h"
     },{
         weight: 10,
-        pattern: "w"
+        pattern: "w w w w"
     },{
         weight: 10,
-        pattern: "q q h"
+        pattern: "q q h q q h q q h q q h"
     },{
         weight: 10,
-        pattern: "h q q"
-    },{
-        weight: 10,
-        pattern: "q q q qr"
-    },{
-        weight: 10,
-        pattern: "h. qr"
-    },{
-        weight: 10,
-        pattern: "h. q"
+        pattern: "q q q qr q q q qr q q q qr q q q qr"
     }
 ]
 
-const chordCommonRhythms: WeightedRhythmPattern[] = [{
+const bassRandomRhythms: WeightedRhythmPattern[] = [{
+        weight: 15,
+        pattern: "e"
+    },
+    {
+        weight: 15,
+        pattern: "q"
+    },{
+        weight: 15,
+        pattern: "h"
+    },{
+        weight: 15,
+        pattern: "w"
+    },{
+        weight: 5,
+        pattern: "er"
+    },{
+        weight: 5,
+        pattern: "qr"
+    },{
+        weight: 5,
+        pattern: "hr"
+    },{
+        weight: 5,
+        pattern: "wr"
+    },
+]
+
+const chordPatternRhythms: WeightedRhythmPattern[] = [{
         weight: 10,
         pattern: "h w h w w"
     },{
@@ -168,45 +193,71 @@ const chordRandomRhythms: WeightedRhythmPattern[] = [
     }
 ]
 
-const melodyRhythms: WeightedRhythmPattern[] = [{
+const melodyPatternRhythms: WeightedRhythmPattern[] = [{
     weight: 10,
-    pattern: "e e e er"
-},{
-    weight: 10,
-    pattern: "x x"
+    pattern: "e e e er e e e er e e e er e e e er"
 },{
     weight: 10,
-    pattern: "x e x"
+    pattern: "x x x x x x x x x"
 },{
     weight: 10,
-    pattern: "x xr x xr"
+    pattern: "x e x x e x x e x x e x x e x"
 },{
     weight: 10,
-    pattern: "e e."
+    pattern: "x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr x xr"
 },{
     weight: 10,
-    pattern: "x e x er"
+    pattern: "e e. e e. e e. e e. e e."
 },{
     weight: 10,
-    pattern: "x e xr e"
+    pattern: "x e x er x e x er x e x er x e x er"
 },{
-    weight: 20,
-    pattern: "qr"
+    weight: 10,
+    pattern: "x e xr e x e xr e x e xr e x e xr e x e xr e x e xr e"
 },{
-    weight: 20,
+    weight: 10,
+    pattern: "xr"
+},{
+    weight: 10,
     pattern: "er"
 },{
     weight: 10,
-    pattern: "er."
-}
+    pattern: "qr"
+}]
+
+var melodyRandomRhythms = [
+    {
+        weight: 10,
+        pattern: "q"
+    },{
+        weight: 10,
+        pattern: "e"
+    },{
+        weight: 10,
+        pattern: "x"
+    },
+    {
+        weight: 3,
+        pattern: "qr"
+    },{
+        weight: 3,
+        pattern: "er"
+    },{
+        weight: 5,
+        pattern: "xr"
+    }
 ]
 
 export enum RhythmType {
     Unspecified,
-    ChordCommon,
+    ChordPattern,
     ChordRandom,
-    Bass,
-    Melody
+    BassPattern,
+    BassRandom,
+    MelodyPattern,
+    MelodyRandom,
+    AtmospherePattern,
+    AtmosphereRandom
 }
 
 type WeightedRhythmPattern = {

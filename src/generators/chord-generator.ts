@@ -140,7 +140,7 @@ export class ChordGenerator {
             rhythm = RhythmPattern.generateFromNoteLengths(this.chordTrack.clipLengthInBars, [NoteLength.Whole]);
         }
         else if(this.chordTrack.rhythm === "common") {
-            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordCommon);
+            rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordPattern);
         }
         else {
             rhythm = RhythmPattern.getPatternByRhythmType(this.chordTrack.clipLengthInBars, RhythmType.ChordRandom);

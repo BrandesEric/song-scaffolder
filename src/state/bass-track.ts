@@ -14,6 +14,8 @@ export class BassTrack {
     numClips = 10;
     subtractOctaves = 2;
 
+    rhythmType: "pattern" | "random" = "pattern";
+
     public static fromFormPost(form): BassTrack {
         var track = new BassTrack();
         track.id = form.id;
@@ -21,6 +23,7 @@ export class BassTrack {
         track.sourceTrack = form.sourceTrack
         track.useSelectedClip = form.useSelectedClip && form.useSelectedClip === "true";
         track.clearClips = form.clearClips && form.clearClips === "true";
+        track.rhythmType = form.rhythmType;
 
         return track;
     }

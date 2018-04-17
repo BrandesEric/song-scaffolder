@@ -15,6 +15,8 @@ export class MelodyTrack {
     startOctave = 3;
     octaveRange = 2;
 
+    rhythmType: "pattern" | "random" = "pattern";
+
     public static fromFormPost(form): MelodyTrack {
         var track = new MelodyTrack();
         track.id = form.id;
@@ -22,6 +24,7 @@ export class MelodyTrack {
         track.sourceTrack = form.sourceTrack
         track.useSelectedClip = form.useSelectedClip && form.useSelectedClip === "true";
         track.clearClips = form.clearClips && form.clearClips === "true";
+        track.rhythmType = form.rhythmType;
 
         return track;
     }

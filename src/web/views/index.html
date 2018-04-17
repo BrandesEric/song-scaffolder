@@ -87,7 +87,7 @@
                     <div class="flex random-duration">
                         <div class="track-parameter flex align-center">
                                 <label><input type="radio" name="rhythm" value="whole" {{#ifCond rhythm "whole"}}checked{{/ifCond}} />Whole Notes</label>   
-                                <label><input type="radio" name="rhythm" value="common" {{#ifCond rhythm "common"}}checked{{/ifCond}} />Common Rhythms</label>   
+                                <label><input type="radio" name="rhythm" value="common" {{#ifCond rhythm "common"}}checked{{/ifCond}} />Pattern Rhythms</label>   
                                 <label><input type="radio" name="rhythm" value="random" {{#ifCond rhythm "random"}}checked{{/ifCond}} />Random Rhythms</label>
                         </div>  
                     </div>
@@ -130,6 +130,11 @@
                                         <option value="{{.}}" {{#ifCond bassTrack.sourceTrack .}}selected{{/ifCond}}>{{.}}</option>
                                     {{/each}}
                                 </select>
+                                <lable>Rhythm:&nbsp;&nbsp;&nbsp;</lable>
+                                <select name="rhythmType" style="margin-right: 20px; padding: 10px;">
+                                    <option value="pattern" {{#ifCond bassTrack.rhythmType "pattern"}}selected{{/ifCond}}>Pattern</option>
+                                    <option value="random" {{#ifCond bassTrack.rhythmType "random"}}selected{{/ifCond}}>Random</option>
+                                </select>
                             </div>
                         </div>
                         <button>Generate</button>
@@ -157,6 +162,11 @@
                                     {{#each @root.currentState.existingTracks}}
                                         <option value="{{.}}" {{#ifCond melodyTrack.sourceTrack .}}selected{{/ifCond}}>{{.}}</option>
                                     {{/each}}
+                                </select>
+                                <lable>Rhythm:&nbsp;&nbsp;&nbsp;</lable>
+                                <select name="rhythmType" style="margin-right: 20px; padding: 10px;">
+                                    <option value="pattern" {{#ifCond melodyTrack.rhythmType "pattern"}}selected{{/ifCond}}>Pattern</option>
+                                    <option value="random" {{#ifCond melodyTrack.rhythmType "random"}}selected{{/ifCond}}>Random</option>
                                 </select>
                             </div>
                         </div>
