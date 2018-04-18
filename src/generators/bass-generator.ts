@@ -32,28 +32,34 @@ export class BassGenerator {
         if(this.bassTrack.clearClips){
             await this.clearClips(track)
         } 
-
         var sourceTrack = await AbletonJs.getTrackByName(this.bassTrack.sourceTrack);
         var clip: AbletonJs.MidiClip;
-        if (this.bassTrack.useSelectedClip) {
-            clip = await AbletonJs.getSelectedMidiClip();
+        try {
+            if (this.bassTrack.useSelectedClip) {
+                clip = await AbletonJs.getSelectedMidiClip();
+            }
+            
+            if(!clip) {
+                clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+            }
         }
-        
-        if(!clip) {
-            clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+        catch (err) {
+            clip = null;
         }
 
-        var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        if(clip) {
+            var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        }
         for (var i = 0; i < this.bassTrack.numClips; i++) {
             var phrase = this.generateBassLineFromMidiClip(clip, midiNotes, i);
             await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
         }
     }
 
-    generateBassLineFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
-        var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
+    generateBassLineFromMidiClip(clip: AbletonJs.MidiClip | null, notes: AbletonJs.MidiNote[], index: number): Phrase {
+        var length = clip != null ? NoteLength.fromBeats(clip.lengthInBeats) : NoteLength.fromBars(4);
         var rhythmType = this.bassTrack.rhythmType === "pattern" ? RhythmType.BassPattern:  RhythmType.BassRandom;
-        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, rhythmType);
+        var rhythm = RhythmPattern.getPatternByRhythmType(length.lengthInBars, rhythmType);
         var builder = new PhraseBuilder(rhythm, notes, this.bassTrack.kind);
 
         var phrase = builder.generatePhrase(`Bass ${index}`);

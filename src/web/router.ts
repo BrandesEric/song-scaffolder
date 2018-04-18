@@ -3,13 +3,14 @@ import * as path from 'path';
 import { serveStatic } from "serve-static";
 import { currentState } from "../state/current";
 import { changeTempo } from "../state/tempo";
-import { addChords, generateChords, generateKick, generateSnare, generateHihat, generateBass, generateMelody, addBass, addMelody, addKick, addSnare, addHihat, deleteTrack } from "../state/tracks";
+import { addChords, generateChords, generateKick, generateSnare, generateHihat, generateBass, generateMelody, addBass, addMelody, addKick, addSnare, addHihat, deleteTrack, addAtmosphere, generateAtmosphere } from "../state/tracks";
 import { KickTrack } from "../state/kick-track";
 import { ChordTrack } from "../state/chord-track";
 import { SnareTrack } from "../state/snare-track";
 import { HihatTrack } from "../state/hihat-track";
 import { BassTrack } from "../state/bass-track";
 import { MelodyTrack } from "../state/melody-track";
+import { AtmosphereTrack } from "../state/atmosphere-track";
 
 export class Router {
     static applyRoutes(app: Application) {
@@ -57,6 +58,11 @@ export class Router {
             res.redirect("/");
         });
 
+        app.post("/add-atmosphere", async(req, res) => {
+            await addAtmosphere(await currentState());
+            res.redirect("/");
+        });
+
         app.post("/generate-chords", async (req, res) => {
             var chordTrack = ChordTrack.fromFormPost(req.body);
             var state = await currentState();
@@ -96,6 +102,13 @@ export class Router {
             var melodyTrack = MelodyTrack.fromFormPost(req.body);
             var state = await currentState();
             await generateMelody(melodyTrack, state);
+            res.redirect("/");
+        });
+
+        app.post("/generate-atmosphere", async (req, res) => {
+            var atmosphereTrack = AtmosphereTrack.fromFormPost(req.body);
+            var state = await currentState();
+            await generateAtmosphere(atmosphereTrack, state);
             res.redirect("/");
         });
 

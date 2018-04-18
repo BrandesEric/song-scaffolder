@@ -4,6 +4,7 @@ import { SnareTrack } from "./snare-track";
 import { HihatTrack } from "./hihat-track";
 import { BassTrack } from "./bass-track";
 import { MelodyTrack } from "./melody-track";
+import { AtmosphereTrack } from "./atmosphere-track";
 
 export class ApplicationState {
     public deviceActive: boolean;
@@ -15,6 +16,7 @@ export class ApplicationState {
     public hihatTracks: HihatTrack[] = [];
     public bassTracks: BassTrack[] = [];
     public melodyTracks: MelodyTrack[] = [];
+    public atmosphereTracks: AtmosphereTrack[] = [];
 
     public updateChordTrack(chordTrack: ChordTrack) {
         var index = this.chordTracks.findIndex(x => x.id === chordTrack.id);
@@ -44,5 +46,10 @@ export class ApplicationState {
     public updateMelodyTrack(melodyTrack: MelodyTrack) {
         var index = this.melodyTracks.findIndex(x => x.id === melodyTrack.id);
         this.melodyTracks[index] = melodyTrack;
+    }
+
+    public updateAtmosphereTrack(atmosphereTrack: AtmosphereTrack) {
+        var index = this.atmosphereTracks.findIndex(x => x.id === atmosphereTrack.id);
+        this.atmosphereTracks[index] = atmosphereTrack;
     }
 }

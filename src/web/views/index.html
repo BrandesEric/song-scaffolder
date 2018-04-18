@@ -29,6 +29,9 @@
             </div>
         </div>
         <div class="flex align-center" style="flex: 1 0 auto">
+            <form action="/add-atmosphere" method="POST">
+                <button class="link-button">Add Atmosphere</button>
+            </form>
             <form action="/add-chords" method="POST">
                 <button class="link-button">Add Chords</button>
             </form>
@@ -163,6 +166,33 @@
                                         <option value="{{.}}" {{#ifCond melodyTrack.sourceTrack .}}selected{{/ifCond}}>{{.}}</option>
                                     {{/each}}
                                 </select>
+                                <lable>Rhythm:&nbsp;&nbsp;&nbsp;</lable>
+                                <select name="rhythmType" style="margin-right: 20px; padding: 10px;">
+                                    <option value="pattern" {{#ifCond melodyTrack.rhythmType "pattern"}}selected{{/ifCond}}>Pattern</option>
+                                    <option value="random" {{#ifCond melodyTrack.rhythmType "random"}}selected{{/ifCond}}>Random</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button>Generate</button>
+                    </div>
+                </form>
+            </div>
+            {{/with}}
+        {{/each}}
+        {{#each currentState.atmosphereTracks}}
+            {{#with . as |atmosphereTrack|}}
+            <div class="track atmosphere">
+                <h3 style="margin-top: 0">Atmosphere/Drone</h3>
+                <form action="/generate-atmosphere" method="POST">
+                    <input type="hidden" name="id" value="{{this.id}}" />
+                    <div class="flex-column">
+                        <div class="flex">
+                            <div class="track-parameter flex align-center">
+                                <label>Track Name:</label> 
+                                <input type="text" name="name" value="{{this.name}}" />
+                                <label><input type="checkbox" name="clearClips" value="true" {{#if clearClips}}checked{{/if}} />Clear Clips</label> 
+                            </div>
+                            <div class="track-parameter flex align-center">
                                 <lable>Rhythm:&nbsp;&nbsp;&nbsp;</lable>
                                 <select name="rhythmType" style="margin-right: 20px; padding: 10px;">
                                     <option value="pattern" {{#ifCond melodyTrack.rhythmType "pattern"}}selected{{/ifCond}}>Pattern</option>

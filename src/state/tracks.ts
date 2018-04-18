@@ -14,6 +14,8 @@ import { BassGenerator } from "../generators/bass-generator";
 import { MelodyTrack } from "./melody-track";
 import { MelodyGenerator } from "../generators/melody-generator";
 import { indexOf, remove } from "lodash";
+import { AtmosphereTrack } from "./atmosphere-track";
+import { AtmosphereGenerator } from "../generators/atmosphere-generator";
 
 export async function deleteTrack(trackName: string, trackKind: string, state: ApplicationState) {
     switch (trackKind) {
@@ -34,6 +36,8 @@ export async function deleteTrack(trackName: string, trackKind: string, state: A
             break;
         case "hihat":
             await deleteTrackFromList(state.hihatTracks, trackName);
+        case "atmosphere":
+            await deleteTrackFromList(state.atmosphereTracks, trackName);
             break;
     }
 }
@@ -116,6 +120,18 @@ export async function generateMelody(melodyTrack: MelodyTrack, state: Applicatio
     return true;
 }
 
+export function addAtmosphere(state: ApplicationState) {
+    state.atmosphereTracks.push(new AtmosphereTrack());
+}
+
+export async function generateAtmosphere(atmospheretrack: AtmosphereTrack, state: ApplicationState): Promise<boolean> {
+    var atmosphereGenerator = new AtmosphereGenerator(atmospheretrack);
+    await atmosphereGenerator.generate();
+    state.updateAtmosphereTrack(atmospheretrack);
+
+    return true;
+}
+
 export enum TrackKind {
     Unspecified,
     Chord,
@@ -123,5 +139,6 @@ export enum TrackKind {
     Snare,
     Hihat,
     Bass,
-    Melody
+    Melody,
+    Atmosphere
 }

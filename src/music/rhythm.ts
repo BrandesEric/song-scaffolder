@@ -60,6 +60,12 @@ export class RhythmPattern {
         else if(rhythmType === RhythmType.MelodyRandom) {
             rhythms = melodyRandomRhythms;
         }
+        else if(rhythmType === RhythmType.AtmospherePattern) {
+            rhythms = atmospherePatternRhythms;
+        }
+        else if(rhythmType === RhythmType.AtmosphereRandom) {
+            rhythms = atmosphereRandomRhythms;
+        }
 
         var totalWeight = rhythms.reduce((acc, val) => val.weight + acc, 0);
         var random = RhythmPattern.getRandomInt(1, totalWeight);
@@ -247,6 +253,34 @@ var melodyRandomRhythms = [
         pattern: "xr"
     }
 ]
+
+var atmospherePatternRhythms = [{
+    weight: 10,
+    pattern: "w w w w"
+},{
+    weight: 10,
+    pattern: "w wr w wr"
+},{
+    weight: 10,
+    pattern: "w. w. w"
+}]
+
+var atmosphereRandomRhythms = [{
+    weight: 15,
+    pattern: "w"
+},{
+    weight: 10,
+    pattern: "h"
+},{
+    weight: 4,
+    pattern: "wr"
+},{
+    weight: 10,
+    pattern: "w."
+},{
+    weight: 4,
+    pattern: "hr"
+}]
 
 export enum RhythmType {
     Unspecified,
