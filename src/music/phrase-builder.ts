@@ -19,7 +19,7 @@ export class PhraseBuilder {
 
     private useSourceNotesPercentage = 70;
 
-    private pitchDirections = [{
+    private pitchDirectionsMelody = [{
         weight: 20,
         direction: PitchDirection.Up
     }, {
@@ -27,6 +27,17 @@ export class PhraseBuilder {
         direction: PitchDirection.Down
     }, {
         weight: 20,
+        direction: PitchDirection.RepeatLast
+    }]
+
+    private pitchDirectionsBass = [{
+        weight: 20,
+        direction: PitchDirection.Up
+    }, {
+        weight: 20,
+        direction: PitchDirection.Down
+    }, {
+        weight: 40,
         direction: PitchDirection.RepeatLast
     }]
 
@@ -160,14 +171,21 @@ export class PhraseBuilder {
     }
 
     getNextPitchDirection() {
-        var totalWeight = this.pitchDirections.reduce((acc, val) => val.weight + acc, 0);
+        var pitchDirections;
+        if(this.phraseType === TrackKind.Melody) {
+            pitchDirections = this.pitchDirectionsMelody;
+        }
+        else {
+            pitchDirections = this.pitchDirectionsBass;
+        }
+        var totalWeight = pitchDirections.reduce((acc, val) => val.weight + acc, 0);
         var random = this.getRandomInt(1, totalWeight);
         var index = 0;
-        var direction = this.pitchDirections[0].direction;
-        while(random > this.pitchDirections[index].weight) {
-            random -= this.pitchDirections[index].weight;
+        var direction = pitchDirections[0].direction;
+        while(random > pitchDirections[index].weight) {
+            random -= pitchDirections[index].weight;
             index++;
-            direction = this.pitchDirections[index].direction;
+            direction = pitchDirections[index].direction;
         }
 
         return direction;
@@ -175,11 +193,11 @@ export class PhraseBuilder {
 
     getNextPitchMovementDistance() {
         var distances;
-        if(this.phraseType === TrackKind.Bass) {
-            distances = this.pitchDistancesBass;
+        if(this.phraseType === TrackKind.Melody) {
+            distances = this.pitchDistancesMelody;
         }
         else {
-            distances = this.pitchDistancesMelody;
+            distances = this.pitchDistancesBass;
         }
         var totalWeight = distances.reduce((acc, val) => val.weight + acc, 0);
         var random = this.getRandomInt(1, totalWeight);

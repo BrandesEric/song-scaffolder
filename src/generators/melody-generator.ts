@@ -35,15 +35,22 @@ export class MelodyGenerator {
 
         var sourceTrack = await AbletonJs.getTrackByName(this.melodyTrack.sourceTrack);
         var clip: AbletonJs.MidiClip;
-        if (this.melodyTrack.useSelectedClip) {
-            clip = await AbletonJs.getSelectedMidiClip();
+        try {
+            if (this.melodyTrack.useSelectedClip) {
+                clip = await AbletonJs.getSelectedMidiClip();
+            }
+            
+            if(!clip) {
+                clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+            }
         }
-        
-        if(!clip) {
-            clip = (await AbletonJs.getMidiClips(sourceTrack))[0];
+        catch (err) {
+            clip = null;
         }
 
-        var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        if(clip) {
+            var midiNotes = await AbletonJs.getMidiClipNotes(clip);
+        }
         for (var i = 0; i < this.melodyTrack.numClips; i++) {
             var phrase = this.generateMelodyFromMidiClip(clip, midiNotes, i);
             await AbletonJs.insertMidiClip(track, phrase.toMidiClip())
@@ -52,9 +59,9 @@ export class MelodyGenerator {
     }
 
     generateMelodyFromMidiClip(clip: AbletonJs.MidiClip, notes: AbletonJs.MidiNote[], index: number): Phrase {
-        var noteLength = NoteLength.fromBeats(clip.lengthInBeats);
+        var length = clip != null ? NoteLength.fromBeats(clip.lengthInBeats) : NoteLength.fromBars(4);
         var rhythmType = this.melodyTrack.rhythmType === "pattern" ? RhythmType.MelodyPattern:  RhythmType.MelodyRandom;
-        var rhythm = RhythmPattern.getPatternByRhythmType(noteLength.lengthInBars, rhythmType);
+        var rhythm = RhythmPattern.getPatternByRhythmType(length.lengthInBars, rhythmType);
         var builder = new PhraseBuilder(rhythm, notes, this.melodyTrack.kind);
 
         var phrase = builder.generatePhrase(`Melody ${index}`);
