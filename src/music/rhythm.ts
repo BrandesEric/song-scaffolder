@@ -262,7 +262,10 @@ var atmospherePatternRhythms = [{
     pattern: "w wr w wr"
 },{
     weight: 10,
-    pattern: "w. w. w"
+    pattern: "w. hr w. hr"
+}, {
+    weight: 10,
+    pattern: "w w 2w"
 }]
 
 var atmosphereRandomRhythms = [{

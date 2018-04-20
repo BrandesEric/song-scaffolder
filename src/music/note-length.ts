@@ -85,6 +85,8 @@ export class NoteLength {
                 return NoteLength.WholeRest; 
             case "w.": 
                 return NoteLength.DottedWhole;
+            case "2w":
+                return NoteLength.TwoWhole;
         }
     }
 }
